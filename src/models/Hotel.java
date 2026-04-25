@@ -1,61 +1,42 @@
 package models;
 
-// Hotel: An accommodation option at a Destination
+// A hotel belongs to a destination.
+// Users can book a hotel as part of a booking.
 
 public class Hotel {
 
-    private int    id;
-    private int    destinationId;
+    private int id;
+    private int destinationId;
     private String name;
-    private int    starRating;      // 1 to 5
+    private int rating;
     private String managerContact;
-    private int    availableRooms;
+    private String address;
     private double pricePerNight;
-    private String imageUrl;        // optional, for future UI use
 
-    public Hotel(int id, int destinationId, String name, int starRating,
-                 String managerContact, int availableRooms,
-                 double pricePerNight, String imageUrl) {
-        this.id              = id;
-        this.destinationId   = destinationId;
-        this.name            = name;
-        this.starRating      = starRating;
-        this.managerContact  = managerContact;
-        this.availableRooms  = availableRooms;
-        this.pricePerNight   = pricePerNight;
-        this.imageUrl        = imageUrl;
+    public Hotel(int id, int destinationId, String name, int rating,
+                 String managerContact, String address, double pricePerNight) {
+        this.id = id;
+        this.destinationId = destinationId;
+        this.name = name;
+        this.rating = rating;
+        this.managerContact = managerContact;
+        this.address = address;
+        this.pricePerNight = pricePerNight;
     }
 
-    // Display hotel info in a nice format
-    public void displayInfo() {
-        System.out.println("  🏨 " + name);
-        System.out.println("  Stars          : " + "⭐".repeat(starRating));
-        System.out.println("  Price/Night    : Rs. " + pricePerNight);
-        System.out.println("  Rooms Available: " + availableRooms);
-        System.out.println("  Contact        : " + managerContact);
-    }
+    public int getId() { return id; }
+    public int getDestinationId() { return destinationId; }
+    public String getName() { return name; }
+    public int getRating() { return rating; }
+    public String getManagerContact() { return managerContact; }
+    public String getAddress() { return address; }
+    public double getPricePerNight() { return pricePerNight; }
 
-    // Calculate total cost for a stay
-    public double calculateStayCost(int nights) {
-        return pricePerNight * nights;
-    }
+    public void setPricePerNight(double pricePerNight) { this.pricePerNight = pricePerNight; }
 
-    // Getters
-    public int    getId()              { return id;              }
-    public int    getDestinationId()   { return destinationId;   }
-    public String getName()            { return name;            }
-    public int    getStarRating()      { return starRating;      }
-    public String getManagerContact()  { return managerContact;  }
-    public int    getAvailableRooms()  { return availableRooms;  }
-    public double getPricePerNight()   { return pricePerNight;   }
-    public String getImageUrl()        { return imageUrl;        }
-
-    // Setters
-    public void setAvailableRooms(int rooms)     { this.availableRooms = rooms;    }
-    public void setPricePerNight(double price)   { this.pricePerNight  = price;    }
-
-    public String toFileString() {
-        return id + "," + destinationId + "," + name + "," + starRating + ","
-             + managerContact + "," + availableRooms + "," + pricePerNight + "," + imageUrl;
+    @Override
+    public String toString() {
+        return "Hotel ID: " + id + " | " + name + " | Stars: " + rating
+                + " | Price per night: $" + pricePerNight + " | Address: " + address;
     }
 }
