@@ -1,308 +1,350 @@
-import services.*;
-import models.*;
-import exceptions.SmartGoException;
 import data.DataStore;
+import exceptions.SmartGoException;
+import models.User;
+import services.*;
 
-import java.util.List;
 import java.util.Scanner;
 
-// Main: The entry point of SmartGo
-//
-// This is the MENU-DRIVEN SYSTEM required for Week 3.
-// Everything runs from here:
-//   - The app starts
-//   - Shows a menu
-//   - User picks an option
-//   - We call the right service
-//   - Loop back to menu
-//
-// Think of Main as the "receptionist" of the app.
-// It doesn't DO the work — it just directs you to the right
-// service (AuthService, FlightService, BookingService, etc.)
+// This is the entry point of the SmartGo travel app.
+// Everything starts here. The menu lets the user navigate
+// through all features of the application.
 
 public class Main {
 
-    // These are our services: the brains of each feature
-    static AuthService   authService   = new AuthService();
-    static FlightService flightService = new FlightService();
-    static BookingService bookingService = new BookingService();
-    static ReviewService reviewService  = new ReviewService();
+    private static Scanner scanner = new Scanner(System.in);
 
-    // Scanner reads what the user types
-    static Scanner scanner = new Scanner(System.in);
-
-    // App Entry Point
     public static void main(String[] args) {
 
-        // Initialize data folder for file handling
-        DataStore.initialize();
+        // Set up the data folder and load all saved data
+        DataStore.init();
+        AuthService.init();
+        FlightService.init();
+        TourPlanService.init();
+        BookingService.init();
+        ReviewService.init();
 
-        printBanner();
+        System.out.println("=====================================");
+        System.out.println("   Welcome to SmartGo Travel App!   ");
+        System.out.println("=====================================");
 
-        // Main Loop: keeps running until user exits
         boolean running = true;
-        while (running) {
 
-            // If nobody is logged in, show the welcome menu
-            if (!authService.isLoggedIn()) {
-                running = showWelcomeMenu();
+        while (running) {
+            if (!AuthService.isLoggedIn()) {
+                showGuestMenu();
+                int choice = readInt();
+
+                switch (choice) {
+                    case 1 -> handleRegister();
+                    case 2 -> handleLogin();
+                    case 3 -> {
+                        System.out.println("Thank you for using SmartGo. Goodbye!");
+                        running = false;
+                    }
+                    default -> System.out.println("Invalid choice. Please enter 1, 2, or 3.");
+                }
+
             } else {
-                // Someone is logged in, show the main app menu
-                running = showMainMenu();
+                showMainMenu();
+                int choice = readInt();
+
+                switch (choice) {
+                    case 1 -> handleFlightsMenu();
+                    case 2 -> handleTourPlansMenu();
+                    case 3 -> handleBookingsMenu();
+                    case 4 -> handleReviewsMenu();
+                    case 5 -> AuthService.logout();
+                    default -> System.out.println("Invalid choice. Please enter a number from 1 to 5.");
+                }
             }
         }
 
-        System.out.println("\n  Thank you for using SmartGo. Have a great trip! ✈");
         scanner.close();
     }
 
-    // Welcome Menu: shown when nobody is logged in
-    private static boolean showWelcomeMenu() {
-        System.out.println("\n╔══════════════════════════════╗");
-        System.out.println("║       WELCOME TO SmartGo     ║");
-        System.out.println("╠══════════════════════════════╣");
-        System.out.println("║  1. Login                    ║");
-        System.out.println("║  2. Register                 ║");
-        System.out.println("║  3. Browse Flights (Guest)   ║");
-        System.out.println("║  0. Exit                     ║");
-        System.out.println("╚══════════════════════════════╝");
-        System.out.print("\n  Enter your choice: ");
-
-        String choice = scanner.nextLine().trim();
-
-        switch (choice) {
-            case "1": handleLogin();           break;
-            case "2": handleRegister();        break;
-            case "3": handleBrowseFlights();   break;
-            case "0": return false;            // exit app
-            default:
-                System.out.println("\n  ❌ Invalid choice. Please enter 1, 2, 3, or 0.");
-        }
-
-        return true; // keep running
+    // The menu shown when no one is logged in
+    private static void showGuestMenu() {
+        System.out.println("\nWhat would you like to do?");
+        System.out.println("1. Create an account");
+        System.out.println("2. Login");
+        System.out.println("3. Exit");
+        System.out.print("Your choice: ");
     }
 
-    // Main Menu: shown after login
-    private static boolean showMainMenu() {
-        User user = authService.getLoggedInUser();
-
-        System.out.println("\n╔══════════════════════════════════════╗");
-        System.out.println("║  Hello, " + padRight(user.getName(), 28) + "║");
-        System.out.println("╠══════════════════════════════════════╣");
-        System.out.println("║  1. Browse Flights                   ║");
-        System.out.println("║  2. Book a Flight                    ║");
-        System.out.println("║  3. My Bookings                      ║");
-        System.out.println("║  4. Cancel a Booking                 ║");
-        System.out.println("║  5. View / Pay Bill                  ║");
-        System.out.println("║  6. Leave a Review                   ║");
-        System.out.println("║  7. My Profile                       ║");
-        System.out.println("║  8. Logout                           ║");
-        System.out.println("║  0. Exit                             ║");
-        System.out.println("╚══════════════════════════════════════╝");
-        System.out.print("\n  Enter your choice: ");
-
-        String choice = scanner.nextLine().trim();
-
-        switch (choice) {
-            case "1": handleBrowseFlights();               break;
-            case "2": handleBookFlight();                  break;
-            case "3": handleMyBookings();                  break;
-            case "4": handleCancelBooking();               break;
-            case "5": handleBillAndPayment();              break;
-            case "6": handleLeaveReview();                 break;
-            case "7": user.displayInfo();                  break;
-            case "8": authService.logout();                break;
-            case "0": return false;
-            default:
-                System.out.println("\n  ❌ Invalid choice. Please try again.");
-        }
-
-        return true;
+    // The main menu shown after login
+    private static void showMainMenu() {
+        User user = AuthService.getLoggedInUser();
+        System.out.println("\nHello, " + user.getName() + "! What would you like to do?");
+        System.out.println("1. Browse Flights");
+        System.out.println("2. Browse Tour Plans");
+        System.out.println("3. My Bookings");
+        System.out.println("4. Reviews");
+        System.out.println("5. Logout");
+        System.out.print("Your choice: ");
     }
 
-    // Handler: Login
-    private static void handleLogin() {
-        System.out.println("\n  ──── LOGIN ────");
-
-        System.out.print("  Email    : ");
-        String email = scanner.nextLine().trim();
-
-        System.out.print("  Password : ");
-        String password = scanner.nextLine().trim();
-
-        try {
-            authService.login(email, password);
-        } catch (SmartGoException e) {
-            // SmartGoException gives us a human-friendly message
-            System.out.println("\n  ❌ " + e.getMessage());
-        }
-    }
-
-    // Handler: Register
+    // Register a new account
     private static void handleRegister() {
-        System.out.println("\n  ──── CREATE AN ACCOUNT ────");
+        System.out.println("\nCreate Your Account");
+        System.out.println("--------------------");
 
-        System.out.print("  Full Name : ");
+        System.out.print("Full name: ");
         String name = scanner.nextLine().trim();
 
-        System.out.print("  Email     : ");
+        System.out.print("Email address: ");
         String email = scanner.nextLine().trim();
 
-        System.out.print("  Phone     : ");
+        System.out.print("Phone number: ");
         String phone = scanner.nextLine().trim();
 
-        System.out.print("  Address   : ");
+        System.out.print("Password: ");
+        String password = scanner.nextLine().trim();
+
+        System.out.print("Home address: ");
         String address = scanner.nextLine().trim();
 
-        System.out.print("  Password  : ");
+        try {
+            AuthService.register(name, email, phone, password, address);
+        } catch (SmartGoException e) {
+            System.out.println("Could not create account: " + e.getMessage());
+        }
+    }
+
+    // Login to an existing account
+    private static void handleLogin() {
+        System.out.println("\nLogin to Your Account");
+        System.out.println("----------------------");
+
+        System.out.print("Email address: ");
+        String email = scanner.nextLine().trim();
+
+        System.out.print("Password: ");
         String password = scanner.nextLine().trim();
 
         try {
-            authService.register(name, email, phone, password, address);
+            AuthService.login(email, password);
         } catch (SmartGoException e) {
-            System.out.println("\n  ❌ " + e.getMessage());
+            System.out.println("Login failed: " + e.getMessage());
         }
     }
 
-    // Handler: Browse Flights
-    private static void handleBrowseFlights() {
-        flightService.displayAllFlights();
-    }
+    // Flights sub-menu
+    private static void handleFlightsMenu() {
+        boolean inMenu = true;
 
-    // Handler: Book a Flight
-    private static void handleBookFlight() {
-        User user = authService.getLoggedInUser();
+        while (inMenu) {
+            System.out.println("\nFlights");
+            System.out.println("--------");
+            System.out.println("1. View all flights");
+            System.out.println("2. Search flights by destination");
+            System.out.println("3. Search flights by airline");
+            System.out.println("4. View reviews for a flight");
+            System.out.println("5. Book a flight");
+            System.out.println("6. Go back");
+            System.out.print("Your choice: ");
 
-        // First show available flights
-        flightService.displayAllFlights();
+            int choice = readInt();
 
-        System.out.print("\n  Enter Flight ID to book: ");
-        try {
-            int flightId = Integer.parseInt(scanner.nextLine().trim());
-
-            System.out.print("  Number of passengers  : ");
-            int passengers = Integer.parseInt(scanner.nextLine().trim());
-
-            Flight flight = flightService.getFlightById(flightId);
-            bookingService.bookFlight(user, flight, passengers);
-
-        } catch (NumberFormatException e) {
-            System.out.println("\n  ❌ Please enter a valid number.");
-        } catch (SmartGoException e) {
-            System.out.println("\n  ❌ " + e.getMessage());
-        }
-    }
-
-    // Handler: My Bookings
-    private static void handleMyBookings() {
-        User user = authService.getLoggedInUser();
-        bookingService.displayUserBookings(user);
-    }
-
-    // Handler: Cancel a Booking
-    private static void handleCancelBooking() {
-        User user = authService.getLoggedInUser();
-
-        // Show their bookings first
-        bookingService.displayUserBookings(user);
-
-        System.out.print("\n  Enter Booking ID to cancel: ");
-        try {
-            int bookingId = Integer.parseInt(scanner.nextLine().trim());
-            bookingService.cancelBooking(bookingId, user);
-        } catch (NumberFormatException e) {
-            System.out.println("\n  ❌ Please enter a valid number.");
-        } catch (SmartGoException e) {
-            System.out.println("\n  ❌ " + e.getMessage());
-        }
-    }
-
-    // Handler: View Bill and Pay
-    private static void handleBillAndPayment() {
-        User user = authService.getLoggedInUser();
-
-        System.out.print("\n  Enter Booking ID to view bill: ");
-        try {
-            int bookingId = Integer.parseInt(scanner.nextLine().trim());
-
-            // Show the bill
-            bookingService.displayBill(bookingId);
-
-            // Ask if they want to pay advance
-            System.out.print("\n  Pay advance now? (yes/no): ");
-            String answer = scanner.nextLine().trim().toLowerCase();
-
-            if (answer.equals("yes") || answer.equals("y")) {
-                System.out.println("  Payment methods: CASH / CARD / BANK_TRANSFER");
-                System.out.print("  Choose method: ");
-                String method = scanner.nextLine().trim().toUpperCase();
-
-                bookingService.processAdvancePayment(bookingId, method, user);
+            switch (choice) {
+                case 1 -> FlightService.showAllFlights();
+                case 2 -> {
+                    System.out.print("Enter destination city: ");
+                    String city = scanner.nextLine().trim();
+                    var results = FlightService.searchByDestination(city);
+                    if (results.isEmpty()) {
+                        System.out.println("No flights found to " + city + ".");
+                    } else {
+                        results.forEach(System.out::println);
+                    }
+                }
+                case 3 -> {
+                    System.out.print("Enter airline name: ");
+                    String airline = scanner.nextLine().trim();
+                    var results = FlightService.searchByAirline(airline);
+                    if (results.isEmpty()) {
+                        System.out.println("No flights found for airline: " + airline + ".");
+                    } else {
+                        results.forEach(System.out::println);
+                    }
+                }
+                case 4 -> {
+                    System.out.print("Enter flight ID to see reviews: ");
+                    int id = readInt();
+                    ReviewService.showReviews("FLIGHT", id);
+                }
+                case 5 -> {
+                    System.out.print("Enter the flight ID you want to book: ");
+                    int id = readInt();
+                    try {
+                        BookingService.bookFlight(AuthService.getLoggedInUser().getId(), id);
+                    } catch (SmartGoException e) {
+                        System.out.println("Booking failed: " + e.getMessage());
+                    }
+                }
+                case 6 -> inMenu = false;
+                default -> System.out.println("Please enter a number from 1 to 6.");
             }
-
-        } catch (NumberFormatException e) {
-            System.out.println("\n  ❌ Please enter a valid number.");
-        } catch (SmartGoException e) {
-            System.out.println("\n  ❌ " + e.getMessage());
         }
     }
 
-    // Handler: Leave a Review
-    private static void handleLeaveReview() {
-        User user = authService.getLoggedInUser();
+    // Tour Plans sub-menu
+    private static void handleTourPlansMenu() {
+        boolean inMenu = true;
 
-        System.out.println("\n  ──── LEAVE A REVIEW ────");
-        System.out.println("  What would you like to review?");
-        System.out.println("  1. Flight");
-        System.out.println("  2. Hotel");
-        System.out.print("\n  Choice: ");
+        while (inMenu) {
+            System.out.println("\nTour Plans");
+            System.out.println("-----------");
+            System.out.println("1. View all tour plans");
+            System.out.println("2. View meal plans for a tour");
+            System.out.println("3. View reviews for a tour plan");
+            System.out.println("4. Book a tour plan");
+            System.out.println("5. Go back");
+            System.out.print("Your choice: ");
 
-        String typeChoice = scanner.nextLine().trim();
-        String reviewType;
+            int choice = readInt();
 
-        switch (typeChoice) {
-            case "1": reviewType = "FLIGHT";    break;
-            case "2": reviewType = "HOTEL";     break;
-            default:
-                System.out.println("\n  ❌ Invalid choice.");
-                return;
+            switch (choice) {
+                case 1 -> TourPlanService.showAllTourPlans();
+                case 2 -> {
+                    System.out.print("Enter tour plan ID: ");
+                    int id = readInt();
+                    TourPlanService.showMealPlansForTour(id);
+                }
+                case 3 -> {
+                    System.out.print("Enter tour plan ID to see reviews: ");
+                    int id = readInt();
+                    ReviewService.showReviews("TOUR_PLAN", id);
+                }
+                case 4 -> {
+                    System.out.print("Enter the tour plan ID you want to book: ");
+                    int id = readInt();
+                    try {
+                        BookingService.bookTourPlan(AuthService.getLoggedInUser().getId(), id);
+                    } catch (SmartGoException e) {
+                        System.out.println("Booking failed: " + e.getMessage());
+                    }
+                }
+                case 5 -> inMenu = false;
+                default -> System.out.println("Please enter a number from 1 to 5.");
+            }
         }
+    }
 
+    // Bookings sub-menu
+    private static void handleBookingsMenu() {
+        boolean inMenu = true;
+        int userId = AuthService.getLoggedInUser().getId();
+
+        while (inMenu) {
+            System.out.println("\nMy Bookings");
+            System.out.println("------------");
+            System.out.println("1. View all my bookings");
+            System.out.println("2. Cancel a booking");
+            System.out.println("3. Pay a bill");
+            System.out.println("4. Go back");
+            System.out.print("Your choice: ");
+
+            int choice = readInt();
+
+            switch (choice) {
+                case 1 -> BookingService.showMyBookings(userId);
+                case 2 -> {
+                    System.out.print("Enter the booking ID you want to cancel: ");
+                    int id = readInt();
+                    try {
+                        BookingService.cancelBooking(id, userId);
+                    } catch (SmartGoException e) {
+                        System.out.println("Could not cancel: " + e.getMessage());
+                    }
+                }
+                case 3 -> {
+                    System.out.print("Enter the booking ID you want to pay for: ");
+                    int bookingId = readInt();
+                    System.out.println("Payment method:");
+                    System.out.println("1. Cash");
+                    System.out.println("2. Card");
+                    System.out.println("3. Bank Transfer");
+                    System.out.print("Your choice: ");
+                    int methodChoice = readInt();
+                    String method = switch (methodChoice) {
+                        case 1 -> "CASH";
+                        case 2 -> "CARD";
+                        case 3 -> "BANK_TRANSFER";
+                        default -> "CASH";
+                    };
+                    try {
+                        BookingService.payBill(bookingId, userId, method);
+                    } catch (SmartGoException e) {
+                        System.out.println("Payment failed: " + e.getMessage());
+                    }
+                }
+                case 4 -> inMenu = false;
+                default -> System.out.println("Please enter a number from 1 to 4.");
+            }
+        }
+    }
+
+    // Reviews sub-menu
+    private static void handleReviewsMenu() {
+        boolean inMenu = true;
+        int userId = AuthService.getLoggedInUser().getId();
+
+        while (inMenu) {
+            System.out.println("\nReviews");
+            System.out.println("--------");
+            System.out.println("1. Write a review");
+            System.out.println("2. View my reviews");
+            System.out.println("3. Go back");
+            System.out.print("Your choice: ");
+
+            int choice = readInt();
+
+            switch (choice) {
+                case 1 -> {
+                    System.out.println("What are you reviewing?");
+                    System.out.println("1. Flight");
+                    System.out.println("2. Hotel");
+                    System.out.println("3. Tour Plan");
+                    System.out.print("Your choice: ");
+                    int typeChoice = readInt();
+
+                    String reviewableType = switch (typeChoice) {
+                        case 1 -> "FLIGHT";
+                        case 2 -> "HOTEL";
+                        case 3 -> "TOUR_PLAN";
+                        default -> "FLIGHT";
+                    };
+
+                    System.out.print("Enter the ID of the " + reviewableType + " you are reviewing: ");
+                    int reviewableId = readInt();
+
+                    System.out.print("Your rating (1 to 5): ");
+                    int rating = readInt();
+
+                    System.out.print("Your comment: ");
+                    String comment = scanner.nextLine().trim();
+
+                    try {
+                        ReviewService.addReview(userId, reviewableType, reviewableId, rating, comment);
+                    } catch (SmartGoException e) {
+                        System.out.println("Could not save review: " + e.getMessage());
+                    }
+                }
+                case 2 -> ReviewService.showMyReviews(userId);
+                case 3 -> inMenu = false;
+                default -> System.out.println("Please enter 1, 2, or 3.");
+            }
+        }
+    }
+
+    // A safe way to read an integer from the user
+    // If the user types something that is not a number, it returns -1 instead of crashing
+    private static int readInt() {
         try {
-            System.out.print("  Enter the ID of the " + reviewType.toLowerCase() + ": ");
-            int refId = Integer.parseInt(scanner.nextLine().trim());
-
-            System.out.print("  Rating (1-5): ");
-            int rating = Integer.parseInt(scanner.nextLine().trim());
-
-            System.out.print("  Your comment: ");
-            String comment = scanner.nextLine().trim();
-
-            reviewService.addReview(user, refId, reviewType, rating, comment);
-
+            String line = scanner.nextLine().trim();
+            return Integer.parseInt(line);
         } catch (NumberFormatException e) {
-            System.out.println("\n  ❌ Please enter a valid number.");
-        } catch (SmartGoException e) {
-            System.out.println("\n  ❌ " + e.getMessage());
+            return -1;
         }
-    }
-
-    // Helpers
-
-    private static void printBanner() {
-        System.out.println("\n");
-        System.out.println("  ███████╗███╗   ███╗ █████╗ ██████╗ ████████╗ ██████╗  ██████╗ ");
-        System.out.println("  ██╔════╝████╗ ████║██╔══██╗██╔══██╗╚══██╔══╝██╔════╝ ██╔═══██╗");
-        System.out.println("  ███████╗██╔████╔██║███████║██████╔╝   ██║   ██║  ███╗██║   ██║");
-        System.out.println("  ╚════██║██║╚██╔╝██║██╔══██║██╔══██╗   ██║   ██║   ██║██║   ██║");
-        System.out.println("  ███████║██║ ╚═╝ ██║██║  ██║██║  ██║   ██║   ╚██████╔╝╚██████╔╝");
-        System.out.println("  ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝    ╚═════╝  ╚═════╝ ");
-        System.out.println("\n            Smart Travel Planner: Your journey starts here.\n");
-    }
-
-    // Pad a string to a fixed width (for neat menu formatting)
-    private static String padRight(String text, int width) {
-        if (text.length() >= width) return text.substring(0, width);
-        return text + " ".repeat(width - text.length());
     }
 }
