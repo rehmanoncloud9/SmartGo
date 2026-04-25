@@ -1,34 +1,32 @@
 package models;
 
-// Meal Booking: Stores which meal plan was picked in a booking
-//
-// When a user picks a Tour Plan, they also pick a Meal Plan.
-// This class records that choice.
+// A meal booking links a booking to the meal plan the user chose.
+// isCancelled lets us cancel the meal without cancelling the whole booking.
 
 public class MealBooking {
 
     private int id;
-    private int bookingId;  // links to the main Booking
-    private int mealPlanId; // which meal plan they chose
+    private int bookingId;
+    private int mealPlanId;
+    private boolean isCancelled;
 
-    public MealBooking(int id, int bookingId, int mealPlanId) {
-        this.id         = id;
-        this.bookingId  = bookingId;
+    public MealBooking(int id, int bookingId, int mealPlanId, boolean isCancelled) {
+        this.id = id;
+        this.bookingId = bookingId;
         this.mealPlanId = mealPlanId;
+        this.isCancelled = isCancelled;
     }
 
-    public void displayInfo() {
-        System.out.println("  Meal Booking ID : " + id);
-        System.out.println("  Booking ID      : " + bookingId);
-        System.out.println("  Meal Plan ID    : " + mealPlanId);
-    }
-
-    // Getters
-    public int getId()         { return id;         }
-    public int getBookingId()  { return bookingId;  }
+    public int getId() { return id; }
+    public int getBookingId() { return bookingId; }
     public int getMealPlanId() { return mealPlanId; }
+    public boolean isCancelled() { return isCancelled; }
 
-    public String toFileString() {
-        return id + "," + bookingId + "," + mealPlanId;
+    public void setCancelled(boolean cancelled) { this.isCancelled = cancelled; }
+
+    @Override
+    public String toString() {
+        return "Meal Booking ID: " + id + " | Booking: " + bookingId
+                + " | Meal Plan: " + mealPlanId + " | Cancelled: " + isCancelled;
     }
 }
