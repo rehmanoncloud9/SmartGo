@@ -1,9 +1,9 @@
 package enums;
 
-// Payment Method: How did the user pay?
+// The ways a user can pay their bill.
 
 public enum PaymentMethod {
-    CASH,           // paid in person
-    CARD,           // debit or credit card
-    BANK_TRANSFER   // direct bank transfer
+    CASH,
+    CARD,
+    BANK_TRANSFER
 }
