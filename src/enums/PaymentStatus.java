@@ -1,9 +1,9 @@
 package enums;
 
-// Payment Status: Has the payment gone through?
+// The three possible states of a payment.
 
 public enum PaymentStatus {
-    PENDING,    // payment initiated but not done yet
-    COMPLETED,  // money received successfully
-    FAILED      // something went wrong
+    PENDING,
+    COMPLETED,
+    FAILED
 }
