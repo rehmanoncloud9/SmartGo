@@ -1,270 +1,357 @@
 package data;
 
 import models.*;
+import enums.*;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-// Data Store: Handles saving and loading data from files
-
-//  This is the FILE HANDLING part of Week 3.
-//  Instead of a database for now, we save everything to .txt files.
-//  Each line in the file = one object.
-//
-
+// DataStore handles saving and loading all app data to and from text files.
+// Each type of object gets its own file in the data folder.
+// This is how the app remembers things between runs.
 
 public class DataStore {
 
-    // File paths: where we store all data
-    // All files go into a "app_data/" folder
-    private static final String DATA_FOLDER    = "app_data/";
-    private static final String USERS_FILE     = DATA_FOLDER + "users.txt";
-    private static final String FLIGHTS_FILE   = DATA_FOLDER + "flights.txt";
-    private static final String HOTELS_FILE    = DATA_FOLDER + "hotels.txt";
-    private static final String BOOKINGS_FILE  = DATA_FOLDER + "bookings.txt";
-    private static final String BILLS_FILE     = DATA_FOLDER + "bills.txt";
-    private static final String PAYMENTS_FILE  = DATA_FOLDER + "payments.txt";
-    private static final String REVIEWS_FILE   = DATA_FOLDER + "reviews.txt";
-    private static final String TOURPLANS_FILE = DATA_FOLDER + "tourplans.txt";
-    private static final String MEALPLANS_FILE = DATA_FOLDER + "mealplans.txt";
-    private static final String DESTINATIONS_FILE = DATA_FOLDER + "destinations.txt";
+    private static final String DATA_FOLDER = "data/";
 
-    // Make sure the data folder exists when app starts
-    public static void initialize() {
+    private static final String USERS_FILE        = DATA_FOLDER + "users.txt";
+    private static final String FLIGHTS_FILE      = DATA_FOLDER + "flights.txt";
+    private static final String HOTELS_FILE       = DATA_FOLDER + "hotels.txt";
+    private static final String DESTINATIONS_FILE = DATA_FOLDER + "destinations.txt";
+    private static final String TOURPLANS_FILE    = DATA_FOLDER + "tourplans.txt";
+    private static final String MEALPLANS_FILE    = DATA_FOLDER + "mealplans.txt";
+    private static final String BOOKINGS_FILE     = DATA_FOLDER + "bookings.txt";
+    private static final String BILLS_FILE        = DATA_FOLDER + "bills.txt";
+    private static final String PAYMENTS_FILE     = DATA_FOLDER + "payments.txt";
+    private static final String REVIEWS_FILE      = DATA_FOLDER + "reviews.txt";
+
+    // Make sure the data folder exists when the app starts
+    public static void init() {
         File folder = new File(DATA_FOLDER);
         if (!folder.exists()) {
-            folder.mkdir(); // create the folder if it doesn't exist
-            System.out.println("  [DataStore] Data folder created.");
+            folder.mkdirs();
         }
     }
 
-    // Generic Helpers: used by all save/load methods below
-
-    // Write a list of lines to a file
-    // Each item in the list becomes one line
-    private static void writeToFile(String filePath, List<String> lines) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            for (String line : lines) {
-                writer.write(line);
-                writer.newLine(); // go to next line
-            }
+    // Write a single line to a file (appending to the end)
+    private static void appendLine(String filename, String line) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
+            writer.write(line);
+            writer.newLine();
         } catch (IOException e) {
-            System.out.println("  [DataStore] ERROR saving to " + filePath + ": " + e.getMessage());
+            System.out.println("Could not save to file: " + filename);
         }
     }
 
-    // Read all lines from a file into a list
-    private static List<String> readFromFile(String filePath) {
+    // Read all lines from a file and return them as a list
+    private static List<String> readLines(String filename) {
         List<String> lines = new ArrayList<>();
-        File file = new File(filePath);
-
-        // If the file doesn't exist yet, return an empty list (not an error)
+        File file = new File(filename);
         if (!file.exists()) return lines;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (!line.trim().isEmpty()) { // skip blank lines
-                    lines.add(line);
+                if (!line.trim().isEmpty()) {
+                    lines.add(line.trim());
                 }
             }
         } catch (IOException e) {
-            System.out.println("  [DataStore] ERROR reading " + filePath + ": " + e.getMessage());
+            System.out.println("Could not read file: " + filename);
         }
-
         return lines;
     }
 
-    // User: Save and Load
-
-    public static void saveUsers(List<User> users) {
-        List<String> lines = new ArrayList<>();
-        for (User u : users) {
-            lines.add(u.toFileString());
+    // Overwrite a file completely with a new list of lines
+    private static void writeAllLines(String filename, List<String> lines) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, false))) {
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Could not write file: " + filename);
         }
-        writeToFile(USERS_FILE, lines);
-        System.out.println("  [DataStore] " + users.size() + " user(s) saved.");
     }
 
-    public static List<User> loadUsers() {
-        List<String> lines = readFromFile(USERS_FILE);
-        List<User> users = new ArrayList<>();
+    // Save a user to the users file
+    // Format: id|name|email|phone|passwordHash|createdAt|address|lastLogin
+    public static void saveUser(User user) {
+        String line = user.getId() + "|" + user.getName() + "|" + user.getEmail()
+                + "|" + user.getPhone() + "|" + user.getPasswordHash()
+                + "|" + user.getCreatedAt() + "|" + user.getAddress() + "|" + user.getLastLogin();
+        appendLine(USERS_FILE, line);
+    }
 
-        for (String line : lines) {
-            try {
-                // Format: USER,id,name,email,phone,passwordHash,createdAt,address,lastLogin
-                String[] parts = line.split(",");
-                if (parts[0].equals("USER") && parts.length >= 9) {
-                    users.add(new User(
-                        Integer.parseInt(parts[1]), // id
-                        parts[2],                   // name
-                        parts[3],                   // email
-                        parts[4],                   // phone
-                        parts[5],                   // passwordHash
-                        parts[6],                   // createdAt
-                        parts[7],                   // address
-                        parts[8]                    // lastLogin
-                    ));
-                }
-            } catch (Exception e) {
-                System.out.println("  [DataStore] Skipping bad user line: " + line);
+    // Load all users from the file
+    public static List<User> loadUsers() {
+        List<User> users = new ArrayList<>();
+        for (String line : readLines(USERS_FILE)) {
+            String[] parts = line.split("\\|");
+            if (parts.length >= 8) {
+                users.add(new User(
+                        Integer.parseInt(parts[0]), parts[1], parts[2],
+                        parts[3], parts[4], parts[5], parts[6], parts[7]
+                ));
             }
         }
-
-        System.out.println("  [DataStore] " + users.size() + " user(s) loaded.");
         return users;
     }
 
-    // Flight: Save and Load
-
-    public static void saveFlights(List<Flight> flights) {
-        List<String> lines = new ArrayList<>();
-        for (Flight f : flights) {
-            lines.add(f.toFileString());
-        }
-        writeToFile(FLIGHTS_FILE, lines);
-        System.out.println("  [DataStore] " + flights.size() + " flight(s) saved.");
+    // Save a flight to the flights file
+    // Format: id|destinationId|price|capacity|airline|flightNumber|class|departureTime|returnTime
+    public static void saveFlight(Flight flight) {
+        String line = flight.getId() + "|" + flight.getDestinationId() + "|" + flight.getPrice()
+                + "|" + flight.getCapacity() + "|" + flight.getAirline()
+                + "|" + flight.getFlightNumber() + "|" + flight.getFlightClass()
+                + "|" + flight.getDepartureTime() + "|" + flight.getReturnTime();
+        appendLine(FLIGHTS_FILE, line);
     }
 
+    // Load all flights from the file
     public static List<Flight> loadFlights() {
-        List<String> lines = readFromFile(FLIGHTS_FILE);
         List<Flight> flights = new ArrayList<>();
-
-        for (String line : lines) {
-            try {
-                // Format: FLIGHT,id,destId,type,price,capacity,depTime,arrTime,airline,flightNo,class,origin
-                String[] p = line.split(",");
-                if (p[0].equals("FLIGHT") && p.length >= 12) {
-                    flights.add(new Flight(
-                        Integer.parseInt(p[1]),  // id
-                        Integer.parseInt(p[2]),  // destinationId
-                        Double.parseDouble(p[4]),// price
-                        Integer.parseInt(p[5]),  // capacity
-                        p[6],                    // departureTime
-                        p[7],                    // arrivalTime
-                        p[8],                    // airline
-                        p[9],                    // flightNumber
-                        p[10],                   // flightClass
-                        p[11]                    // origin
-                    ));
-                }
-            } catch (Exception e) {
-                System.out.println("  [DataStore] Skipping bad flight line: " + line);
+        for (String line : readLines(FLIGHTS_FILE)) {
+            String[] parts = line.split("\\|");
+            if (parts.length >= 9) {
+                flights.add(new Flight(
+                        Integer.parseInt(parts[0]), Integer.parseInt(parts[1]),
+                        Double.parseDouble(parts[2]), Integer.parseInt(parts[3]),
+                        parts[4], parts[5], parts[6], parts[7], parts[8]
+                ));
             }
         }
-
-        System.out.println("  [DataStore] " + flights.size() + " flight(s) loaded.");
         return flights;
     }
 
-    // Booking: Save and Load
-
-    public static void saveBookings(List<Booking> bookings) {
+    // Save all flights back to the file (used after cancel or update)
+    public static void saveAllFlights(List<Flight> flights) {
         List<String> lines = new ArrayList<>();
-        for (Booking b : bookings) {
-            lines.add(b.toFileString());
+        for (Flight f : flights) {
+            lines.add(f.getId() + "|" + f.getDestinationId() + "|" + f.getPrice()
+                    + "|" + f.getCapacity() + "|" + f.getAirline()
+                    + "|" + f.getFlightNumber() + "|" + f.getFlightClass()
+                    + "|" + f.getDepartureTime() + "|" + f.getReturnTime());
         }
-        writeToFile(BOOKINGS_FILE, lines);
-        System.out.println("  [DataStore] " + bookings.size() + " booking(s) saved.");
+        writeAllLines(FLIGHTS_FILE, lines);
     }
 
-    public static List<Booking> loadBookings() {
-        List<String> lines = readFromFile(BOOKINGS_FILE);
-        List<Booking> bookings = new ArrayList<>();
+    // Save a hotel to the hotels file
+    // Format: id|destinationId|name|rating|managerContact|address|pricePerNight
+    public static void saveHotel(Hotel hotel) {
+        String line = hotel.getId() + "|" + hotel.getDestinationId() + "|" + hotel.getName()
+                + "|" + hotel.getRating() + "|" + hotel.getManagerContact()
+                + "|" + hotel.getAddress() + "|" + hotel.getPricePerNight();
+        appendLine(HOTELS_FILE, line);
+    }
 
-        for (String line : lines) {
-            try {
-                // Format: id,userId,bookingType,tourPlanId,transportId,status,createdAt
-                String[] p = line.split(",");
-                if (p.length >= 7) {
-                    bookings.add(new Booking(
-                        Integer.parseInt(p[0]), // id
-                        Integer.parseInt(p[1]), // userId
-                        p[2],                   // bookingType
-                        Integer.parseInt(p[3]), // tourPlanId
-                        Integer.parseInt(p[4]), // transportId
-                        p[5],                   // status
-                        p[6]                    // createdAt
-                    ));
-                }
-            } catch (Exception e) {
-                System.out.println("  [DataStore] Skipping bad booking line: " + line);
+    // Load all hotels from the file
+    public static List<Hotel> loadHotels() {
+        List<Hotel> hotels = new ArrayList<>();
+        for (String line : readLines(HOTELS_FILE)) {
+            String[] parts = line.split("\\|");
+            if (parts.length >= 7) {
+                hotels.add(new Hotel(
+                        Integer.parseInt(parts[0]), Integer.parseInt(parts[1]),
+                        parts[2], Integer.parseInt(parts[3]),
+                        parts[4], parts[5], Double.parseDouble(parts[6])
+                ));
             }
         }
+        return hotels;
+    }
 
-        System.out.println("  [DataStore] " + bookings.size() + " booking(s) loaded.");
+    // Save a destination to the destinations file
+    // Format: id|city|region|country|attractions|imageUrl
+    public static void saveDestination(Destination destination) {
+        String line = destination.getId() + "|" + destination.getCity() + "|" + destination.getRegion()
+                + "|" + destination.getCountry() + "|" + destination.getAttractions()
+                + "|" + destination.getImageUrl();
+        appendLine(DESTINATIONS_FILE, line);
+    }
+
+    // Load all destinations from the file
+    public static List<Destination> loadDestinations() {
+        List<Destination> destinations = new ArrayList<>();
+        for (String line : readLines(DESTINATIONS_FILE)) {
+            String[] parts = line.split("\\|");
+            if (parts.length >= 6) {
+                destinations.add(new Destination(
+                        Integer.parseInt(parts[0]), parts[1], parts[2],
+                        parts[3], parts[4], parts[5]
+                ));
+            }
+        }
+        return destinations;
+    }
+
+    // Save a tour plan to the tour plans file
+    // Format: id|destinationId|adminId|title|durationDays|basePrice|status
+    public static void saveTourPlan(TourPlan plan) {
+        String line = plan.getId() + "|" + plan.getDestinationId() + "|" + plan.getAdminId()
+                + "|" + plan.getTitle() + "|" + plan.getDurationDays()
+                + "|" + plan.getBasePrice() + "|" + plan.getStatus();
+        appendLine(TOURPLANS_FILE, line);
+    }
+
+    // Load all tour plans from the file
+    public static List<TourPlan> loadTourPlans() {
+        List<TourPlan> plans = new ArrayList<>();
+        for (String line : readLines(TOURPLANS_FILE)) {
+            String[] parts = line.split("\\|");
+            if (parts.length >= 7) {
+                plans.add(new TourPlan(
+                        Integer.parseInt(parts[0]), Integer.parseInt(parts[1]),
+                        Integer.parseInt(parts[2]), parts[3],
+                        Integer.parseInt(parts[4]), Double.parseDouble(parts[5]), parts[6]
+                ));
+            }
+        }
+        return plans;
+    }
+
+    // Save a meal plan to the meal plans file
+    // Format: id|tourPlanId|name|description|price
+    public static void saveMealPlan(MealPlan meal) {
+        String line = meal.getId() + "|" + meal.getTourPlanId() + "|" + meal.getName()
+                + "|" + meal.getDescription() + "|" + meal.getPrice();
+        appendLine(MEALPLANS_FILE, line);
+    }
+
+    // Load all meal plans from the file
+    public static List<MealPlan> loadMealPlans() {
+        List<MealPlan> meals = new ArrayList<>();
+        for (String line : readLines(MEALPLANS_FILE)) {
+            String[] parts = line.split("\\|");
+            if (parts.length >= 5) {
+                meals.add(new MealPlan(
+                        Integer.parseInt(parts[0]), Integer.parseInt(parts[1]),
+                        parts[2], parts[3], Double.parseDouble(parts[4])
+                ));
+            }
+        }
+        return meals;
+    }
+
+    // Save a booking to the bookings file
+    // Format: id|userId|bookingType|tourPlanId|transportId|bookedAt|status
+    public static void saveBooking(Booking booking) {
+        String line = booking.getId() + "|" + booking.getUserId() + "|" + booking.getBookingType()
+                + "|" + booking.getTourPlanId() + "|" + booking.getTransportId()
+                + "|" + booking.getBookedAt() + "|" + booking.getStatus().name();
+        appendLine(BOOKINGS_FILE, line);
+    }
+
+    // Load all bookings from the file
+    public static List<Booking> loadBookings() {
+        List<Booking> bookings = new ArrayList<>();
+        for (String line : readLines(BOOKINGS_FILE)) {
+            String[] parts = line.split("\\|");
+            if (parts.length >= 7) {
+                bookings.add(new Booking(
+                        Integer.parseInt(parts[0]), Integer.parseInt(parts[1]),
+                        parts[2], Integer.parseInt(parts[3]),
+                        Integer.parseInt(parts[4]), parts[5],
+                        BookingStatus.valueOf(parts[6])
+                ));
+            }
+        }
         return bookings;
     }
 
-    // Bill: Save and Load
-
-    public static void saveBills(List<Bill> bills) {
+    // Save all bookings back to file (used after cancellation)
+    public static void saveAllBookings(List<Booking> bookings) {
         List<String> lines = new ArrayList<>();
-        for (Bill b : bills) lines.add(b.toFileString());
-        writeToFile(BILLS_FILE, lines);
-        System.out.println("  [DataStore] " + bills.size() + " bill(s) saved.");
+        for (Booking b : bookings) {
+            lines.add(b.getId() + "|" + b.getUserId() + "|" + b.getBookingType()
+                    + "|" + b.getTourPlanId() + "|" + b.getTransportId()
+                    + "|" + b.getBookedAt() + "|" + b.getStatus().name());
+        }
+        writeAllLines(BOOKINGS_FILE, lines);
     }
 
-    public static List<Bill> loadBills() {
-        List<String> lines = readFromFile(BILLS_FILE);
-        List<Bill> bills = new ArrayList<>();
+    // Save a bill to the bills file
+    // Format: id|bookingId|baseAmount|platformFee|totalAmount|status
+    public static void saveBill(Bill bill) {
+        String line = bill.getId() + "|" + bill.getBookingId() + "|" + bill.getBaseAmount()
+                + "|" + bill.getPlatformFee() + "|" + bill.getTotalAmount() + "|" + bill.getStatus();
+        appendLine(BILLS_FILE, line);
+    }
 
-        for (String line : lines) {
-            try {
-                // Format: id,bookingId,baseAmount,advanceFee,totalAmount,status
-                String[] p = line.split(",");
-                if (p.length >= 6) {
-                    bills.add(new Bill(
-                        Integer.parseInt(p[0]),    // id
-                        Integer.parseInt(p[1]),    // bookingId
-                        Double.parseDouble(p[2]),  // baseAmount
-                        Double.parseDouble(p[4]),  // totalAmount
-                        p[5]                       // status
-                    ));
-                }
-            } catch (Exception e) {
-                System.out.println("  [DataStore] Skipping bad bill line: " + line);
+    // Load all bills from the file
+    public static List<Bill> loadBills() {
+        List<Bill> bills = new ArrayList<>();
+        for (String line : readLines(BILLS_FILE)) {
+            String[] parts = line.split("\\|");
+            if (parts.length >= 6) {
+                Bill bill = new Bill(
+                        Integer.parseInt(parts[0]), Integer.parseInt(parts[1]),
+                        Double.parseDouble(parts[2]), Double.parseDouble(parts[3])
+                );
+                bill.setStatus(parts[5]);
+                bills.add(bill);
             }
         }
-
-        System.out.println("  [DataStore] " + bills.size() + " bill(s) loaded.");
         return bills;
     }
 
-    // Review: Save and Load
-
-    public static void saveReviews(List<Review> reviews) {
+    // Save all bills back to file (used after payment)
+    public static void saveAllBills(List<Bill> bills) {
         List<String> lines = new ArrayList<>();
-        for (Review r : reviews) lines.add(r.toFileString());
-        writeToFile(REVIEWS_FILE, lines);
-        System.out.println("  [DataStore] " + reviews.size() + " review(s) saved.");
+        for (Bill b : bills) {
+            lines.add(b.getId() + "|" + b.getBookingId() + "|" + b.getBaseAmount()
+                    + "|" + b.getPlatformFee() + "|" + b.getTotalAmount() + "|" + b.getStatus());
+        }
+        writeAllLines(BILLS_FILE, lines);
     }
 
-    public static List<Review> loadReviews() {
-        List<String> lines = readFromFile(REVIEWS_FILE);
-        List<Review> reviews = new ArrayList<>();
+    // Save a payment to the payments file
+    // Format: id|billId|amount|paymentType|method|paidAt|status
+    public static void savePayment(Payment payment) {
+        String line = payment.getId() + "|" + payment.getBillId() + "|" + payment.getAmount()
+                + "|" + payment.getPaymentType() + "|" + payment.getMethod()
+                + "|" + payment.getPaidAt() + "|" + payment.getStatus();
+        appendLine(PAYMENTS_FILE, line);
+    }
 
-        for (String line : lines) {
-            try {
-                // Format: id,userId,referenceId,reviewType,rating,comment,createdAt
-                String[] p = line.split(",");
-                if (p.length >= 7) {
-                    reviews.add(new Review(
-                        Integer.parseInt(p[0]), // id
-                        Integer.parseInt(p[1]), // userId
-                        Integer.parseInt(p[2]), // referenceId
-                        p[3],                   // reviewType
-                        Integer.parseInt(p[4]), // rating
-                        p[5],                   // comment
-                        p[6]                    // createdAt
-                    ));
-                }
-            } catch (Exception e) {
-                System.out.println("  [DataStore] Skipping bad review line: " + line);
+    // Load all payments from the file
+    public static List<Payment> loadPayments() {
+        List<Payment> payments = new ArrayList<>();
+        for (String line : readLines(PAYMENTS_FILE)) {
+            String[] parts = line.split("\\|");
+            if (parts.length >= 7) {
+                payments.add(new Payment(
+                        Integer.parseInt(parts[0]), Integer.parseInt(parts[1]),
+                        Double.parseDouble(parts[2]), parts[3], parts[4], parts[5], parts[6]
+                ));
             }
         }
+        return payments;
+    }
 
-        System.out.println("  [DataStore] " + reviews.size() + " review(s) loaded.");
+    // Save a review to the reviews file
+    // Format: id|userId|reviewableType|reviewableId|rating|comment|createdAt
+    public static void saveReview(Review review) {
+        String line = review.getId() + "|" + review.getUserId() + "|" + review.getReviewableType()
+                + "|" + review.getReviewableId() + "|" + review.getRating()
+                + "|" + review.getComment() + "|" + review.getCreatedAt();
+        appendLine(REVIEWS_FILE, line);
+    }
+
+    // Load all reviews from the file
+    public static List<Review> loadReviews() {
+        List<Review> reviews = new ArrayList<>();
+        for (String line : readLines(REVIEWS_FILE)) {
+            String[] parts = line.split("\\|");
+            if (parts.length >= 7) {
+                reviews.add(new Review(
+                        Integer.parseInt(parts[0]), Integer.parseInt(parts[1]),
+                        parts[2], Integer.parseInt(parts[3]),
+                        Integer.parseInt(parts[4]), parts[5], parts[6]
+                ));
+            }
+        }
         return reviews;
     }
 }

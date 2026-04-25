@@ -1,53 +1,39 @@
 package models;
 
-// Hotel Booking: Stores the hotel-specific part of a booking
-//
-// The main Booking record knows you booked something.
-// HotelBooking knows WHICH hotel, which dates, how many rooms.
-//
-// OOP: Encapsulation: hotel stay details are owned by this class alone
+// A hotel booking stores the extra details when a user picks a hotel.
+// It is always linked to a main Booking record.
 
 public class HotelBooking {
 
-    private int    id;
-    private int    bookingId; // links to the main Booking
-    private int    hotelId;   // which hotel
+    private int id;
+    private int bookingId;
+    private int hotelId;
     private String checkIn;
     private String checkOut;
-    private int    guestCount;
-    private String roomType;  // "SINGLE", "DOUBLE", "SUITE"
+    private int numGuests;
 
-    public HotelBooking(int id, int bookingId, int hotelId,
-                        String checkIn, String checkOut,
-                        int guestCount, String roomType) {
-        this.id         = id;
-        this.bookingId  = bookingId;
-        this.hotelId    = hotelId;
-        this.checkIn    = checkIn;
-        this.checkOut   = checkOut;
-        this.guestCount = guestCount;
-        this.roomType   = roomType;
+    public HotelBooking(int id, int bookingId, int hotelId, String checkIn, String checkOut, int numGuests) {
+        this.id = id;
+        this.bookingId = bookingId;
+        this.hotelId = hotelId;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+        this.numGuests = numGuests;
     }
 
-    public void displayInfo() {
-        System.out.println("  Hotel Booking ID : " + id);
-        System.out.println("  Check In         : " + checkIn);
-        System.out.println("  Check Out        : " + checkOut);
-        System.out.println("  Guests           : " + guestCount);
-        System.out.println("  Room Type        : " + roomType);
-    }
+    public int getId() { return id; }
+    public int getBookingId() { return bookingId; }
+    public int getHotelId() { return hotelId; }
+    public String getCheckIn() { return checkIn; }
+    public String getCheckOut() { return checkOut; }
+    public int getNumGuests() { return numGuests; }
 
-    // Getters
-    public int    getId()         { return id;         }
-    public int    getBookingId()  { return bookingId;  }
-    public int    getHotelId()    { return hotelId;    }
-    public String getCheckIn()    { return checkIn;    }
-    public String getCheckOut()   { return checkOut;   }
-    public int    getGuestCount() { return guestCount; }
-    public String getRoomType()   { return roomType;   }
+    public void setCheckIn(String checkIn) { this.checkIn = checkIn; }
+    public void setCheckOut(String checkOut) { this.checkOut = checkOut; }
 
-    public String toFileString() {
-        return id + "," + bookingId + "," + hotelId + ","
-             + checkIn + "," + checkOut + "," + guestCount + "," + roomType;
+    @Override
+    public String toString() {
+        return "Hotel Booking ID: " + id + " | Booking: " + bookingId + " | Hotel: " + hotelId
+                + " | Check-in: " + checkIn + " | Check-out: " + checkOut + " | Guests: " + numGuests;
     }
 }

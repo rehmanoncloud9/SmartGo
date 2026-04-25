@@ -1,210 +1,209 @@
 package services;
 
-import models.*;
-import exceptions.SmartGoException;
 import data.DataStore;
+import enums.BookingStatus;
+import exceptions.SmartGoException;
+import models.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-// Booking Service: The heart of SmartGo
-//
-// This handles:
-//   - Making a new booking (standalone flight)
-//   - Viewing a user's bookings
-//   - Cancelling a booking
-//   - Generating a Bill after booking
-//   - Processing payment
+// BookingService handles everything related to bookings.
+// Users can book a flight, book a tour plan, cancel a booking,
+// view their bookings, and make payments on their bills.
 
 public class BookingService {
 
-    private List<Booking> bookings;
-    private List<Bill>    bills;
-    private List<Payment> payments;
+    private static int nextBookingId = 1;
+    private static int nextBillId = 1;
+    private static int nextPaymentId = 1;
 
-    // Constructor: loads everything from files
-    public BookingService() {
-        this.bookings = DataStore.loadBookings();
-        this.bills    = DataStore.loadBills();
-        this.payments = new ArrayList<>();
+    private static final double PLATFORM_FEE_RATE = 0.05;
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+    // Set up IDs based on existing saved data
+    public static void init() {
+        List<Booking> bookings = DataStore.loadBookings();
+        if (!bookings.isEmpty()) {
+            nextBookingId = bookings.get(bookings.size() - 1).getId() + 1;
+        }
+
+        List<Bill> bills = DataStore.loadBills();
+        if (!bills.isEmpty()) {
+            nextBillId = bills.get(bills.size() - 1).getId() + 1;
+        }
+
+        List<Payment> payments = DataStore.loadPayments();
+        if (!payments.isEmpty()) {
+            nextPaymentId = payments.get(payments.size() - 1).getId() + 1;
+        }
     }
 
-    // Book a Flight: Standalone booking (no tour plan)
-    public Booking bookFlight(User user, Flight flight, int passengers) throws SmartGoException {
+    // Book a flight for the currently logged in user
+    public static Booking bookFlight(int userId, int flightId) throws SmartGoException {
+        Flight flight = FlightService.getFlightById(flightId);
 
-        // --- Validation ---
-        if (passengers <= 0) {
-            throw new SmartGoException("Number of passengers must be at least 1.");
-        }
-        if (passengers > flight.getCapacity()) {
-            throw new SmartGoException("Not enough seats. Only "
-                    + flight.getCapacity() + " seats available.");
-        }
-
-        // Create the booking
-        int newBookingId = bookings.size() + 1;
-        String now = getCurrentTime();
+        String bookedAt = LocalDateTime.now().format(formatter);
 
         Booking booking = new Booking(
-            newBookingId,
-            user.getId(),
-            "STANDALONE",   // not a tour plan
-            0,              // no tour plan involved
-            flight.getId(), // the flight they're booking
-            "CONFIRMED",    // auto-confirm for now
-            now
+                nextBookingId++, userId, "FLIGHT",
+                0, flight.getId(), bookedAt, BookingStatus.CONFIRMED
         );
+        DataStore.saveBooking(booking);
 
-        bookings.add(booking);
-        DataStore.saveBookings(bookings);
+        double platformFee = flight.getPrice() * PLATFORM_FEE_RATE;
+        Bill bill = new Bill(nextBillId++, booking.getId(), flight.getPrice(), platformFee);
+        DataStore.saveBill(bill);
 
-        System.out.println("\n  ✅ Booking confirmed!");
-        booking.displayInfo();
-
-        // --- Auto-generate the Bill ---
-        generateBill(booking, flight, passengers);
+        System.out.println("Flight booked successfully!");
+        System.out.println("Booking ID: " + booking.getId());
+        System.out.println("Flight: " + flight.getAirline() + " " + flight.getFlightNumber());
+        System.out.println("Base Price: $" + flight.getPrice());
+        System.out.println("Platform Fee (5%): $" + String.format("%.2f", platformFee));
+        System.out.println("Total Bill: $" + String.format("%.2f", bill.getTotalAmount()));
 
         return booking;
     }
 
-    // Cancel a Booking
-    public void cancelBooking(int bookingId, User user) throws SmartGoException {
+    // Book a tour plan for the currently logged in user
+    public static Booking bookTourPlan(int userId, int tourPlanId) throws SmartGoException {
+        TourPlan plan = TourPlanService.getTourPlanById(tourPlanId);
 
-        Booking booking = getBookingById(bookingId);
+        String bookedAt = LocalDateTime.now().format(formatter);
 
-        // Make sure this booking belongs to this user
-        if (booking.getUserId() != user.getId()) {
-            throw new SmartGoException("You can only cancel your own bookings.");
-        }
+        Booking booking = new Booking(
+                nextBookingId++, userId, "TOUR_PLAN",
+                plan.getId(), 0, bookedAt, BookingStatus.CONFIRMED
+        );
+        DataStore.saveBooking(booking);
 
-        // Can't cancel what's already cancelled
-        if (booking.getStatus().equals("CANCELLED")) {
-            throw new SmartGoException("This booking is already cancelled.");
-        }
+        double platformFee = plan.getBasePrice() * PLATFORM_FEE_RATE;
+        Bill bill = new Bill(nextBillId++, booking.getId(), plan.getBasePrice(), platformFee);
+        DataStore.saveBill(bill);
 
-        booking.setStatus("CANCELLED");
-        DataStore.saveBookings(bookings);
+        System.out.println("Tour plan booked successfully!");
+        System.out.println("Booking ID: " + booking.getId());
+        System.out.println("Tour: " + plan.getTitle());
+        System.out.println("Duration: " + plan.getDurationDays() + " days");
+        System.out.println("Base Price: $" + plan.getBasePrice());
+        System.out.println("Platform Fee (5%): $" + String.format("%.2f", platformFee));
+        System.out.println("Total Bill: $" + String.format("%.2f", bill.getTotalAmount()));
 
-        System.out.println("\n  ✅ Booking #" + bookingId + " has been cancelled.");
-        System.out.println("  Note: Advance payment is non-refundable as per policy.");
+        return booking;
     }
 
-    // View all bookings for a user
-    public List<Booking> getUserBookings(User user) throws SmartGoException {
-        List<Booking> userBookings = new ArrayList<>();
+    // Cancel a booking by ID
+    public static void cancelBooking(int bookingId, int userId) throws SmartGoException {
+        List<Booking> bookings = DataStore.loadBookings();
+        boolean found = false;
 
         for (Booking b : bookings) {
-            if (b.getUserId() == user.getId()) {
-                userBookings.add(b);
+            if (b.getId() == bookingId && b.getUserId() == userId) {
+                if (b.getStatus() == BookingStatus.CANCELLED) {
+                    throw new SmartGoException("This booking is already cancelled.");
+                }
+                b.setStatus(BookingStatus.CANCELLED);
+                found = true;
+                break;
             }
         }
 
-        if (userBookings.isEmpty()) {
-            throw new SmartGoException("You have no bookings yet. Start planning your trip!");
+        if (!found) {
+            throw new SmartGoException("No booking found with ID " + bookingId + " for your account.");
         }
 
-        return userBookings;
+        DataStore.saveAllBookings(bookings);
+        System.out.println("Booking #" + bookingId + " has been cancelled.");
     }
 
-    // Display all bookings for a user
-    public void displayUserBookings(User user) {
-        try {
-            List<Booking> userBookings = getUserBookings(user);
-            System.out.println("\n  ========== YOUR BOOKINGS ==========");
-            int i = 1;
-            for (Booking b : userBookings) {
-                System.out.println("\n  Booking #" + i);
-                b.displayInfo();
-                i++;
-            }
-        } catch (SmartGoException e) {
-            System.out.println("\n  " + e.getMessage());
-        }
-    }
+    // Show all bookings for a specific user
+    public static void showMyBookings(int userId) {
+        List<Booking> bookings = DataStore.loadBookings();
+        List<Bill> bills = DataStore.loadBills();
+        boolean found = false;
 
-    // Process Payment: Pay the advance (40%)
-    public void processAdvancePayment(int bookingId, String method, User user)
-            throws SmartGoException {
+        System.out.println("\nYour Bookings:");
+        System.out.println("===============");
 
-        // Find the bill for this booking
-        Bill bill = getBillByBookingId(bookingId);
-
-        if (bill.getStatus().equals("PAID")) {
-            throw new SmartGoException("This bill is already fully paid.");
-        }
-
-        // Create the payment record
-        int newPaymentId = payments.size() + 1;
-        Payment payment = new Payment(
-            newPaymentId,
-            bill.getId(),
-            bookingId,
-            bill.getAdvanceFee(),   // paying 40% advance
-            "ADVANCE",
-            method,
-            getCurrentTime(),
-            "COMPLETED"
-        );
-
-        payments.add(payment);
-        bill.setStatus("PARTIAL"); // advance paid, remaining pending
-        DataStore.saveBills(bills);
-
-        System.out.println("\n  ✅ Advance payment of Rs. "
-                + bill.getAdvanceFee() + " received!");
-        System.out.println("  Remaining balance : Rs. " + bill.getRemainingAmount());
-        payment.displayInfo();
-    }
-
-    // View Bill for a booking
-    public void displayBill(int bookingId) throws SmartGoException {
-        Bill bill = getBillByBookingId(bookingId);
-        bill.displayBill();
-    }
-
-    // Private Helpers
-
-    // Generate a bill automatically after a booking is made
-    private void generateBill(Booking booking, Flight flight, int passengers) {
-        double totalCost = flight.calculateCost(passengers); // polymorphism!
-        int newBillId = bills.size() + 1;
-
-        Bill bill = new Bill(
-            newBillId,
-            booking.getId(),
-            totalCost,  // base = total here (no extra fees)
-            totalCost,  // total
-            "UNPAID"
-        );
-
-        bills.add(bill);
-        DataStore.saveBills(bills);
-
-        System.out.println("\n  📄 Bill Generated:");
-        bill.displayBill();
-    }
-
-    // Find a booking by its ID
-    private Booking getBookingById(int bookingId) throws SmartGoException {
         for (Booking b : bookings) {
-            if (b.getId() == bookingId) return b;
+            if (b.getUserId() == userId) {
+                System.out.println(b);
+
+                // Also show the bill for this booking
+                for (Bill bill : bills) {
+                    if (bill.getBookingId() == b.getId()) {
+                        System.out.println("  Bill: Total $" + String.format("%.2f", bill.getTotalAmount())
+                                + " | Status: " + bill.getStatus());
+                    }
+                }
+                System.out.println();
+                found = true;
+            }
         }
-        throw new SmartGoException("Booking #" + bookingId + " not found.");
+
+        if (!found) {
+            System.out.println("You have no bookings yet.");
+        }
     }
 
-    // Find a bill by booking ID
-    private Bill getBillByBookingId(int bookingId) throws SmartGoException {
-        for (Bill b : bills) {
+    // Pay a bill for a booking
+    public static void payBill(int bookingId, int userId, String method) throws SmartGoException {
+        List<Bill> bills = DataStore.loadBills();
+        List<Booking> bookings = DataStore.loadBookings();
+
+        // Make sure the booking belongs to this user
+        boolean userOwnsBooking = false;
+        for (Booking b : bookings) {
+            if (b.getId() == bookingId && b.getUserId() == userId) {
+                userOwnsBooking = true;
+                break;
+            }
+        }
+
+        if (!userOwnsBooking) {
+            throw new SmartGoException("No booking found with ID " + bookingId + " for your account.");
+        }
+
+        // Find the bill and mark it as paid
+        boolean billFound = false;
+        for (Bill bill : bills) {
+            if (bill.getBookingId() == bookingId) {
+                if (bill.getStatus().equals("PAID")) {
+                    throw new SmartGoException("This bill has already been paid.");
+                }
+
+                bill.setStatus("PAID");
+                billFound = true;
+
+                String paidAt = LocalDateTime.now().format(formatter);
+                Payment payment = new Payment(
+                        nextPaymentId++, bill.getId(),
+                        bill.getTotalAmount(), "FULL", method, paidAt, "COMPLETED"
+                );
+                DataStore.savePayment(payment);
+
+                System.out.println("Payment successful!");
+                System.out.println("Amount paid: $" + String.format("%.2f", bill.getTotalAmount()));
+                System.out.println("Method: " + method);
+                System.out.println("Paid at: " + paidAt);
+                break;
+            }
+        }
+
+        if (!billFound) {
+            throw new SmartGoException("No bill found for booking ID " + bookingId + ".");
+        }
+
+        DataStore.saveAllBills(bills);
+    }
+
+    // Get the bill for a specific booking
+    public static Bill getBillForBooking(int bookingId) throws SmartGoException {
+        for (Bill b : DataStore.loadBills()) {
             if (b.getBookingId() == bookingId) return b;
         }
-        throw new SmartGoException("No bill found for Booking #" + bookingId);
-    }
-
-    // Current timestamp
-    private String getCurrentTime() {
-        return LocalDateTime.now()
-               .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        throw new SmartGoException("No bill found for booking ID " + bookingId + ".");
     }
 }

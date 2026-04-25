@@ -1,53 +1,32 @@
 package models;
 
-// Admin: A staff member who manages Tour Plans on SmartGo
-//
-// OOP Concepts:
-//   - INHERITANCE: Admin extends Person
-//   - POLYMORPHISM: getRole() returns "Admin"
+// An admin who can add flights, hotels, and tour plans.
+// Extends Person and adds an admin role label.
 
 public class Admin extends Person {
 
-    // Admins have a specific job title, like "Tour Manager"
-    private String adminRole;
+    private String role;
     private String lastLogin;
 
-    // Constructor
-    public Admin(int id, String name, String email,
-                 String phone, String passwordHash,
-                 String createdAt, String adminRole, String lastLogin) {
-
+    public Admin(int id, String name, String email, String phone, String passwordHash, String createdAt, String role, String lastLogin) {
         super(id, name, email, phone, passwordHash, createdAt);
-
-        this.adminRole = adminRole;
+        this.role = role;
         this.lastLogin = lastLogin;
     }
 
-    // Admin answers the abstract method from Person
+    public String getAdminRole() { return role; }
+    public String getLastLogin() { return lastLogin; }
+
+    public void setAdminRole(String role) { this.role = role; }
+    public void setLastLogin(String lastLogin) { this.lastLogin = lastLogin; }
+
     @Override
     public String getRole() {
         return "Admin";
     }
 
-    // Show extra admin info on top of Person's info
     @Override
-    public void displayInfo() {
-        super.displayInfo();
-        System.out.println("  Admin Role : " + adminRole);
-        System.out.println("  Last Login : " + lastLogin);
-        System.out.println("==============================");
-    }
-
-    // Getters and Setters
-    public String getAdminRole() { return adminRole; }
-    public String getLastLogin() { return lastLogin; }
-
-    public void setAdminRole(String adminRole) { this.adminRole = adminRole; }
-    public void setLastLogin(String lastLogin) { this.lastLogin = lastLogin; }
-
-    // Save to file
-    @Override
-    public String toFileString() {
-        return "ADMIN," + super.toFileString() + "," + adminRole + "," + lastLogin;
+    public String toString() {
+        return super.toString() + " | Admin Role: " + role;
     }
 }
