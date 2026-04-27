@@ -3,18 +3,15 @@ import exceptions.SmartGoException;
 import models.User;
 import services.*;
 
-import java.util.Scanner;
-
-// This is the entry point of the SmartGo travel app.
-// Everything starts here. The menu lets the user navigate
-// through all features of the application.
+import javax.swing.*;
+import java.awt.*;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.List;
 
 public class Main {
 
-    private static Scanner scanner = new Scanner(System.in);
-
     public static void main(String[] args) {
-
         // Set up the data folder and load all saved data
         DataStore.init();
         AuthService.init();
@@ -23,328 +20,279 @@ public class Main {
         BookingService.init();
         ReviewService.init();
 
-        System.out.println("=====================================");
-        System.out.println("   Welcome to SmartGo Travel App!   ");
-        System.out.println("=====================================");
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ignored) {}
+
+        JOptionPane.showMessageDialog(null, "Welcome to SmartGo Travel App!", "SmartGo", JOptionPane.INFORMATION_MESSAGE);
 
         boolean running = true;
 
         while (running) {
             if (!AuthService.isLoggedIn()) {
-                showGuestMenu();
-                int choice = readInt();
+                String[] options = {"Create an account", "Login", "Exit"};
+                int choice = JOptionPane.showOptionDialog(null, "What would you like to do?", "Guest Menu",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                 switch (choice) {
-                    case 1 -> handleRegister();
-                    case 2 -> handleLogin();
-                    case 3 -> {
-                        System.out.println("Thank you for using SmartGo. Goodbye!");
+                    case 0 -> handleRegister();
+                    case 1 -> handleLogin();
+                    case 2, JOptionPane.CLOSED_OPTION -> {
+                        JOptionPane.showMessageDialog(null, "Thank you for using SmartGo. Goodbye!");
                         running = false;
                     }
-                    default -> System.out.println("Invalid choice. Please enter 1, 2, or 3.");
                 }
-
             } else {
-                showMainMenu();
-                int choice = readInt();
+                User user = AuthService.getLoggedInUser();
+                String[] options = {"Browse Flights", "Browse Tour Plans", "My Bookings", "Reviews", "Logout"};
+                int choice = JOptionPane.showOptionDialog(null, "Hello, " + user.getName() + "! What would you like to do?", "Main Menu",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                 switch (choice) {
-                    case 1 -> handleFlightsMenu();
-                    case 2 -> handleTourPlansMenu();
-                    case 3 -> handleBookingsMenu();
-                    case 4 -> handleReviewsMenu();
-                    case 5 -> AuthService.logout();
-                    default -> System.out.println("Invalid choice. Please enter a number from 1 to 5.");
+                    case 0 -> handleFlightsMenu();
+                    case 1 -> handleTourPlansMenu();
+                    case 2 -> handleBookingsMenu();
+                    case 3 -> handleReviewsMenu();
+                    case 4 -> AuthService.logout();
+                    case JOptionPane.CLOSED_OPTION -> {}
                 }
             }
         }
-
-        scanner.close();
     }
 
-    // The menu shown when no one is logged in
-    private static void showGuestMenu() {
-        System.out.println("\nWhat would you like to do?");
-        System.out.println("1. Create an account");
-        System.out.println("2. Login");
-        System.out.println("3. Exit");
-        System.out.print("Your choice: ");
-    }
-
-    // The main menu shown after login
-    private static void showMainMenu() {
-        User user = AuthService.getLoggedInUser();
-        System.out.println("\nHello, " + user.getName() + "! What would you like to do?");
-        System.out.println("1. Browse Flights");
-        System.out.println("2. Browse Tour Plans");
-        System.out.println("3. My Bookings");
-        System.out.println("4. Reviews");
-        System.out.println("5. Logout");
-        System.out.print("Your choice: ");
-    }
-
-    // Register a new account
     private static void handleRegister() {
-        System.out.println("\nCreate Your Account");
-        System.out.println("--------------------");
+        JTextField nameField = new JTextField();
+        JTextField emailField = new JTextField();
+        JTextField phoneField = new JTextField();
+        JPasswordField passwordField = new JPasswordField();
+        JTextField addressField = new JTextField();
 
-        System.out.print("Full name: ");
-        String name = scanner.nextLine().trim();
+        Object[] message = {
+                "Full Name:", nameField,
+                "Email:", emailField,
+                "Phone:", phoneField,
+                "Password:", passwordField,
+                "Address:", addressField
+        };
 
-        System.out.print("Email address: ");
-        String email = scanner.nextLine().trim();
-
-        System.out.print("Phone number: ");
-        String phone = scanner.nextLine().trim();
-
-        System.out.print("Password: ");
-        String password = scanner.nextLine().trim();
-
-        System.out.print("Home address: ");
-        String address = scanner.nextLine().trim();
-
-        try {
-            AuthService.register(name, email, phone, password, address);
-        } catch (SmartGoException e) {
-            System.out.println("Could not create account: " + e.getMessage());
+        int option = JOptionPane.showConfirmDialog(null, message, "Register Account", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            try {
+                AuthService.register(nameField.getText(), emailField.getText(), phoneField.getText(), 
+                        new String(passwordField.getPassword()), addressField.getText());
+                JOptionPane.showMessageDialog(null, "Account created successfully!");
+            } catch (SmartGoException e) {
+                JOptionPane.showMessageDialog(null, "Could not create account: " + e.getMessage());
+            }
         }
     }
 
-    // Login to an existing account
     private static void handleLogin() {
-        System.out.println("\nLogin to Your Account");
-        System.out.println("----------------------");
+        JTextField emailField = new JTextField();
+        JPasswordField passwordField = new JPasswordField();
 
-        System.out.print("Email address: ");
-        String email = scanner.nextLine().trim();
+        Object[] message = {
+                "Email:", emailField,
+                "Password:", passwordField
+        };
 
-        System.out.print("Password: ");
-        String password = scanner.nextLine().trim();
-
-        try {
-            AuthService.login(email, password);
-        } catch (SmartGoException e) {
-            System.out.println("Login failed: " + e.getMessage());
+        int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            try {
+                AuthService.login(emailField.getText(), new String(passwordField.getPassword()));
+            } catch (SmartGoException e) {
+                JOptionPane.showMessageDialog(null, "Login failed: " + e.getMessage());
+            }
         }
     }
 
-    // Flights sub-menu
     private static void handleFlightsMenu() {
         boolean inMenu = true;
-
         while (inMenu) {
-            System.out.println("\nFlights");
-            System.out.println("--------");
-            System.out.println("1. View all flights");
-            System.out.println("2. Search flights by destination");
-            System.out.println("3. Search flights by airline");
-            System.out.println("4. View reviews for a flight");
-            System.out.println("5. Book a flight");
-            System.out.println("6. Go back");
-            System.out.print("Your choice: ");
-
-            int choice = readInt();
+            String[] options = {"View all", "Search by destination", "Search by airline", "View reviews", "Book a flight", "Back"};
+            int choice = JOptionPane.showOptionDialog(null, "Flights Menu", "Flights",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
             switch (choice) {
-                case 1 -> FlightService.showAllFlights();
+                case 0 -> captureOutput(() -> FlightService.showAllFlights(), "All Flights");
+                case 1 -> {
+                    String city = JOptionPane.showInputDialog("Enter destination city:");
+                    if (city != null) {
+                        var results = FlightService.searchByDestination(city);
+                        showResults(results, "Flights to " + city);
+                    }
+                }
                 case 2 -> {
-                    System.out.print("Enter destination city: ");
-                    String city = scanner.nextLine().trim();
-                    var results = FlightService.searchByDestination(city);
-                    if (results.isEmpty()) {
-                        System.out.println("No flights found to " + city + ".");
-                    } else {
-                        results.forEach(System.out::println);
+                    String airline = JOptionPane.showInputDialog("Enter airline name:");
+                    if (airline != null) {
+                        var results = FlightService.searchByAirline(airline);
+                        showResults(results, "Flights by " + airline);
                     }
                 }
                 case 3 -> {
-                    System.out.print("Enter airline name: ");
-                    String airline = scanner.nextLine().trim();
-                    var results = FlightService.searchByAirline(airline);
-                    if (results.isEmpty()) {
-                        System.out.println("No flights found for airline: " + airline + ".");
-                    } else {
-                        results.forEach(System.out::println);
+                    String idStr = JOptionPane.showInputDialog("Enter flight ID:");
+                    if (idStr != null) {
+                        try {
+                            int id = Integer.parseInt(idStr);
+                            captureOutput(() -> ReviewService.showReviews("FLIGHT", id), "Flight Reviews");
+                        } catch (Exception e) { JOptionPane.showMessageDialog(null, "Invalid ID"); }
                     }
                 }
                 case 4 -> {
-                    System.out.print("Enter flight ID to see reviews: ");
-                    int id = readInt();
-                    ReviewService.showReviews("FLIGHT", id);
-                }
-                case 5 -> {
-                    System.out.print("Enter the flight ID you want to book: ");
-                    int id = readInt();
-                    try {
-                        BookingService.bookFlight(AuthService.getLoggedInUser().getId(), id);
-                    } catch (SmartGoException e) {
-                        System.out.println("Booking failed: " + e.getMessage());
+                    String idStr = JOptionPane.showInputDialog("Enter flight ID to book:");
+                    if (idStr != null) {
+                        try {
+                            int id = Integer.parseInt(idStr);
+                            BookingService.bookFlight(AuthService.getLoggedInUser().getId(), id);
+                            JOptionPane.showMessageDialog(null, "Flight booked!");
+                        } catch (Exception e) { JOptionPane.showMessageDialog(null, "Booking failed: " + e.getMessage()); }
                     }
                 }
-                case 6 -> inMenu = false;
-                default -> System.out.println("Please enter a number from 1 to 6.");
+                case 5, JOptionPane.CLOSED_OPTION -> inMenu = false;
             }
         }
     }
 
-    // Tour Plans sub-menu
     private static void handleTourPlansMenu() {
         boolean inMenu = true;
-
         while (inMenu) {
-            System.out.println("\nTour Plans");
-            System.out.println("-----------");
-            System.out.println("1. View all tour plans");
-            System.out.println("2. View meal plans for a tour");
-            System.out.println("3. View reviews for a tour plan");
-            System.out.println("4. Book a tour plan");
-            System.out.println("5. Go back");
-            System.out.print("Your choice: ");
-
-            int choice = readInt();
+            String[] options = {"View all", "View meal plans", "View reviews", "Book a tour", "Back"};
+            int choice = JOptionPane.showOptionDialog(null, "Tour Plans Menu", "Tour Plans",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
             switch (choice) {
-                case 1 -> TourPlanService.showAllTourPlans();
-                case 2 -> {
-                    System.out.print("Enter tour plan ID: ");
-                    int id = readInt();
-                    TourPlanService.showMealPlansForTour(id);
-                }
-                case 3 -> {
-                    System.out.print("Enter tour plan ID to see reviews: ");
-                    int id = readInt();
-                    ReviewService.showReviews("TOUR_PLAN", id);
-                }
-                case 4 -> {
-                    System.out.print("Enter the tour plan ID you want to book: ");
-                    int id = readInt();
-                    try {
-                        BookingService.bookTourPlan(AuthService.getLoggedInUser().getId(), id);
-                    } catch (SmartGoException e) {
-                        System.out.println("Booking failed: " + e.getMessage());
+                case 0 -> captureOutput(() -> TourPlanService.showAllTourPlans(), "All Tour Plans");
+                case 1 -> {
+                    String idStr = JOptionPane.showInputDialog("Enter tour ID:");
+                    if (idStr != null) {
+                        try {
+                            int id = Integer.parseInt(idStr);
+                            captureOutput(() -> TourPlanService.showMealPlansForTour(id), "Meal Plans");
+                        } catch (Exception e) { JOptionPane.showMessageDialog(null, "Invalid ID"); }
                     }
                 }
-                case 5 -> inMenu = false;
-                default -> System.out.println("Please enter a number from 1 to 5.");
+                case 2 -> {
+                    String idStr = JOptionPane.showInputDialog("Enter tour ID:");
+                    if (idStr != null) {
+                        try {
+                            int id = Integer.parseInt(idStr);
+                            captureOutput(() -> ReviewService.showReviews("TOUR_PLAN", id), "Tour Reviews");
+                        } catch (Exception e) { JOptionPane.showMessageDialog(null, "Invalid ID"); }
+                    }
+                }
+                case 3 -> {
+                    String idStr = JOptionPane.showInputDialog("Enter tour ID to book:");
+                    if (idStr != null) {
+                        try {
+                            int id = Integer.parseInt(idStr);
+                            BookingService.bookTourPlan(AuthService.getLoggedInUser().getId(), id);
+                            JOptionPane.showMessageDialog(null, "Tour booked!");
+                        } catch (Exception e) { JOptionPane.showMessageDialog(null, "Booking failed: " + e.getMessage()); }
+                    }
+                }
+                case 4, JOptionPane.CLOSED_OPTION -> inMenu = false;
             }
         }
     }
 
-    // Bookings sub-menu
     private static void handleBookingsMenu() {
         boolean inMenu = true;
         int userId = AuthService.getLoggedInUser().getId();
-
         while (inMenu) {
-            System.out.println("\nMy Bookings");
-            System.out.println("------------");
-            System.out.println("1. View all my bookings");
-            System.out.println("2. Cancel a booking");
-            System.out.println("3. Pay a bill");
-            System.out.println("4. Go back");
-            System.out.print("Your choice: ");
-
-            int choice = readInt();
+            String[] options = {"View my bookings", "Cancel a booking", "Pay a bill", "Back"};
+            int choice = JOptionPane.showOptionDialog(null, "My Bookings Menu", "Bookings",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
             switch (choice) {
-                case 1 -> BookingService.showMyBookings(userId);
+                case 0 -> captureOutput(() -> BookingService.showMyBookings(userId), "My Bookings");
+                case 1 -> {
+                    String idStr = JOptionPane.showInputDialog("Enter booking ID to cancel:");
+                    if (idStr != null) {
+                        try {
+                            int id = Integer.parseInt(idStr);
+                            BookingService.cancelBooking(id, userId);
+                            JOptionPane.showMessageDialog(null, "Booking canceled.");
+                        } catch (Exception e) { JOptionPane.showMessageDialog(null, "Error: " + e.getMessage()); }
+                    }
+                }
                 case 2 -> {
-                    System.out.print("Enter the booking ID you want to cancel: ");
-                    int id = readInt();
-                    try {
-                        BookingService.cancelBooking(id, userId);
-                    } catch (SmartGoException e) {
-                        System.out.println("Could not cancel: " + e.getMessage());
+                    String idStr = JOptionPane.showInputDialog("Enter booking ID to pay:");
+                    if (idStr != null) {
+                        try {
+                            int bId = Integer.parseInt(idStr);
+                            String[] methods = {"CASH", "CARD", "BANK_TRANSFER"};
+                            int mChoice = JOptionPane.showOptionDialog(null, "Select payment method:", "Payment",
+                                    JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, methods, methods[0]);
+                            if (mChoice != JOptionPane.CLOSED_OPTION) {
+                                BookingService.payBill(bId, userId, methods[mChoice]);
+                                JOptionPane.showMessageDialog(null, "Payment processed!");
+                            }
+                        } catch (Exception e) { JOptionPane.showMessageDialog(null, "Payment failed: " + e.getMessage()); }
                     }
                 }
-                case 3 -> {
-                    System.out.print("Enter the booking ID you want to pay for: ");
-                    int bookingId = readInt();
-                    System.out.println("Payment method:");
-                    System.out.println("1. Cash");
-                    System.out.println("2. Card");
-                    System.out.println("3. Bank Transfer");
-                    System.out.print("Your choice: ");
-                    int methodChoice = readInt();
-                    String method = switch (methodChoice) {
-                        case 1 -> "CASH";
-                        case 2 -> "CARD";
-                        case 3 -> "BANK_TRANSFER";
-                        default -> "CASH";
-                    };
-                    try {
-                        BookingService.payBill(bookingId, userId, method);
-                    } catch (SmartGoException e) {
-                        System.out.println("Payment failed: " + e.getMessage());
-                    }
-                }
-                case 4 -> inMenu = false;
-                default -> System.out.println("Please enter a number from 1 to 4.");
+                case 3, JOptionPane.CLOSED_OPTION -> inMenu = false;
             }
         }
     }
 
-    // Reviews sub-menu
     private static void handleReviewsMenu() {
         boolean inMenu = true;
         int userId = AuthService.getLoggedInUser().getId();
-
         while (inMenu) {
-            System.out.println("\nReviews");
-            System.out.println("--------");
-            System.out.println("1. Write a review");
-            System.out.println("2. View my reviews");
-            System.out.println("3. Go back");
-            System.out.print("Your choice: ");
-
-            int choice = readInt();
+            String[] options = {"Write a review", "View my reviews", "Back"};
+            int choice = JOptionPane.showOptionDialog(null, "Reviews Menu", "Reviews",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
             switch (choice) {
-                case 1 -> {
-                    System.out.println("What are you reviewing?");
-                    System.out.println("1. Flight");
-                    System.out.println("2. Hotel");
-                    System.out.println("3. Tour Plan");
-                    System.out.print("Your choice: ");
-                    int typeChoice = readInt();
-
-                    String reviewableType = switch (typeChoice) {
-                        case 1 -> "FLIGHT";
-                        case 2 -> "HOTEL";
-                        case 3 -> "TOUR_PLAN";
-                        default -> "FLIGHT";
-                    };
-
-                    System.out.print("Enter the ID of the " + reviewableType + " you are reviewing: ");
-                    int reviewableId = readInt();
-
-                    System.out.print("Your rating (1 to 5): ");
-                    int rating = readInt();
-
-                    System.out.print("Your comment: ");
-                    String comment = scanner.nextLine().trim();
-
-                    try {
-                        ReviewService.addReview(userId, reviewableType, reviewableId, rating, comment);
-                    } catch (SmartGoException e) {
-                        System.out.println("Could not save review: " + e.getMessage());
+                case 0 -> {
+                    String[] types = {"FLIGHT", "HOTEL", "TOUR_PLAN"};
+                    int typeChoice = JOptionPane.showOptionDialog(null, "What are you reviewing?", "Review Type",
+                            JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, types, types[0]);
+                    if (typeChoice != JOptionPane.CLOSED_OPTION) {
+                        String idStr = JOptionPane.showInputDialog("Enter ID:");
+                        String ratingStr = JOptionPane.showInputDialog("Rating (1-5):");
+                        String comment = JOptionPane.showInputDialog("Comment:");
+                        if (idStr != null && ratingStr != null && comment != null) {
+                            try {
+                                ReviewService.addReview(userId, types[typeChoice], Integer.parseInt(idStr), Integer.parseInt(ratingStr), comment);
+                                JOptionPane.showMessageDialog(null, "Review added!");
+                            } catch (Exception e) { JOptionPane.showMessageDialog(null, "Error: " + e.getMessage()); }
+                        }
                     }
                 }
-                case 2 -> ReviewService.showMyReviews(userId);
-                case 3 -> inMenu = false;
-                default -> System.out.println("Please enter 1, 2, or 3.");
+                case 1 -> captureOutput(() -> ReviewService.showMyReviews(userId), "My Reviews");
+                case 2, JOptionPane.CLOSED_OPTION -> inMenu = false;
             }
         }
     }
 
-    // A safe way to read an integer from the user
-    // If the user types something that is not a number, it returns -1 instead of crashing
-    private static int readInt() {
-        try {
-            String line = scanner.nextLine().trim();
-            return Integer.parseInt(line);
-        } catch (NumberFormatException e) {
-            return -1;
+    private static void captureOutput(Runnable action, String title) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+        PrintStream old = System.out;
+        System.setOut(ps);
+        action.run();
+        System.out.flush();
+        System.setOut(old);
+
+        JTextArea textArea = new JTextArea(baos.toString());
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(600, 400));
+        JOptionPane.showMessageDialog(null, scrollPane, title, JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private static void showResults(List<?> list, String title) {
+        if (list.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No results found.");
+            return;
         }
+        StringBuilder sb = new StringBuilder();
+        list.forEach(item -> sb.append(item.toString()).append("\n\n"));
+        JTextArea textArea = new JTextArea(sb.toString());
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(600, 400));
+        JOptionPane.showMessageDialog(null, scrollPane, title, JOptionPane.PLAIN_MESSAGE);
     }
 }
