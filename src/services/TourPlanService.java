@@ -36,18 +36,18 @@ public class TourPlanService {
 
     // Add sample tour plans so the app is not empty on first run
     private static void addSampleData() {
-        TourPlan t1 = new TourPlan(nextPlanId++, 1, 1, "Dubai Explorer", 7, 1200.00, "ACTIVE");
-        TourPlan t2 = new TourPlan(nextPlanId++, 2, 1, "Paris Romantic Getaway", 5, 1500.00, "ACTIVE");
-        TourPlan t3 = new TourPlan(nextPlanId++, 3, 1, "Istanbul Heritage Tour", 6, 950.00, "ACTIVE");
+        TourPlan t1 = new TourPlan(nextPlanId++, 1, 1, "Multan Heritage Tour", 4, 180.00, "ACTIVE");
+        TourPlan t2 = new TourPlan(nextPlanId++, 2, 1, "Lahore Cultural Experience", 5, 220.00, "ACTIVE");
+        TourPlan t3 = new TourPlan(nextPlanId++, 3, 1, "Skardu Mountain Adventure", 7, 350.00, "ACTIVE");
 
         DataStore.saveTourPlan(t1);
         DataStore.saveTourPlan(t2);
         DataStore.saveTourPlan(t3);
 
-        MealPlan m1 = new MealPlan(nextMealId++, t1.getId(), "Standard Meals", "Breakfast and dinner included", 80.00);
-        MealPlan m2 = new MealPlan(nextMealId++, t1.getId(), "Premium Meals", "All meals plus room service", 150.00);
-        MealPlan m3 = new MealPlan(nextMealId++, t2.getId(), "Breakfast Only", "Daily breakfast included", 50.00);
-        MealPlan m4 = new MealPlan(nextMealId++, t3.getId(), "Full Board", "All meals included", 120.00);
+        MealPlan m1 = new MealPlan(nextMealId++, t1.getId(), "Full Board", "All meals included", 40.00);
+        MealPlan m2 = new MealPlan(nextMealId++, t2.getId(), "Breakfast and Dinner", "Breakfast and dinner included", 35.00);
+        MealPlan m3 = new MealPlan(nextMealId++, t3.getId(), "Standard Meals", "Breakfast and dinner included", 50.00);
+        MealPlan m4 = new MealPlan(nextMealId++, t3.getId(), "Premium Meals", "All meals plus room service", 90.00);
 
         DataStore.saveMealPlan(m1);
         DataStore.saveMealPlan(m2);
