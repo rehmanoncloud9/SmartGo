@@ -17,6 +17,7 @@ public class Main {
         AuthService.init();
         FlightService.init();
         TourPlanService.init();
+        HotelService.init();
         BookingService.init();
         ReviewService.init();
 
@@ -44,16 +45,17 @@ public class Main {
                 }
             } else {
                 User user = AuthService.getLoggedInUser();
-                String[] options = {"Browse Flights", "Browse Tour Plans", "My Bookings", "Reviews", "Logout"};
+                String[] options = {"Browse Flights", "Browse Tour Plans", "Browse Hotels", "My Bookings", "Reviews", "Logout"};
                 int choice = JOptionPane.showOptionDialog(null, "Hello, " + user.getName() + "! What would you like to do?", "Main Menu",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                 switch (choice) {
                     case 0 -> handleFlightsMenu();
                     case 1 -> handleTourPlansMenu();
-                    case 2 -> handleBookingsMenu();
-                    case 3 -> handleReviewsMenu();
-                    case 4 -> AuthService.logout();
+                    case 2 -> handleHotelsMenu();
+                    case 3 -> handleBookingsMenu();
+                    case 4 -> handleReviewsMenu();
+                    case 5 -> AuthService.logout();
                     case JOptionPane.CLOSED_OPTION -> {}
                 }
             }
@@ -187,6 +189,53 @@ public class Main {
                             int id = Integer.parseInt(idStr);
                             BookingService.bookTourPlan(AuthService.getLoggedInUser().getId(), id);
                             JOptionPane.showMessageDialog(null, "Tour booked!");
+                        } catch (Exception e) { JOptionPane.showMessageDialog(null, "Booking failed: " + e.getMessage()); }
+                    }
+                }
+                case 4, JOptionPane.CLOSED_OPTION -> inMenu = false;
+            }
+        }
+    }
+
+    private static void handleHotelsMenu() {
+        boolean inMenu = true;
+        while (inMenu) {
+            String[] options = {"View all", "Search by name", "View reviews", "Book a hotel", "Back"};
+            int choice = JOptionPane.showOptionDialog(null, "Hotels Menu", "Hotels",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+            switch (choice) {
+                case 0 -> captureOutput(() -> HotelService.showAllHotels(), "All Hotels");
+                case 1 -> {
+                    String name = JOptionPane.showInputDialog("Enter hotel name:");
+                    if (name != null) {
+                        var results = HotelService.searchByName(name);
+                        showResults(results, "Hotels matching " + name);
+                    }
+                }
+                case 2 -> {
+                    String idStr = JOptionPane.showInputDialog("Enter hotel ID:");
+                    if (idStr != null) {
+                        try {
+                            int id = Integer.parseInt(idStr);
+                            captureOutput(() -> ReviewService.showReviews("HOTEL", id), "Hotel Reviews");
+                        } catch (Exception e) { JOptionPane.showMessageDialog(null, "Invalid ID"); }
+                    }
+                }
+                case 3 -> {
+                    String idStr = JOptionPane.showInputDialog("Enter hotel ID to book:");
+                    if (idStr != null) {
+                        try {
+                            int id = Integer.parseInt(idStr);
+                            String checkIn = JOptionPane.showInputDialog("Enter Check-in Date (YYYY-MM-DD):");
+                            String checkOut = JOptionPane.showInputDialog("Enter Check-out Date (YYYY-MM-DD):");
+                            String guestsStr = JOptionPane.showInputDialog("Number of guests:");
+                            
+                            if (checkIn != null && checkOut != null && guestsStr != null) {
+                                int guests = Integer.parseInt(guestsStr);
+                                BookingService.bookHotel(AuthService.getLoggedInUser().getId(), id, checkIn, checkOut, guests);
+                                JOptionPane.showMessageDialog(null, "Hotel booked!");
+                            }
                         } catch (Exception e) { JOptionPane.showMessageDialog(null, "Booking failed: " + e.getMessage()); }
                     }
                 }
