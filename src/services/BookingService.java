@@ -19,6 +19,7 @@ public class BookingService {
     private static int nextBookingId = 1;
     private static int nextBillId = 1;
     private static int nextPaymentId = 1;
+    private static int nextHotelBookingId = 1;
 
     private static final double PLATFORM_FEE_RATE = 0.05;
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -38,6 +39,11 @@ public class BookingService {
         List<Payment> payments = DataStore.loadPayments();
         if (!payments.isEmpty()) {
             nextPaymentId = payments.get(payments.size() - 1).getId() + 1;
+        }
+
+        List<HotelBooking> hotelBookings = DataStore.loadHotelBookings();
+        if (!hotelBookings.isEmpty()) {
+            nextHotelBookingId = hotelBookings.get(hotelBookings.size() - 1).getId() + 1;
         }
     }
 
@@ -88,6 +94,43 @@ public class BookingService {
         System.out.println("Tour: " + plan.getTitle());
         System.out.println("Duration: " + plan.getDurationDays() + " days");
         System.out.println("Base Price: $" + plan.getBasePrice());
+        System.out.println("Platform Fee (5%): $" + String.format("%.2f", platformFee));
+        System.out.println("Total Bill: $" + String.format("%.2f", bill.getTotalAmount()));
+
+        return booking;
+    }
+
+    // Book a hotel for the currently logged in user
+    public static Booking bookHotel(int userId, int hotelId, String checkIn, String checkOut, int numGuests) throws SmartGoException {
+        Hotel hotel = HotelService.getHotelById(hotelId);
+
+        String bookedAt = LocalDateTime.now().format(formatter);
+
+        // 1. Create main booking record
+        Booking booking = new Booking(
+                nextBookingId++, userId, "HOTEL",
+                0, 0, bookedAt, BookingStatus.CONFIRMED
+        );
+        DataStore.saveBooking(booking);
+
+        // 2. Create specific hotel booking details
+        HotelBooking hotelBooking = new HotelBooking(
+                nextHotelBookingId++, booking.getId(), hotelId,
+                checkIn, checkOut, numGuests
+        );
+        DataStore.saveHotelBooking(hotelBooking);
+
+        // 3. Create bill (assuming 1 night for simplicity, or we could parse dates)
+        // For now let's just use the hotel price per night
+        double platformFee = hotel.getPricePerNight() * PLATFORM_FEE_RATE;
+        Bill bill = new Bill(nextBillId++, booking.getId(), hotel.getPricePerNight(), platformFee);
+        DataStore.saveBill(bill);
+
+        System.out.println("Hotel booked successfully!");
+        System.out.println("Booking ID: " + booking.getId());
+        System.out.println("Hotel: " + hotel.getName());
+        System.out.println("Dates: " + checkIn + " to " + checkOut);
+        System.out.println("Price: $" + hotel.getPricePerNight());
         System.out.println("Platform Fee (5%): $" + String.format("%.2f", platformFee));
         System.out.println("Total Bill: $" + String.format("%.2f", bill.getTotalAmount()));
 
