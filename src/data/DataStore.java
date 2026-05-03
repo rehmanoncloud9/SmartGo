@@ -25,6 +25,7 @@ public class DataStore {
     private static final String BILLS_FILE        = DATA_FOLDER + "bills.txt";
     private static final String PAYMENTS_FILE     = DATA_FOLDER + "payments.txt";
     private static final String REVIEWS_FILE      = DATA_FOLDER + "reviews.txt";
+    private static final String HOTEL_BOOKINGS_FILE = DATA_FOLDER + "hotel_bookings.txt";
 
     // Make sure the data folder exists when the app starts
     public static void init() {
@@ -353,5 +354,39 @@ public class DataStore {
             }
         }
         return reviews;
+    }
+
+    // Save a hotel booking to the hotel bookings file
+    // Format: id|bookingId|hotelId|checkIn|checkOut|numGuests
+    public static void saveHotelBooking(HotelBooking hb) {
+        String line = hb.getId() + "|" + hb.getBookingId() + "|" + hb.getHotelId()
+                + "|" + hb.getCheckIn() + "|" + hb.getCheckOut() + "|" + hb.getNumGuests();
+        appendLine(HOTEL_BOOKINGS_FILE, line);
+    }
+
+    // Load all hotel bookings from the file
+    public static List<HotelBooking> loadHotelBookings() {
+        List<HotelBooking> bookings = new ArrayList<>();
+        for (String line : readLines(HOTEL_BOOKINGS_FILE)) {
+            String[] parts = line.split("\\|");
+            if (parts.length >= 6) {
+                bookings.add(new HotelBooking(
+                        Integer.parseInt(parts[0]), Integer.parseInt(parts[1]),
+                        Integer.parseInt(parts[2]), parts[3], parts[4],
+                        Integer.parseInt(parts[5])
+                ));
+            }
+        }
+        return bookings;
+    }
+
+    // Save all hotel bookings back to file
+    public static void saveAllHotelBookings(List<HotelBooking> bookings) {
+        List<String> lines = new ArrayList<>();
+        for (HotelBooking hb : bookings) {
+            lines.add(hb.getId() + "|" + hb.getBookingId() + "|" + hb.getHotelId()
+                    + "|" + hb.getCheckIn() + "|" + hb.getCheckOut() + "|" + hb.getNumGuests());
+        }
+        writeAllLines(HOTEL_BOOKINGS_FILE, lines);
     }
 }
