@@ -37,25 +37,25 @@ public class FlightService {
 
     // Add some starting flights and destinations so the app is not empty on first run
     private static void addSampleData() {
-        Destination d1 = new Destination(nextDestinationId++, "Dubai", "Gulf", "UAE",
-                "Burj Khalifa, Dubai Mall, Desert Safari", "dubai.jpg");
-        Destination d2 = new Destination(nextDestinationId++, "Paris", "Ile-de-France", "France",
-                "Eiffel Tower, Louvre Museum, Notre Dame", "paris.jpg");
-        Destination d3 = new Destination(nextDestinationId++, "Istanbul", "Marmara", "Turkey",
-                "Blue Mosque, Grand Bazaar, Bosphorus", "istanbul.jpg");
+        Destination d1 = new Destination(nextDestinationId++, "Multan", "Punjab", "Pakistan",
+                "Shah Rukn-e-Alam Shrine, Multan Fort, Ghanta Ghar", "multan.jpg");
+        Destination d2 = new Destination(nextDestinationId++, "Lahore", "Punjab", "Pakistan",
+                "Badshahi Mosque, Lahore Fort, Shalimar Gardens", "lahore.jpg");
+        Destination d3 = new Destination(nextDestinationId++, "Skardu", "Gilgit-Baltistan", "Pakistan",
+                "Shangrila Resort, Deosai Plains, Upper Kachura Lake", "skardu.jpg");
 
         DataStore.saveDestination(d1);
         DataStore.saveDestination(d2);
         DataStore.saveDestination(d3);
 
-        Flight f1 = new Flight(nextFlightId++, d1.getId(), 450.00, 180,
-                "Emirates", "EK-611", "Economy", "2025-06-10 08:00", "2025-06-20 14:00");
-        Flight f2 = new Flight(nextFlightId++, d1.getId(), 850.00, 40,
-                "Emirates", "EK-612", "Business", "2025-06-12 10:00", "2025-06-22 16:00");
-        Flight f3 = new Flight(nextFlightId++, d2.getId(), 620.00, 200,
-                "Air France", "AF-201", "Economy", "2025-07-01 06:00", "2025-07-10 18:00");
-        Flight f4 = new Flight(nextFlightId++, d3.getId(), 380.00, 150,
-                "Turkish Airlines", "TK-708", "Economy", "2025-06-25 09:00", "2025-07-05 21:00");
+        Flight f1 = new Flight(nextFlightId++, d1.getId(), 55.00, 180,
+                "PIA", "PK-341", "Economy", "2025-06-10 08:00", "2025-06-14 14:00");
+        Flight f2 = new Flight(nextFlightId++, d2.getId(), 45.00, 200,
+                "AirBlue", "PA-210", "Economy", "2025-06-15 07:30", "2025-06-20 18:00");
+        Flight f3 = new Flight(nextFlightId++, d2.getId(), 120.00, 40,
+                "AirBlue", "PA-211", "Business", "2025-06-18 09:00", "2025-06-23 16:00");
+        Flight f4 = new Flight(nextFlightId++, d3.getId(), 95.00, 150,
+                "PIA", "PK-451", "Economy", "2025-07-01 06:00", "2025-07-08 21:00");
 
         DataStore.saveFlight(f1);
         DataStore.saveFlight(f2);

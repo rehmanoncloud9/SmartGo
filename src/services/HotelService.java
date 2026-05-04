@@ -26,9 +26,9 @@ public class HotelService {
     }
 
     private static void addSampleData() {
-        addHotel(1, "Dubai Luxury Suites", 5, "+971-50-1234567", "Sheikh Zayed Rd, Dubai", 450.00);
-        addHotel(2, "Hotel de Paris", 4, "+33-1-4444-5555", "Rue de Rivoli, Paris", 350.00);
-        addHotel(3, "Istanbul Old City Hotel", 4, "+90-212-555-6677", "Sultanahmet, Istanbul", 120.00);
+        addHotel(1, "Multan Continental Hotel", 4, "+92-61-111-2233", "Nawan Shehar, Multan", 35.00);
+        addHotel(2, "Pearl Continental Lahore", 5, "+92-42-111-5050", "Shahrah-e-Quaid-e-Azam, Lahore", 85.00);
+        addHotel(3, "Shangrila Resort Skardu", 5, "+92-58-145-0101", "Lower Kachura Lake, Skardu", 70.00);
         System.out.println("Sample hotels loaded.");
     }
 
