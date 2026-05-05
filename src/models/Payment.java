@@ -6,6 +6,7 @@ package models;
 
 public class Payment {
 
+    // These fields record every detail of a successful financial transaction
     private int id;
     private int billId;
     private double amount;
@@ -14,6 +15,7 @@ public class Payment {
     private String paidAt;
     private String status;
 
+    // This constructor initializes the payment record with the settled amount and method used
     public Payment(int id, int billId, double amount, String paymentType, String method, String paidAt, String status) {
         this.id = id;
         this.billId = billId;
@@ -36,6 +38,7 @@ public class Payment {
 
     @Override
     public String toString() {
+        // This provides a complete transaction receipt for the system to display
         return "Payment ID: " + id + " | Bill: " + billId + " | Amount: $" + amount
                 + " | Type: " + paymentType + " | Method: " + method
                 + " | Paid at: " + paidAt + " | Status: " + status;

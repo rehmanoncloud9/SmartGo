@@ -6,6 +6,7 @@ package models;
 
 public abstract class Person {
 
+    // We use private fields here to keep the data safe and follow encapsulation
     private int id;
     private String name;
     private String email;
@@ -13,6 +14,7 @@ public abstract class Person {
     private String passwordHash;
     private String createdAt;
 
+    // This constructor sets up the common information shared by all people in the app
     public Person(int id, String name, String email, String phone, String passwordHash, String createdAt) {
         this.id = id;
         this.name = name;
@@ -32,11 +34,12 @@ public abstract class Person {
     public void setName(String name) { this.name = name; }
     public void setPhone(String phone) { this.phone = phone; }
 
-    // Every subclass must be able to describe itself
+    // This is an abstract method that every specific person type must implement
     public abstract String getRole();
 
     @Override
     public String toString() {
+        // We call getRole() here even though it is not defined yet - that is polymorphism
         return "ID: " + id + " | Name: " + name + " | Email: " + email + " | Role: " + getRole();
     }
 }

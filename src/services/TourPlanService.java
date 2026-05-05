@@ -14,10 +14,11 @@ import java.util.List;
 
 public class TourPlanService {
 
+    // These variables help us assign unique identification numbers to new plans and meals
     private static int nextPlanId = 1;
     private static int nextMealId = 1;
 
-    // Load existing data and add sample tour plans if none exist
+    // We prepare the tour system by loading existing files and setting the next available IDs
     public static void init() {
         List<TourPlan> existing = DataStore.loadTourPlans();
         if (!existing.isEmpty()) {
@@ -29,12 +30,13 @@ public class TourPlanService {
             nextMealId = meals.get(meals.size() - 1).getId() + 1;
         }
 
+        // If the tour database is empty we add some pre defined packages
         if (existing.isEmpty()) {
             addSampleData();
         }
     }
 
-    // Add sample tour plans so the app is not empty on first run
+    // This creates a few exciting tour packages to give users options on their first visit
     private static void addSampleData() {
         TourPlan t1 = new TourPlan(nextPlanId++, 1, 1, "Multan Heritage Tour", 4, 180.00, "ACTIVE");
         TourPlan t2 = new TourPlan(nextPlanId++, 2, 1, "Lahore Cultural Experience", 5, 220.00, "ACTIVE");
@@ -44,6 +46,7 @@ public class TourPlanService {
         DataStore.saveTourPlan(t2);
         DataStore.saveTourPlan(t3);
 
+        // We also attach different dining options to each tour package
         MealPlan m1 = new MealPlan(nextMealId++, t1.getId(), "Full Board", "All meals included", 40.00);
         MealPlan m2 = new MealPlan(nextMealId++, t2.getId(), "Breakfast and Dinner", "Breakfast and dinner included", 35.00);
         MealPlan m3 = new MealPlan(nextMealId++, t3.getId(), "Standard Meals", "Breakfast and dinner included", 50.00);
@@ -57,7 +60,7 @@ public class TourPlanService {
         System.out.println("Sample tour plans and meal plans loaded.");
     }
 
-    // Show all active tour plans
+    // This displays every active tour package that a user can book
     public static void showAllTourPlans() {
         List<TourPlan> plans = DataStore.loadTourPlans();
 
@@ -69,6 +72,7 @@ public class TourPlanService {
         System.out.println("\nAll Available Tour Plans:");
         System.out.println("==========================");
         for (TourPlan p : plans) {
+            // We only show plans that are currently marked as active
             if (p.getStatus().equals("ACTIVE")) {
                 System.out.println(p);
             }
@@ -76,7 +80,7 @@ public class TourPlanService {
         System.out.println();
     }
 
-    // Show meal plans available for a specific tour plan
+    // This prints out all the dining options available for a specific tour
     public static void showMealPlansForTour(int tourPlanId) {
         List<MealPlan> meals = DataStore.loadMealPlans();
         boolean found = false;
@@ -95,7 +99,7 @@ public class TourPlanService {
         System.out.println();
     }
 
-    // Get a tour plan by its ID
+    // This finds a specific tour package using its ID number
     public static TourPlan getTourPlanById(int id) throws SmartGoException {
         for (TourPlan p : DataStore.loadTourPlans()) {
             if (p.getId() == id) return p;
@@ -103,7 +107,7 @@ public class TourPlanService {
         throw new SmartGoException("No tour plan found with ID " + id + ". Please check and try again.");
     }
 
-    // Get a meal plan by its ID
+    // This finds a specific dining option using its ID number
     public static MealPlan getMealPlanById(int id) throws SmartGoException {
         for (MealPlan m : DataStore.loadMealPlans()) {
             if (m.getId() == id) return m;
@@ -111,7 +115,7 @@ public class TourPlanService {
         throw new SmartGoException("No meal plan found with ID " + id + ". Please check and try again.");
     }
 
-    // Get all meal plans for a specific tour plan
+    // This gives us a list of all meal plans that belong to a certain tour
     public static List<MealPlan> getMealPlansForTour(int tourPlanId) {
         List<MealPlan> result = new ArrayList<>();
         for (MealPlan m : DataStore.loadMealPlans()) {
@@ -120,7 +124,7 @@ public class TourPlanService {
         return result;
     }
 
-    // Add a new tour plan (admin only)
+    // This method lets an administrator add a new tour package to a destination
     public static void addTourPlan(int destinationId, int adminId, String title,
                                     int durationDays, double basePrice) {
         TourPlan plan = new TourPlan(nextPlanId++, destinationId, adminId, title, durationDays, basePrice, "ACTIVE");
@@ -128,14 +132,14 @@ public class TourPlanService {
         System.out.println("Tour plan added: " + title);
     }
 
-    // Add a meal plan to an existing tour (admin only)
+    // This allows an administrator to add new dining options to an existing tour
     public static void addMealPlan(int tourPlanId, String name, String description, double price) {
         MealPlan meal = new MealPlan(nextMealId++, tourPlanId, name, description, price);
         DataStore.saveMealPlan(meal);
         System.out.println("Meal plan added: " + name);
     }
 
-    // Get all tour plans
+    // This returns the complete list of all tour plans for other services to use
     public static List<TourPlan> getAllTourPlans() {
         return DataStore.loadTourPlans();
     }

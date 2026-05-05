@@ -15,10 +15,11 @@ import java.util.List;
 
 public class ReviewService {
 
+    // This counter ensures that every review in the system has its own unique ID
     private static int nextReviewId = 1;
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    // Load existing data to get the right next ID
+    // We initialize the service by checking the last saved review to set the correct starting ID
     public static void init() {
         List<Review> existing = DataStore.loadReviews();
         if (!existing.isEmpty()) {
@@ -26,21 +27,23 @@ public class ReviewService {
         }
     }
 
-    // Add a review for any type of item
-    // reviewableType can be "FLIGHT", "HOTEL", or "TOUR_PLAN"
+    // This method allows users to share their feedback on any travel service they have used
     public static void addReview(int userId, String reviewableType, int reviewableId,
                                   int rating, String comment) throws SmartGoException {
 
+        // We make sure the rating is within the logical range of one to five stars
         if (rating < 1 || rating > 5) {
             throw new SmartGoException("Rating must be between 1 and 5.");
         }
 
+        // We also check that the user didn't leave the comment section empty
         if (comment == null || comment.trim().isEmpty()) {
             throw new SmartGoException("Please write a comment for your review.");
         }
 
         String createdAt = LocalDateTime.now().format(formatter);
 
+        // We create a new Review object and save it immediately to our text file
         Review review = new Review(
                 nextReviewId++, userId, reviewableType,
                 reviewableId, rating, comment.trim(), createdAt
@@ -52,8 +55,7 @@ public class ReviewService {
         System.out.println("Rating: " + rating + "/5 for " + reviewableType + " #" + reviewableId);
     }
 
-    // Show all reviews for a specific item
-    // For example: showReviews("FLIGHT", 1) shows all reviews for flight with ID 1
+    // This displays all feedback left for a specific flight, hotel, or tour plan
     public static void showReviews(String reviewableType, int reviewableId) {
         List<Review> reviews = DataStore.loadReviews();
         boolean found = false;
@@ -62,6 +64,7 @@ public class ReviewService {
         System.out.println("================================");
 
         for (Review r : reviews) {
+            // We check both the type and the ID to find the exact matches
             if (r.getReviewableType().equalsIgnoreCase(reviewableType)
                     && r.getReviewableId() == reviewableId) {
                 System.out.println(r);
@@ -75,7 +78,7 @@ public class ReviewService {
         }
     }
 
-    // Show all reviews written by a specific user
+    // This lets a logged in user see every single review they have ever written
     public static void showMyReviews(int userId) {
         List<Review> reviews = DataStore.loadReviews();
         boolean found = false;

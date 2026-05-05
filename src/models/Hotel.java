@@ -5,6 +5,7 @@ package models;
 
 public class Hotel implements Reviewable {
 
+    // These private fields store all the essential information about each hotel
     private int id;
     private int destinationId;
     private String name;
@@ -13,6 +14,7 @@ public class Hotel implements Reviewable {
     private String address;
     private double pricePerNight;
 
+    // This constructor initializes a new hotel record for a specific destination
     public Hotel(int id, int destinationId, String name, int rating,
                  String managerContact, String address, double pricePerNight) {
         this.id = id;
@@ -36,16 +38,19 @@ public class Hotel implements Reviewable {
 
     @Override
     public String getDisplayName() {
+        // This gives the review service a simple name to show to the user
         return name;
     }
 
     @Override
     public String getReviewType() {
+        // This categorizes the review so the system knows it belongs to a hotel
         return "HOTEL";
     }
 
     @Override
     public String toString() {
+        // This provides a clean summary of the hotel for the user interface
         return "Hotel ID: " + id + " | " + name + " | Stars: " + rating
                 + " | Price per night: $" + pricePerNight + " | Address: " + address;
     }

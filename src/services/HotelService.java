@@ -13,18 +13,21 @@ import java.util.List;
 
 public class HotelService {
 
+    // This counter ensures every new hotel gets a unique identification number
     private static int nextHotelId = 1;
 
-    // Load existing data
+    // This method prepares the hotel database when the application launches
     public static void init() {
         List<Hotel> hotels = DataStore.loadHotels();
         if (!hotels.isEmpty()) {
             nextHotelId = hotels.get(hotels.size() - 1).getId() + 1;
         } else {
+            // We only add sample hotels if the system is completely empty
             addSampleData();
         }
     }
 
+    // This adds a few well known hotels so the app is ready for testing immediately
     private static void addSampleData() {
         addHotel(1, "Multan Continental Hotel", 4, "+92-61-111-2233", "Nawan Shehar, Multan", 35.00);
         addHotel(2, "Pearl Continental Lahore", 5, "+92-42-111-5050", "Shahrah-e-Quaid-e-Azam, Lahore", 85.00);
@@ -32,7 +35,7 @@ public class HotelService {
         System.out.println("Sample hotels loaded.");
     }
 
-    // Show all available hotels
+    // This displays a full list of every hotel currently in the system
     public static void showAllHotels() {
         List<Hotel> hotels = DataStore.loadHotels();
 
@@ -49,10 +52,11 @@ public class HotelService {
         System.out.println();
     }
 
-    // Search for hotels by name
+    // This allows users to find a specific hotel by typing any part of its name
     public static List<Hotel> searchByName(String query) {
         List<Hotel> results = new ArrayList<>();
         for (Hotel h : DataStore.loadHotels()) {
+            // We search for partial matches so 'pearl' would find 'Pearl Continental'
             if (h.getName().toLowerCase().contains(query.toLowerCase())) {
                 results.add(h);
             }
@@ -60,7 +64,7 @@ public class HotelService {
         return results;
     }
 
-    // Get a hotel by its ID
+    // This finds a specific hotel record using its unique ID number
     public static Hotel getHotelById(int id) throws SmartGoException {
         for (Hotel h : DataStore.loadHotels()) {
             if (h.getId() == id) return h;
@@ -68,7 +72,7 @@ public class HotelService {
         throw new SmartGoException("No hotel found with ID " + id + ".");
     }
 
-    // Add a new hotel (admin only)
+    // This method allows an administrator to add a new hotel to a specific destination
     public static void addHotel(int destinationId, String name, int rating,
                                 String managerContact, String address, double pricePerNight) {
         Hotel hotel = new Hotel(nextHotelId++, destinationId, name, rating, managerContact, address, pricePerNight);
@@ -76,7 +80,7 @@ public class HotelService {
         System.out.println("Hotel added: " + name);
     }
 
-    // Get all hotels
+    // This simply returns the entire list of hotels for other services to use
     public static List<Hotel> getAllHotels() {
         return DataStore.loadHotels();
     }

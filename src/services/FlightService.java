@@ -14,10 +14,11 @@ import java.util.List;
 
 public class FlightService {
 
+    // These counters keep track of the next unique IDs for flights and destinations
     private static int nextFlightId = 1;
     private static int nextDestinationId = 1;
 
-    // Load existing data and add sample flights if none exist
+    // This method sets up the initial flight data when the app starts up
     public static void init() {
         List<Flight> existing = DataStore.loadFlights();
         if (!existing.isEmpty()) {
@@ -29,13 +30,13 @@ public class FlightService {
             nextDestinationId = destinations.get(destinations.size() - 1).getId() + 1;
         }
 
-        // Add sample data only if no flights exist yet
+        // We only add sample flights if the database is currently empty
         if (existing.isEmpty()) {
             addSampleData();
         }
     }
 
-    // Add some starting flights and destinations so the app is not empty on first run
+    // This creates a few default flights so the user has something to browse immediately
     private static void addSampleData() {
         Destination d1 = new Destination(nextDestinationId++, "Multan", "Punjab", "Pakistan",
                 "Shah Rukn-e-Alam Shrine, Multan Fort, Ghanta Ghar", "multan.jpg");
@@ -65,7 +66,7 @@ public class FlightService {
         System.out.println("Sample flights and destinations loaded.");
     }
 
-    // Show all available flights
+    // This prints every available flight along with its destination details
     public static void showAllFlights() {
         List<Flight> flights = DataStore.loadFlights();
         List<Destination> destinations = DataStore.loadDestinations();
@@ -85,13 +86,14 @@ public class FlightService {
         }
     }
 
-    // Search flights by destination city name
+    // This lets users filter flights by typing in a city name
     public static List<Flight> searchByDestination(String city) {
         List<Flight> flights = DataStore.loadFlights();
         List<Destination> destinations = DataStore.loadDestinations();
         List<Flight> results = new ArrayList<>();
 
         for (Destination d : destinations) {
+            // We ignore case so 'multan' and 'Multan' both work correctly
             if (d.getCity().equalsIgnoreCase(city)) {
                 for (Flight f : flights) {
                     if (f.getDestinationId() == d.getId()) {
@@ -103,7 +105,7 @@ public class FlightService {
         return results;
     }
 
-    // Search flights by airline name
+    // This filters flights based on the airline name provided
     public static List<Flight> searchByAirline(String airline) {
         List<Flight> flights = DataStore.loadFlights();
         List<Flight> results = new ArrayList<>();
@@ -116,7 +118,7 @@ public class FlightService {
         return results;
     }
 
-    // Get a single flight by its ID
+    // This finds a specific flight using its ID number
     public static Flight getFlightById(int id) throws SmartGoException {
         for (Flight f : DataStore.loadFlights()) {
             if (f.getId() == id) return f;
@@ -124,7 +126,7 @@ public class FlightService {
         throw new SmartGoException("No flight found with ID " + id + ". Please check the ID and try again.");
     }
 
-    // Add a new flight (admin only)
+    // This method allows an administrator to add a brand new flight to the system
     public static void addFlight(int destinationId, double price, int capacity,
                                   String airline, String flightNumber, String flightClass,
                                   String departureTime, String returnTime) {
@@ -134,12 +136,12 @@ public class FlightService {
         System.out.println("Flight added successfully: " + newFlight.getFlightNumber());
     }
 
-    // Get all available destinations
+    // Returns a complete list of all destinations currently in the database
     public static List<Destination> getAllDestinations() {
         return DataStore.loadDestinations();
     }
 
-    // Helper to get destination name by ID
+    // This is a private helper to turn a destination ID into a readable city name
     private static String getDestinationName(List<Destination> destinations, int id) {
         for (Destination d : destinations) {
             if (d.getId() == id) return d.getCity() + ", " + d.getCountry();

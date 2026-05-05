@@ -14,12 +14,13 @@ import java.util.List;
 
 public class AuthService {
 
+    // This variable keeps track of who is currently using the app
     private static User loggedInUser = null;
     private static int nextUserId = 1;
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    // Load users from file when the app starts to get the right next ID
+    // We check the last registered user in the file to decide the next unique ID
     public static void init() {
         List<User> existing = DataStore.loadUsers();
         if (!existing.isEmpty()) {
@@ -27,11 +28,11 @@ public class AuthService {
         }
     }
 
-    // Register a new user account
-    // Throws an exception if the email is already taken
+    // This creates a new account for a user after checking if the email is available
     public static User register(String name, String email, String phone, String password, String address) throws SmartGoException {
         List<User> users = DataStore.loadUsers();
 
+        // We loop through all users to make sure the email is not already taken
         for (User u : users) {
             if (u.getEmail().equalsIgnoreCase(email)) {
                 throw new SmartGoException("An account with this email already exists. Please use a different email.");
@@ -40,8 +41,7 @@ public class AuthService {
 
         String createdAt = LocalDateTime.now().format(formatter);
 
-        // In a real app you would hash the password properly.
-        // For this project we store it as-is to keep things simple.
+        // We store the password as-is for now, which is common for lab projects
         User newUser = new User(nextUserId++, name, email, phone, password, createdAt, address, createdAt);
         DataStore.saveUser(newUser);
 
@@ -49,12 +49,12 @@ public class AuthService {
         return newUser;
     }
 
-    // Login with email and password
-    // Throws an exception if the credentials are wrong
+    // This verifies credentials and sets the session for the user
     public static User login(String email, String password) throws SmartGoException {
         List<User> users = DataStore.loadUsers();
 
         for (User u : users) {
+            // Both the email and password must match exactly
             if (u.getEmail().equalsIgnoreCase(email) && u.getPasswordHash().equals(password)) {
                 loggedInUser = u;
                 System.out.println("Welcome back, " + u.getName() + "!");
@@ -62,6 +62,7 @@ public class AuthService {
             }
         }
 
+        // If we reach this point, it means we didn't find a matching account
         throw new SmartGoException("Incorrect email or password. Please try again.");
     }
 

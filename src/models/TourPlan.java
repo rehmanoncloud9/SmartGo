@@ -5,6 +5,7 @@ package models;
 
 public class TourPlan {
 
+    // Every tour plan has its own identification and destination link
     private int id;
     private int destinationId;
     private int adminId;
@@ -13,6 +14,7 @@ public class TourPlan {
     private double basePrice;
     private String status;
 
+    // This constructor builds the tour package with its title, duration and price
     public TourPlan(int id, int destinationId, int adminId, String title,
                     int durationDays, double basePrice, String status) {
         this.id = id;
@@ -37,6 +39,7 @@ public class TourPlan {
 
     @Override
     public String toString() {
+        // This gives a human readable summary of the entire tour package
         return "Tour Plan ID: " + id + " | " + title + " | Duration: " + durationDays
                 + " days | Price: $" + basePrice + " | Status: " + status;
     }

@@ -16,15 +16,17 @@ import java.util.List;
 
 public class BookingService {
 
+    // We keep track of the next available IDs to ensure every record is unique
     private static int nextBookingId = 1;
     private static int nextBillId = 1;
     private static int nextPaymentId = 1;
     private static int nextHotelBookingId = 1;
 
+    // Every booking gets a 5 percent platform fee added to the base price
     private static final double PLATFORM_FEE_RATE = 0.05;
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    // Set up IDs based on existing saved data
+    // We look at the last saved records to figure out where to start our ID counters
     public static void init() {
         List<Booking> bookings = DataStore.loadBookings();
         if (!bookings.isEmpty()) {
@@ -47,22 +49,26 @@ public class BookingService {
         }
     }
 
-    // Book a flight for the currently logged in user
+    // This handles the entire process of reserving a flight and generating the bill
     public static Booking bookFlight(int userId, int flightId) throws SmartGoException {
+        // Find the flight details first
         Flight flight = FlightService.getFlightById(flightId);
 
         String bookedAt = LocalDateTime.now().format(formatter);
 
+        // Create the actual booking record and save it to the text file
         Booking booking = new Booking(
                 nextBookingId++, userId, "FLIGHT",
                 0, flight.getId(), bookedAt, BookingStatus.CONFIRMED
         );
         DataStore.saveBooking(booking);
 
+        // Calculate the platform fee and create the invoice for this flight
         double platformFee = flight.getPrice() * PLATFORM_FEE_RATE;
         Bill bill = new Bill(nextBillId++, booking.getId(), flight.getPrice(), platformFee);
         DataStore.saveBill(bill);
 
+        // Print the confirmation details so the UI can capture and show them
         System.out.println("Flight booked successfully!");
         System.out.println("Booking ID: " + booking.getId());
         System.out.println("Flight: " + flight.getAirline() + " " + flight.getFlightNumber());
@@ -73,18 +79,20 @@ public class BookingService {
         return booking;
     }
 
-    // Book a tour plan for the currently logged in user
+    // Similar to flights but for tour packages
     public static Booking bookTourPlan(int userId, int tourPlanId) throws SmartGoException {
         TourPlan plan = TourPlanService.getTourPlanById(tourPlanId);
 
         String bookedAt = LocalDateTime.now().format(formatter);
 
+        // Record the tour booking in the database
         Booking booking = new Booking(
                 nextBookingId++, userId, "TOUR_PLAN",
                 plan.getId(), 0, bookedAt, BookingStatus.CONFIRMED
         );
         DataStore.saveBooking(booking);
 
+        // Generate the bill with the standard 5 percent commission
         double platformFee = plan.getBasePrice() * PLATFORM_FEE_RATE;
         Bill bill = new Bill(nextBillId++, booking.getId(), plan.getBasePrice(), platformFee);
         DataStore.saveBill(bill);

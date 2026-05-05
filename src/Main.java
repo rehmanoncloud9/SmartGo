@@ -12,7 +12,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        // Set up the data folder and load all saved data
+        // Prepare the local storage and load all existing data from text files
         DataStore.init();
         AuthService.init();
         FlightService.init();
@@ -21,6 +21,7 @@ public class Main {
         BookingService.init();
         ReviewService.init();
 
+        // Make the app look like a standard Windows or Mac app instead of the old Java look
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ignored) {}
@@ -29,8 +30,10 @@ public class Main {
 
         boolean running = true;
 
+        // Keep the app running in a loop until the user decides to exit
         while (running) {
             if (!AuthService.isLoggedIn()) {
+                // This menu shows up if no one is logged in yet
                 String[] options = {"Create an account", "Login", "Exit"};
                 int choice = JOptionPane.showOptionDialog(null, "What would you like to do?", "Guest Menu",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -44,6 +47,7 @@ public class Main {
                     }
                 }
             } else {
+                // This is the main dashboard for registered users
                 User user = AuthService.getLoggedInUser();
                 String[] options = {"Browse Flights", "Browse Tour Plans", "Browse Hotels", "My Bookings", "Reviews", "Logout"};
                 int choice = JOptionPane.showOptionDialog(null, "Hello, " + user.getName() + "! What would you like to do?", "Main Menu",
@@ -315,19 +319,26 @@ public class Main {
         }
     }
 
+    // This helper method is very important because it lets us show console output in a GUI window
     private static void captureOutput(Runnable action, String title) {
+        // We create a temporary storage in memory to catch everything printed to the console
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(baos);
         PrintStream old = System.out;
+        
+        // We tell Java to send all print commands to our memory storage instead of the black console window
         System.setOut(ps);
-        action.run();
+        action.run(); // Run the service method (like showAllFlights)
         System.out.flush();
-        System.setOut(old);
-
+        System.setOut(old); // Put everything back to normal
+        
+        // Now we take everything we caught and put it inside a scrollable text area
         JTextArea textArea = new JTextArea(baos.toString());
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setPreferredSize(new Dimension(600, 400));
+        
+        // Finally show the window with all the captured text
         JOptionPane.showMessageDialog(null, scrollPane, title, JOptionPane.PLAIN_MESSAGE);
     }
 

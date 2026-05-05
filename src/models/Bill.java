@@ -6,6 +6,7 @@ package models;
 
 public class Bill {
 
+    // These fields hold all the financial details for an invoice
     private int id;
     private int bookingId;
     private double baseAmount;
@@ -13,12 +14,14 @@ public class Bill {
     private double totalAmount;
     private String status;
 
+    // This constructor calculates the final total by adding the platform fee to the base price
     public Bill(int id, int bookingId, double baseAmount, double platformFee) {
         this.id = id;
         this.bookingId = bookingId;
         this.baseAmount = baseAmount;
         this.platformFee = platformFee;
         this.totalAmount = baseAmount + platformFee;
+        // Every new bill starts as unpaid by default until the user makes a payment
         this.status = "UNPAID";
     }
 
@@ -33,6 +36,7 @@ public class Bill {
 
     @Override
     public String toString() {
+        // This provides a clear summary of the charges for the user to review
         return "Bill ID: " + id + " | Booking: " + bookingId
                 + " | Base: $" + baseAmount + " | Platform Fee: $" + platformFee
                 + " | Total: $" + totalAmount + " | Status: " + status;
