@@ -5,12 +5,14 @@ package models;
 
 public class MealPlan {
 
+    // These fields store the details for the optional dining packages
     private int id;
     private int tourPlanId;
     private String name;
     private String description;
     private double price;
 
+    // This constructor links the meal plan to a specific tour and sets its price
     public MealPlan(int id, int tourPlanId, String name, String description, double price) {
         this.id = id;
         this.tourPlanId = tourPlanId;
@@ -29,6 +31,7 @@ public class MealPlan {
 
     @Override
     public String toString() {
+        // This provides a helpful summary of the meal option for the user
         return "Meal Plan ID: " + id + " | " + name + " | Price: $" + price + " | " + description;
     }
 }

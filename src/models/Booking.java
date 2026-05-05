@@ -7,6 +7,7 @@ import enums.BookingStatus;
 
 public class Booking {
 
+    // Every booking record keeps track of the user and exactly what service they reserved
     private int id;
     private int userId;
     private String bookingType;
@@ -15,6 +16,7 @@ public class Booking {
     private String bookedAt;
     private BookingStatus status;
 
+    // This constructor initializes the reservation with all the necessary tracking details
     public Booking(int id, int userId, String bookingType, int tourPlanId,
                    int transportId, String bookedAt, BookingStatus status) {
         this.id = id;
@@ -38,6 +40,7 @@ public class Booking {
 
     @Override
     public String toString() {
+        // This provides a quick summary of the reservation for the user or administrator
         return "Booking ID: " + id + " | User: " + userId + " | Type: " + bookingType
                 + " | Status: " + status + " | Booked at: " + bookedAt;
     }

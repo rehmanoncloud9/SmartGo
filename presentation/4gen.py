@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+
+slides = []
+
+CSS = """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -50,9 +53,23 @@ body{font-family:"DM Sans",sans-serif;background:#f1f5f9;color:var(--text);paddi
 .ph{border-radius:10px;border:1px dashed #cbd5e1;background:rgba(15,23,42,0.02);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#94a3b8;font-family:"JetBrains Mono",monospace;font-size:11px;flex:1;}
 </style></head><body>
 </style></head><body>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+"""
+
+def slide(n, content, bg="var(--dark2)"):
+    return f'''<div class="slide-wrap"><div class="slide">
+<div class="bg" style="background:{bg};"></div>
+<div class="pad">{content}</div>
+<div class="sn">{n:02d} / 30</div>
+</div></div>'''
+
+def title_row(label, heading, color="var(--g1)"):
+    return f'<div class="label">{label}</div><div class="heading grad" style="font-size:42px;">{heading}</div>'
+
+def concept_header(label, num, tag_cls, tag_text):
+    return f'<div style="display:flex;gap:10px;align-items:center;"><div class="label">{label} {num}</div><span class="concept-tag {tag_cls}">{tag_text}</span></div>'
+
+# ── S01 Title ─────────────────────────────────────────────────────────────────
+slides.append(slide(1, '''
 <div style="height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 40px;gap:60px;">
   <div style="border-left:4px solid var(--g1);padding-left:32px;">
     <div class="display grad" style="font-size:140px;letter-spacing:-0.06em;line-height:0.9;">SmartGo</div>
@@ -86,12 +103,10 @@ body{font-family:"DM Sans",sans-serif;background:#f1f5f9;color:var(--text);paddi
       </div>
     </div>
   </div>
-</div></div>
-<div class="sn">01 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+</div>''', bg="var(--dark2)"))
+
+# ── S02 Overview ──────────────────────────────────────────────────────────────
+slides.append(slide(2, '''
 <div style="display:flex;gap:10px;align-items:center;"><div class="label">Project Overview</div><span class="concept-tag tag-green">Technical Summary</span></div>
 <div class="heading grad" style="font-size:48px;margin-bottom:30px;">What Is SmartGo?</div>
 
@@ -139,12 +154,10 @@ body{font-family:"DM Sans",sans-serif;background:#f1f5f9;color:var(--text);paddi
       </div>
     </div>
   </div>
-</div></div>
-<div class="sn">02 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+</div>'''))
+
+# ── S03 Architecture ──────────────────────────────────────────────────────────
+slides.append(slide(3, '''
 <div style="display:flex;gap:10px;align-items:center;"><div class="label">Architecture</div><span class="concept-tag tag-blue">Layered System</span></div>
 <div class="heading grad" style="font-size:44px;margin-bottom:30px;">System Architecture — Layer by Layer</div>
 
@@ -194,12 +207,10 @@ src/
       </pre>
     </div>
   </div>
-</div></div>
-<div class="sn">03 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+</div>'''))
+
+# ── S04 UML Person ────────────────────────────────────────────────────────────
+slides.append(slide(4, '''
 <div class="label">UML · Module 1 of 5</div>
 <div class="heading grad" style="font-size:44px;">Person Hierarchy — Abstraction Root</div>
 <div class="two-col">
@@ -236,12 +247,10 @@ src/
       <div class="vs-good"><strong>✅ With:</strong> Person is single source of truth for identity. Change once, both subclasses inherit.</div>
     </div>
   </div>
-</div></div>
-<div class="sn">04 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+</div>'''))
+
+# ── S05 UML Transport ─────────────────────────────────────────────────────────
+slides.append(slide(5, '''
 <div class="label">UML · Module 2 of 5</div>
 <div class="heading grad" style="font-size:44px;">Transport Hierarchy — Polymorphic Scheduling</div>
 <div class="two-col">
@@ -279,12 +288,10 @@ src/
       <div class="vs-good"><strong>✅ With:</strong> BookingService calls transport.getPrice() generically — zero type-checking needed.</div>
     </div>
   </div>
-</div></div>
-<div class="sn">05 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+</div>'''))
+
+# ── S06 UML Reviewable ────────────────────────────────────────────────────────
+slides.append(slide(6, '''
 <div class="label">UML · Module 3 of 5</div>
 <div class="heading grad" style="font-size:44px;">Reviewable Interface — Cross-Cutting Contract</div>
 <div class="two-col">
@@ -311,12 +318,10 @@ src/
     </div>
     <div class="code" style="font-size:10.5px;"><span class="cc">// ReviewService works for ANY Reviewable</span><br><span class="ck">public static void</span> showReviews(<span class="cs">String</span> type, <span class="cs">int</span> id)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">throws</span> SmartGoException {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cc">// Works for "FLIGHT", "HOTEL", "TOUR_PLAN"</span><br>}</div>
   </div>
-</div></div>
-<div class="sn">06 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+</div>'''))
+
+# ── S07 UML Booking Chain ─────────────────────────────────────────────────────
+slides.append(slide(7, '''
 <div class="label">UML · Module 4 of 5</div>
 <div class="heading grad" style="font-size:44px;">Booking → Bill → Payment Chain</div>
 <div class="two-col">
@@ -337,12 +342,10 @@ src/
     </div>
     <div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:#f59e0b;margin-bottom:6px;">BookingStatus Enum</div><div style="font-family:JetBrains Mono,monospace;font-size:11px;color:#94a3b8;">PENDING &nbsp;→ CONFIRMED &nbsp;→ CANCELLED</div><div style="font-size:12px;color:var(--muted);margin-top:6px;">Using an enum prevents illegal state strings like "canceld" — compiler enforces valid states.</div></div>
   </div>
-</div></div>
-<div class="sn">07 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+</div>'''))
+
+# ── S08 UML TourPlan ──────────────────────────────────────────────────────────
+slides.append(slide(8, '''
 <div class="label">UML · Module 5 of 5</div>
 <div class="heading grad" style="font-size:44px;">TourPlan Ecosystem — Composition & Association</div>
 <div class="two-col">
@@ -367,12 +370,10 @@ src/
     </div>
     <div class="card"><div style="font-size:12px;color:var(--muted);line-height:1.6;">One TourPlan can have <strong style="color:var(--text);">multiple MealPlans</strong>, multiple <strong style="color:var(--text);">transport options</strong>, and multiple <strong style="color:var(--text);">hotels</strong> — one marked isDefault.</div></div>
   </div>
-</div></div>
-<div class="sn">08 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+</div>'''))
+
+# ── S09 Full UML placeholder ──────────────────────────────────────────────────
+slides.append(slide(9, '''
 <div class="label">UML · Complete System</div>
 <div class="heading grad" style="font-size:40px;">Full Class Diagram — All Relationships</div>
 <div class="ph" style="flex:1;border-radius:12px;">
@@ -381,179 +382,109 @@ src/
   <div style="font-size:48px;">🖼️</div>
   <div style="font-size:14px;">Insert Full UML / ERD Diagram here</div>
   <div style="font-size:11px;color:#1e293b;">Replace placeholder with your ERD image</div>
-</div></div>
-<div class="sn">09 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+</div>'''))
+
+# helper: OOP concept slide ────────────────────────────────────────────────────
+def oop_slide(n, label_num, tag_cls, tag_txt, heading, left_code, right_content):
+    return slide(n, f'''
 <div style="display:flex;gap:10px;align-items:center;">
-  <div class="label">OOP Concept 1 of 8</div>
-  <span class="concept-tag tag-green">Abstraction</span>
+  <div class="label">OOP Concept {label_num}</div>
+  <span class="concept-tag {tag_cls}">{tag_txt}</span>
 </div>
-<div class="heading grad" style="font-size:42px;">Abstraction — Hiding Implementation Details</div>
+<div class="heading grad" style="font-size:42px;">{heading}</div>
 <div class="two-col">
-  <div style="display:flex;flex-direction:column;gap:10px;"><div class="code"><span class="cc">// Person.java — abstract base class</span><br><span class="ck">public abstract class</span> <span class="ct">Person</span> {<br>&nbsp;&nbsp;<span class="ck">private</span> <span class="cs">int</span> id;<br>&nbsp;&nbsp;<span class="ck">private</span> <span class="cs">String</span> name, email, phone, passwordHash;<br><br>&nbsp;&nbsp;<span class="cc">// Every subclass MUST implement this</span><br>&nbsp;&nbsp;<span class="ck">public abstract</span> <span class="cs">String</span> <span class="cm">getRole</span>();<br><br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cs">String</span> <span class="cm">toString</span>() {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">return</span> <span class="ct">"ID: "</span> + id + <span class="ct">" | Role: "</span> + <span class="cm">getRole</span>();<br>&nbsp;&nbsp;}<br>}</div>
-<div class="code"><span class="cc">// Transport.java — abstract with forced contract</span><br><span class="ck">public abstract class</span> <span class="ct">Transport</span> {<br>&nbsp;&nbsp;<span class="ck">private double</span> price;<br>&nbsp;&nbsp;<span class="ck">private int</span> capacity;<br><br>&nbsp;&nbsp;<span class="cc">// Subclasses provide their schedule format</span><br>&nbsp;&nbsp;<span class="ck">public abstract</span> <span class="cs">String</span> <span class="cm">getScheduleSummary</span>();<br>}</div></div>
-  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g1);margin-bottom:8px;">Why We Used This Here</div>
+  <div style="display:flex;flex-direction:column;gap:10px;">{left_code}</div>
+  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;">{right_content}</div>
+</div>''')
+
+# S10 Abstraction
+slides.append(oop_slide(10,"1 of 8","tag-green","Abstraction","Abstraction — Hiding Implementation Details",
+'''<div class="code"><span class="cc">// Person.java — abstract base class</span><br><span class="ck">public abstract class</span> <span class="ct">Person</span> {<br>&nbsp;&nbsp;<span class="ck">private</span> <span class="cs">int</span> id;<br>&nbsp;&nbsp;<span class="ck">private</span> <span class="cs">String</span> name, email, phone, passwordHash;<br><br>&nbsp;&nbsp;<span class="cc">// Every subclass MUST implement this</span><br>&nbsp;&nbsp;<span class="ck">public abstract</span> <span class="cs">String</span> <span class="cm">getRole</span>();<br><br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cs">String</span> <span class="cm">toString</span>() {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">return</span> <span class="ct">"ID: "</span> + id + <span class="ct">" | Role: "</span> + <span class="cm">getRole</span>();<br>&nbsp;&nbsp;}<br>}</div>
+<div class="code"><span class="cc">// Transport.java — abstract with forced contract</span><br><span class="ck">public abstract class</span> <span class="ct">Transport</span> {<br>&nbsp;&nbsp;<span class="ck">private double</span> price;<br>&nbsp;&nbsp;<span class="ck">private int</span> capacity;<br><br>&nbsp;&nbsp;<span class="cc">// Subclasses provide their schedule format</span><br>&nbsp;&nbsp;<span class="ck">public abstract</span> <span class="cs">String</span> <span class="cm">getScheduleSummary</span>();<br>}</div>''',
+'''<div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g1);margin-bottom:8px;">Why We Used This Here</div>
 <div class="bullet"><strong>Person</strong> and <strong>Transport</strong> are abstract because a plain "Person" or "Transport" has no meaning in our domain.</div>
 <div class="bullet">Abstract classes define <strong>template behavior</strong> (toString, getPrice) while delegating variable behavior to subclasses.</div>
 <div class="bullet">The compiler prevents <code style="background:#020810;padding:2px 5px;border-radius:4px;font-family:JetBrains Mono,monospace;font-size:10px;">new Person()</code> — invalid object creation is impossible.</div></div>
-<div class="vs-grid"><div class="vs-bad"><strong>❌ Alternative:</strong> Concrete classes with a "type" String field and runtime checks — messy, error-prone, no compile safety.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ Our Choice:</strong> Abstract classes give compile-time safety and force correct design.</div></div></div>
-</div></div>
-<div class="sn">10 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
-<div style="display:flex;gap:10px;align-items:center;">
-  <div class="label">OOP Concept 2 of 8</div>
-  <span class="concept-tag tag-blue">Encapsulation</span>
-</div>
-<div class="heading grad" style="font-size:42px;">Encapsulation — Controlled Access to Data</div>
-<div class="two-col">
-  <div style="display:flex;flex-direction:column;gap:10px;"><div class="code"><span class="cc">// Bill.java — totalAmount is computed internally</span><br><span class="ck">public class</span> <span class="ct">Bill</span> {<br>&nbsp;&nbsp;<span class="ck">private double</span> baseAmount, platformFee;<br>&nbsp;&nbsp;<span class="ck">private double</span> totalAmount; <span class="cc">// never set externally</span><br>&nbsp;&nbsp;<span class="ck">private</span> <span class="cs">String</span> status;<br><br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cm">Bill</span>(<span class="cs">int</span> id, <span class="cs">int</span> bookingId,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">double</span> base, <span class="ck">double</span> fee) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">this</span>.baseAmount = base;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">this</span>.platformFee = fee;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">this</span>.totalAmount = base + fee; <span class="cc">// auto-computed</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">this</span>.status = <span class="ct">"UNPAID"</span>; <span class="cc">// safe default</span><br>&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;<span class="cc">// No setter for totalAmount — read-only</span><br>&nbsp;&nbsp;<span class="ck">public double</span> <span class="cm">getTotalAmount</span>() { <span class="ck">return</span> totalAmount; }<br>&nbsp;&nbsp;<span class="ck">public void</span> <span class="cm">setStatus</span>(<span class="cs">String</span> s) { <span class="ck">this</span>.status = s; }<br>}</div></div>
-  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g2);margin-bottom:8px;">Why We Used This Here</div>
+<div class="vs-grid"><div class="vs-bad"><strong>❌ Alternative:</strong> Concrete classes with a "type" String field and runtime checks — messy, error-prone, no compile safety.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ Our Choice:</strong> Abstract classes give compile-time safety and force correct design.</div></div>'''))
+
+# S11 Encapsulation
+slides.append(oop_slide(11,"2 of 8","tag-blue","Encapsulation","Encapsulation — Controlled Access to Data",
+'''<div class="code"><span class="cc">// Bill.java — totalAmount is computed internally</span><br><span class="ck">public class</span> <span class="ct">Bill</span> {<br>&nbsp;&nbsp;<span class="ck">private double</span> baseAmount, platformFee;<br>&nbsp;&nbsp;<span class="ck">private double</span> totalAmount; <span class="cc">// never set externally</span><br>&nbsp;&nbsp;<span class="ck">private</span> <span class="cs">String</span> status;<br><br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cm">Bill</span>(<span class="cs">int</span> id, <span class="cs">int</span> bookingId,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">double</span> base, <span class="ck">double</span> fee) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">this</span>.baseAmount = base;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">this</span>.platformFee = fee;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">this</span>.totalAmount = base + fee; <span class="cc">// auto-computed</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">this</span>.status = <span class="ct">"UNPAID"</span>; <span class="cc">// safe default</span><br>&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;<span class="cc">// No setter for totalAmount — read-only</span><br>&nbsp;&nbsp;<span class="ck">public double</span> <span class="cm">getTotalAmount</span>() { <span class="ck">return</span> totalAmount; }<br>&nbsp;&nbsp;<span class="ck">public void</span> <span class="cm">setStatus</span>(<span class="cs">String</span> s) { <span class="ck">this</span>.status = s; }<br>}</div>''',
+'''<div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g2);margin-bottom:8px;">Why We Used This Here</div>
 <div class="bullet">All fields are <strong>private</strong> across every model class. External code only reads/modifies what we explicitly allow.</div>
 <div class="bullet"><strong>totalAmount</strong> has no setter — it can never be tampered with after creation. Prevents billing fraud.</div>
 <div class="bullet"><strong>passwordHash</strong> in Person is private — AuthService validates it but no other class can read it directly.</div>
 <div class="bullet">Default status = "UNPAID" in constructor ensures objects always start in a valid state.</div></div>
-<div class="vs-grid"><div class="vs-bad"><strong>❌ Without:</strong> Public fields mean any class can set bill.totalAmount = 0 — silent fraud, no audit trail.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ With:</strong> Only BookingService.payBill() can transition status to PAID, after a real payment is recorded.</div></div></div>
-</div></div>
-<div class="sn">11 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
-<div style="display:flex;gap:10px;align-items:center;">
-  <div class="label">OOP Concept 3 of 8</div>
-  <span class="concept-tag tag-purple">Inheritance</span>
-</div>
-<div class="heading grad" style="font-size:42px;">Inheritance — Code Reuse via IS-A Relationships</div>
-<div class="two-col">
-  <div style="display:flex;flex-direction:column;gap:10px;"><div class="code"><span class="cc">// Flight.java — inherits from Transport</span><br><span class="ck">public class</span> <span class="ct">Flight</span> <span class="ck">extends</span> <span class="ct">Transport</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">implements</span> <span class="cv">Reviewable</span> {<br><br>&nbsp;&nbsp;<span class="ck">private</span> <span class="cs">String</span> airline, flightNumber, flightClass;<br>&nbsp;&nbsp;<span class="ck">private</span> <span class="cs">String</span> departureTime, returnTime;<br><br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cm">Flight</span>(<span class="cs">int</span> id, <span class="cs">int</span> destId,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">double</span> price, <span class="cs">int</span> cap, <span class="cs">String</span> airline, ...) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">super</span>(id, destId, <span class="ct">"Flight"</span>, price, cap);<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">this</span>.airline = airline;<br>&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;<span class="ck">@Override</span><br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cs">String</span> <span class="cm">getScheduleSummary</span>() {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">return</span> <span class="ct">"Departs: "</span> + departureTime +<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ct">" | Returns: "</span> + returnTime;<br>&nbsp;&nbsp;}<br>}</div></div>
-  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g3);margin-bottom:8px;">Why We Used This Here</div>
+<div class="vs-grid"><div class="vs-bad"><strong>❌ Without:</strong> Public fields mean any class can set bill.totalAmount = 0 — silent fraud, no audit trail.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ With:</strong> Only BookingService.payBill() can transition status to PAID, after a real payment is recorded.</div></div>'''))
+
+# S12 Inheritance
+slides.append(oop_slide(12,"3 of 8","tag-purple","Inheritance","Inheritance — Code Reuse via IS-A Relationships",
+'''<div class="code"><span class="cc">// Flight.java — inherits from Transport</span><br><span class="ck">public class</span> <span class="ct">Flight</span> <span class="ck">extends</span> <span class="ct">Transport</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">implements</span> <span class="cv">Reviewable</span> {<br><br>&nbsp;&nbsp;<span class="ck">private</span> <span class="cs">String</span> airline, flightNumber, flightClass;<br>&nbsp;&nbsp;<span class="ck">private</span> <span class="cs">String</span> departureTime, returnTime;<br><br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cm">Flight</span>(<span class="cs">int</span> id, <span class="cs">int</span> destId,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">double</span> price, <span class="cs">int</span> cap, <span class="cs">String</span> airline, ...) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">super</span>(id, destId, <span class="ct">"Flight"</span>, price, cap);<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">this</span>.airline = airline;<br>&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;<span class="ck">@Override</span><br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cs">String</span> <span class="cm">getScheduleSummary</span>() {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">return</span> <span class="ct">"Departs: "</span> + departureTime +<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ct">" | Returns: "</span> + returnTime;<br>&nbsp;&nbsp;}<br>}</div>''',
+'''<div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g3);margin-bottom:8px;">Why We Used This Here</div>
 <div class="bullet"><strong>Flight IS-A Transport</strong> — inherits price, capacity, destinationId, and toString() without rewriting them.</div>
 <div class="bullet"><strong>super()</strong> delegates base construction to Transport. Flight only initializes its own airline-specific fields.</div>
 <div class="bullet"><strong>Admin extends Person</strong> and <strong>User extends Person</strong> — both reuse full authentication and identity infrastructure.</div>
 <div class="bullet">@Override is explicit — prevents typo-based method hiding without a compiler warning.</div></div>
-<div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:var(--muted);margin-bottom:6px;">Inheritance Tree</div><div style="font-family:JetBrains Mono,monospace;font-size:11px;line-height:1.9;color:#94a3b8;">Person → User &nbsp;&nbsp;&nbsp;Person → Admin<br>Transport → Flight &nbsp;Transport → Bus &nbsp;Transport → Train<br>Exception → SmartGoException</div></div></div>
-</div></div>
-<div class="sn">12 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
-<div style="display:flex;gap:10px;align-items:center;">
-  <div class="label">OOP Concept 4 of 8</div>
-  <span class="concept-tag tag-orange">Polymorphism — Runtime</span>
-</div>
-<div class="heading grad" style="font-size:42px;">Runtime Polymorphism — One Call, Many Behaviors</div>
-<div class="two-col">
-  <div style="display:flex;flex-direction:column;gap:10px;"><div class="code"><span class="cc">// Same method call — different output per type</span><br><br><span class="cv">Transport</span> t1 = <span class="ck">new</span> <span class="ct">Flight</span>(...);<br><span class="cv">Transport</span> t2 = <span class="ck">new</span> <span class="ct">Bus</span>(...);<br><span class="cv">Transport</span> t3 = <span class="ck">new</span> <span class="ct">Train</span>(...);<br><br>System.out.<span class="cm">println</span>(t1.<span class="cm">getScheduleSummary</span>());<br><span class="cc">// → "Departs: 08:00 | Returns: 14:00"</span><br>System.out.<span class="cm">println</span>(t2.<span class="cm">getScheduleSummary</span>());<br><span class="cc">// → "Departs: 07:30 | Arrives: 12:00"</span><br>System.out.<span class="cm">println</span>(t3.<span class="cm">getScheduleSummary</span>());<br><span class="cc">// → "Departs: 06:00 | Arrives: 11:30"</span><br><br><span class="cc">// ReviewService — polymorphic on Reviewable</span><br><span class="ck">public static void</span> <span class="cm">showReviews</span>(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs">String</span> type, <span class="cs">int</span> id) { ... }<br><span class="cc">// Same method: FLIGHT, HOTEL, TOUR_PLAN</span></div></div>
-  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#fb923c;margin-bottom:8px;">Why We Used This Here</div>
+<div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:var(--muted);margin-bottom:6px;">Inheritance Tree</div><div style="font-family:JetBrains Mono,monospace;font-size:11px;line-height:1.9;color:#94a3b8;">Person → User &nbsp;&nbsp;&nbsp;Person → Admin<br>Transport → Flight &nbsp;Transport → Bus &nbsp;Transport → Train<br>Exception → SmartGoException</div></div>'''))
+
+# S13 Polymorphism Runtime
+slides.append(oop_slide(13,"4 of 8","tag-orange","Polymorphism — Runtime","Runtime Polymorphism — One Call, Many Behaviors",
+'''<div class="code"><span class="cc">// Same method call — different output per type</span><br><br><span class="cv">Transport</span> t1 = <span class="ck">new</span> <span class="ct">Flight</span>(...);<br><span class="cv">Transport</span> t2 = <span class="ck">new</span> <span class="ct">Bus</span>(...);<br><span class="cv">Transport</span> t3 = <span class="ck">new</span> <span class="ct">Train</span>(...);<br><br>System.out.<span class="cm">println</span>(t1.<span class="cm">getScheduleSummary</span>());<br><span class="cc">// → "Departs: 08:00 | Returns: 14:00"</span><br>System.out.<span class="cm">println</span>(t2.<span class="cm">getScheduleSummary</span>());<br><span class="cc">// → "Departs: 07:30 | Arrives: 12:00"</span><br>System.out.<span class="cm">println</span>(t3.<span class="cm">getScheduleSummary</span>());<br><span class="cc">// → "Departs: 06:00 | Arrives: 11:30"</span><br><br><span class="cc">// ReviewService — polymorphic on Reviewable</span><br><span class="ck">public static void</span> <span class="cm">showReviews</span>(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs">String</span> type, <span class="cs">int</span> id) { ... }<br><span class="cc">// Same method: FLIGHT, HOTEL, TOUR_PLAN</span></div>''',
+'''<div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#fb923c;margin-bottom:8px;">Why We Used This Here</div>
 <div class="bullet">The <strong>Reviewable interface</strong> lets ReviewService handle Hotel, Flight, and TourPlan uniformly — no switch-case on type needed.</div>
 <div class="bullet"><strong>getScheduleSummary()</strong> is overridden in 3 concrete classes — the JVM dispatches to the right implementation at runtime.</div>
 <div class="bullet">This is the <strong>Open/Closed Principle</strong>: adding a new transport type (e.g., Ferry) requires zero changes to BookingService.</div></div>
-<div class="vs-grid"><div class="vs-bad"><strong>❌ Without:</strong> if (type.equals("FLIGHT")) {...} else if (type.equals("BUS")) {...} — grows with every new type.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ With:</strong> transport.getScheduleSummary() — one line works for all transport types today and tomorrow.</div></div></div>
-</div></div>
-<div class="sn">13 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
-<div style="display:flex;gap:10px;align-items:center;">
-  <div class="label">OOP Concept 4b of 8</div>
-  <span class="concept-tag tag-orange">Polymorphism — Compile-time</span>
-</div>
-<div class="heading grad" style="font-size:42px;">Method Overloading — Same Name, Different Signature</div>
-<div class="two-col">
-  <div style="display:flex;flex-direction:column;gap:10px;"><div class="code"><span class="cc">// AuthService.java — two login() overloads</span><br><br><span class="cc">// Login by email + password</span><br><span class="ck">public static</span> <span class="cv">User</span> <span class="cm">login</span>(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs">String</span> email, <span class="cs">String</span> password)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">throws</span> <span class="cv">SmartGoException</span> {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cc">// find user by email, compare password</span><br>}<br><br><span class="cc">// Login by userID + password (admin use case)</span><br><span class="ck">public static</span> <span class="cv">User</span> <span class="cm">login</span>(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs">int</span> userId, <span class="cs">String</span> password)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">throws</span> <span class="cv">SmartGoException</span> {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cc">// find user by ID, compare password</span><br>}<br><br><span class="cc">// Resolved at COMPILE TIME by parameter types</span><br>AuthService.<span class="cm">login</span>(<span class="ct">"email@x.com"</span>, <span class="ct">"pass"</span>); <span class="cc">// → 1st</span><br>AuthService.<span class="cm">login</span>(42, <span class="ct">"pass"</span>); <span class="cc">// → 2nd</span></div></div>
-  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#fb923c;margin-bottom:8px;">Why We Used This Here</div>
+<div class="vs-grid"><div class="vs-bad"><strong>❌ Without:</strong> if (type.equals("FLIGHT")) {...} else if (type.equals("BUS")) {...} — grows with every new type.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ With:</strong> transport.getScheduleSummary() — one line works for all transport types today and tomorrow.</div></div>'''))
+
+# S14 Polymorphism Compile-time
+slides.append(oop_slide(14,"4b of 8","tag-orange","Polymorphism — Compile-time","Method Overloading — Same Name, Different Signature",
+'''<div class="code"><span class="cc">// AuthService.java — two login() overloads</span><br><br><span class="cc">// Login by email + password</span><br><span class="ck">public static</span> <span class="cv">User</span> <span class="cm">login</span>(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs">String</span> email, <span class="cs">String</span> password)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">throws</span> <span class="cv">SmartGoException</span> {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cc">// find user by email, compare password</span><br>}<br><br><span class="cc">// Login by userID + password (admin use case)</span><br><span class="ck">public static</span> <span class="cv">User</span> <span class="cm">login</span>(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs">int</span> userId, <span class="cs">String</span> password)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">throws</span> <span class="cv">SmartGoException</span> {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cc">// find user by ID, compare password</span><br>}<br><br><span class="cc">// Resolved at COMPILE TIME by parameter types</span><br>AuthService.<span class="cm">login</span>(<span class="ct">"email@x.com"</span>, <span class="ct">"pass"</span>); <span class="cc">// → 1st</span><br>AuthService.<span class="cm">login</span>(42, <span class="ct">"pass"</span>); <span class="cc">// → 2nd</span></div>''',
+'''<div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#fb923c;margin-bottom:8px;">Why We Used This Here</div>
 <div class="bullet"><strong>Compile-time polymorphism</strong> allows different calling conventions without renaming the method — callers use the natural login() name.</div>
 <div class="bullet">The compiler selects the right overload based on argument types: String+String → email login; int+String → ID login.</div>
 <div class="bullet">Cleanly separates two distinct login flows without an if-else branch inside a single method.</div></div>
-<div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:var(--muted);margin-bottom:6px;">Runtime vs Compile-time</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;"><div style="background:#020810;border-radius:8px;padding:10px;"><div style="color:var(--g1);font-weight:700;margin-bottom:4px;">Runtime (Override)</div><div style="color:var(--muted);">getScheduleSummary() — JVM picks at runtime</div></div><div style="background:#020810;border-radius:8px;padding:10px;"><div style="color:var(--g2);font-weight:700;margin-bottom:4px;">Compile-time (Overload)</div><div style="color:var(--muted);">login() — compiler picks by arg types</div></div></div></div></div>
-</div></div>
-<div class="sn">14 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
-<div style="display:flex;gap:10px;align-items:center;">
-  <div class="label">OOP Concept 5 of 8</div>
-  <span class="concept-tag tag-purple">Interfaces</span>
-</div>
-<div class="heading grad" style="font-size:42px;">Interfaces — Designing Contracts, Not Implementations</div>
-<div class="two-col">
-  <div style="display:flex;flex-direction:column;gap:10px;"><div class="code"><span class="cc">// Reviewable.java — a pure contract</span><br><span class="ck">public interface</span> <span class="cv">Reviewable</span> {<br>&nbsp;&nbsp;<span class="cs">int</span> <span class="cm">getId</span>();<br>&nbsp;&nbsp;<span class="cs">String</span> <span class="cm">getDisplayName</span>();<br>&nbsp;&nbsp;<span class="cs">String</span> <span class="cm">getReviewType</span>();<br>}<br><br><span class="cc">// Hotel implements Reviewable</span><br><span class="ck">public class</span> <span class="ct">Hotel</span> <span class="ck">implements</span> <span class="cv">Reviewable</span> {<br>&nbsp;&nbsp;<span class="ck">@Override</span><br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cs">String</span> <span class="cm">getDisplayName</span>() { <span class="ck">return</span> name; }<br>&nbsp;&nbsp;<span class="ck">@Override</span><br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cs">String</span> <span class="cm">getReviewType</span>() { <span class="ck">return</span> <span class="ct">"HOTEL"</span>; }<br>}<br><br><span class="cc">// Flight: extends Transport AND implements Reviewable</span><br><span class="ck">public class</span> <span class="ct">Flight</span> <span class="ck">extends</span> <span class="ct">Transport</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">implements</span> <span class="cv">Reviewable</span> { ... }</div></div>
-  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g3);margin-bottom:8px;">Why We Used This Here</div>
+<div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:var(--muted);margin-bottom:6px;">Runtime vs Compile-time</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;"><div style="background:#020810;border-radius:8px;padding:10px;"><div style="color:var(--g1);font-weight:700;margin-bottom:4px;">Runtime (Override)</div><div style="color:var(--muted);">getScheduleSummary() — JVM picks at runtime</div></div><div style="background:#020810;border-radius:8px;padding:10px;"><div style="color:var(--g2);font-weight:700;margin-bottom:4px;">Compile-time (Overload)</div><div style="color:var(--muted);">login() — compiler picks by arg types</div></div></div></div>'''))
+
+# S15 Interfaces
+slides.append(oop_slide(15,"5 of 8","tag-purple","Interfaces","Interfaces — Designing Contracts, Not Implementations",
+'''<div class="code"><span class="cc">// Reviewable.java — a pure contract</span><br><span class="ck">public interface</span> <span class="cv">Reviewable</span> {<br>&nbsp;&nbsp;<span class="cs">int</span> <span class="cm">getId</span>();<br>&nbsp;&nbsp;<span class="cs">String</span> <span class="cm">getDisplayName</span>();<br>&nbsp;&nbsp;<span class="cs">String</span> <span class="cm">getReviewType</span>();<br>}<br><br><span class="cc">// Hotel implements Reviewable</span><br><span class="ck">public class</span> <span class="ct">Hotel</span> <span class="ck">implements</span> <span class="cv">Reviewable</span> {<br>&nbsp;&nbsp;<span class="ck">@Override</span><br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cs">String</span> <span class="cm">getDisplayName</span>() { <span class="ck">return</span> name; }<br>&nbsp;&nbsp;<span class="ck">@Override</span><br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cs">String</span> <span class="cm">getReviewType</span>() { <span class="ck">return</span> <span class="ct">"HOTEL"</span>; }<br>}<br><br><span class="cc">// Flight: extends Transport AND implements Reviewable</span><br><span class="ck">public class</span> <span class="ct">Flight</span> <span class="ck">extends</span> <span class="ct">Transport</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">implements</span> <span class="cv">Reviewable</span> { ... }</div>''',
+'''<div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g3);margin-bottom:8px;">Why We Used This Here</div>
 <div class="bullet">Java does not support multiple inheritance of classes. But a class <strong>can implement multiple interfaces</strong> — Flight extends Transport and also implements Reviewable.</div>
 <div class="bullet">Reviewable is a <strong>behavioral contract</strong> — not about what an object IS, but what it CAN DO (be reviewed).</div>
 <div class="bullet">ReviewService works with any Reviewable now or in future. Zero changes needed to add a new reviewable type.</div></div>
-<div class="vs-grid"><div class="vs-bad"><strong>❌ Abstract class for Reviewable:</strong> Forces Hotel to stop extending its own hierarchy just to be reviewable.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ Interface:</strong> Hotel and Flight keep their own hierarchies AND gain review capability — no trade-off.</div></div></div>
-</div></div>
-<div class="sn">15 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
-<div style="display:flex;gap:10px;align-items:center;">
-  <div class="label">OOP Concept 6 of 8</div>
-  <span class="concept-tag tag-green">Custom Exceptions</span>
-</div>
-<div class="heading grad" style="font-size:42px;">Custom Exception — SmartGoException</div>
-<div class="two-col">
-  <div style="display:flex;flex-direction:column;gap:10px;"><div class="code"><span class="cc">// SmartGoException.java</span><br><span class="ck">public class</span> <span class="ct">SmartGoException</span> <span class="ck">extends</span> <span class="ct">Exception</span> {<br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cm">SmartGoException</span>(<span class="cs">String</span> message) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">super</span>(message);<br>&nbsp;&nbsp;}<br>}<br><br><span class="cc">// Thrown with human-readable messages</span><br><span class="ck">throw new</span> <span class="ct">SmartGoException</span>(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ct">"An account with this email already exists."</span><br>);<br><br><span class="cc">// Caught cleanly in Main.java</span><br><span class="ck">try</span> {<br>&nbsp;&nbsp;AuthService.<span class="cm">login</span>(email, password);<br>} <span class="ck">catch</span> (<span class="cv">SmartGoException</span> e) {<br>&nbsp;&nbsp;JOptionPane.<span class="cm">showMessageDialog</span>(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">null</span>, <span class="ct">"Login failed: "</span> + e.<span class="cm">getMessage</span>()<br>&nbsp;&nbsp;);<br>}</div></div>
-  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g1);margin-bottom:8px;">Why We Used This Here</div>
+<div class="vs-grid"><div class="vs-bad"><strong>❌ Abstract class for Reviewable:</strong> Forces Hotel to stop extending its own hierarchy just to be reviewable.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ Interface:</strong> Hotel and Flight keep their own hierarchies AND gain review capability — no trade-off.</div></div>'''))
+
+# S16 Custom Exceptions
+slides.append(oop_slide(16,"6 of 8","tag-green","Custom Exceptions","Custom Exception — SmartGoException",
+'''<div class="code"><span class="cc">// SmartGoException.java</span><br><span class="ck">public class</span> <span class="ct">SmartGoException</span> <span class="ck">extends</span> <span class="ct">Exception</span> {<br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cm">SmartGoException</span>(<span class="cs">String</span> message) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">super</span>(message);<br>&nbsp;&nbsp;}<br>}<br><br><span class="cc">// Thrown with human-readable messages</span><br><span class="ck">throw new</span> <span class="ct">SmartGoException</span>(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ct">"An account with this email already exists."</span><br>);<br><br><span class="cc">// Caught cleanly in Main.java</span><br><span class="ck">try</span> {<br>&nbsp;&nbsp;AuthService.<span class="cm">login</span>(email, password);<br>} <span class="ck">catch</span> (<span class="cv">SmartGoException</span> e) {<br>&nbsp;&nbsp;JOptionPane.<span class="cm">showMessageDialog</span>(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">null</span>, <span class="ct">"Login failed: "</span> + e.<span class="cm">getMessage</span>()<br>&nbsp;&nbsp;);<br>}</div>''',
+'''<div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g1);margin-bottom:8px;">Why We Used This Here</div>
 <div class="bullet"><strong>Domain-specific error type</strong> — callers catch SmartGoException, not generic Exception. Our domain errors are distinguishable from Java I/O errors.</div>
 <div class="bullet"><strong>Checked exception</strong> (extends Exception) — compiler forces every caller to handle or declare it. No silent failure.</div>
 <div class="bullet"><strong>Human-readable messages</strong> go straight into JOptionPane — user sees "Incorrect password", not a stack trace.</div>
 <div class="bullet">All service methods declare <code style="background:#020810;padding:2px 5px;border-radius:4px;font-family:JetBrains Mono,monospace;font-size:10px;">throws SmartGoException</code>.</div></div>
-<div class="vs-grid"><div class="vs-bad"><strong>❌ Without:</strong> Return null on failure — null pointer crashes, silent failures, terrible UX.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ With:</strong> Throw SmartGoException — compiler-enforced handling, user-friendly error display.</div></div></div>
-</div></div>
-<div class="sn">16 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
-<div style="display:flex;gap:10px;align-items:center;">
-  <div class="label">OOP Concept 7 of 8</div>
-  <span class="concept-tag tag-blue">Enumerations</span>
-</div>
-<div class="heading grad" style="font-size:42px;">Enums — Type-Safe Constants</div>
-<div class="two-col">
-  <div style="display:flex;flex-direction:column;gap:10px;"><div class="code"><span class="cc">// BookingStatus.java</span><br><span class="ck">public enum</span> <span class="cv">BookingStatus</span> {<br>&nbsp;&nbsp;PENDING, CONFIRMED, CANCELLED<br>}<br><br><span class="cc">// PaymentStatus.java</span><br><span class="ck">public enum</span> <span class="cv">PaymentStatus</span> {<br>&nbsp;&nbsp;PENDING, COMPLETED, FAILED<br>}<br><br><span class="cc">// PaymentMethod.java</span><br><span class="ck">public enum</span> <span class="cv">PaymentMethod</span> {<br>&nbsp;&nbsp;CASH, CARD, BANK_TRANSFER<br>}<br><br><span class="cc">// Only valid states allowed — compiler enforces</span><br>booking.<span class="cm">setStatus</span>(<span class="cv">BookingStatus</span>.CANCELLED);<br><br><span class="cc">// Serialize:   status.name()  → "CANCELLED"</span><br><span class="cc">// Deserialize: BookingStatus.valueOf("CANCELLED")</span></div></div>
-  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g2);margin-bottom:8px;">Why We Used This Here</div>
+<div class="vs-grid"><div class="vs-bad"><strong>❌ Without:</strong> Return null on failure — null pointer crashes, silent failures, terrible UX.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ With:</strong> Throw SmartGoException — compiler-enforced handling, user-friendly error display.</div></div>'''))
+
+# S17 Enums
+slides.append(oop_slide(17,"7 of 8","tag-blue","Enumerations","Enums — Type-Safe Constants",
+'''<div class="code"><span class="cc">// BookingStatus.java</span><br><span class="ck">public enum</span> <span class="cv">BookingStatus</span> {<br>&nbsp;&nbsp;PENDING, CONFIRMED, CANCELLED<br>}<br><br><span class="cc">// PaymentStatus.java</span><br><span class="ck">public enum</span> <span class="cv">PaymentStatus</span> {<br>&nbsp;&nbsp;PENDING, COMPLETED, FAILED<br>}<br><br><span class="cc">// PaymentMethod.java</span><br><span class="ck">public enum</span> <span class="cv">PaymentMethod</span> {<br>&nbsp;&nbsp;CASH, CARD, BANK_TRANSFER<br>}<br><br><span class="cc">// Only valid states allowed — compiler enforces</span><br>booking.<span class="cm">setStatus</span>(<span class="cv">BookingStatus</span>.CANCELLED);<br><br><span class="cc">// Serialize:   status.name()  → "CANCELLED"</span><br><span class="cc">// Deserialize: BookingStatus.valueOf("CANCELLED")</span></div>''',
+'''<div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g2);margin-bottom:8px;">Why We Used This Here</div>
 <div class="bullet"><strong>Type safety</strong> — assigning status = "canceld" (typo) is a compile error when using an enum. String fields have no such protection.</div>
 <div class="bullet">Enums work with <strong>switch expressions</strong> — exhaustiveness checking prevents missing cases.</div>
 <div class="bullet"><strong>Serialization</strong>: status.name() writes "CONFIRMED" to file; BookingStatus.valueOf() reads it back — zero parsing boilerplate.</div>
 <div class="bullet">Three separate enums for three separate domains — each concept stays in its own type.</div></div>
-<div class="vs-grid"><div class="vs-bad"><strong>❌ With Strings:</strong> "paid", "PAID", "Paid" all pass compilation but break equality checks at runtime.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ With Enums:</strong> Only .CONFIRMED, .PENDING, .CANCELLED compile. Compiler is the gatekeeper.</div></div></div>
-</div></div>
-<div class="sn">17 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
-<div style="display:flex;gap:10px;align-items:center;">
-  <div class="label">OOP Concept 8 of 8</div>
-  <span class="concept-tag tag-orange">File Serialization</span>
-</div>
-<div class="heading grad" style="font-size:42px;">File Serialization — Persistent Object State</div>
-<div class="two-col">
-  <div style="display:flex;flex-direction:column;gap:10px;"><div class="code"><span class="cc">// DataStore.java — serialize User to pipe-delimited line</span><br><span class="ck">public static void</span> <span class="cm">saveUser</span>(<span class="cv">User</span> user) {<br>&nbsp;&nbsp;<span class="cs">String</span> line = user.<span class="cm">getId</span>() + <span class="ct">"|"</span><br>&nbsp;&nbsp;&nbsp;&nbsp;+ user.<span class="cm">getName</span>() + <span class="ct">"|"</span> + user.<span class="cm">getEmail</span>()<br>&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="ct">"|"</span> + user.<span class="cm">getPasswordHash</span>()<br>&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="ct">"|"</span> + user.<span class="cm">getAddress</span>();<br>&nbsp;&nbsp;<span class="cm">appendLine</span>(USERS_FILE, line);<br>}<br><br><span class="cc">// Deserialize — reconstruct User from line</span><br><span class="ck">public static</span> List&lt;<span class="cv">User</span>&gt; <span class="cm">loadUsers</span>() {<br>&nbsp;&nbsp;List&lt;<span class="cv">User</span>&gt; users = <span class="ck">new</span> ArrayList&lt;&gt;();<br>&nbsp;&nbsp;<span class="ck">for</span> (<span class="cs">String</span> line : <span class="cm">readLines</span>(USERS_FILE)) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs">String</span>[] p = line.<span class="cm">split</span>(<span class="ct">"\|"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">if</span> (p.length >= 8)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;users.<span class="cm">add</span>(<span class="ck">new</span> <span class="ct">User</span>(Integer.<span class="cm">parseInt</span>(p[0]),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p[1], p[2], ...));<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;<span class="ck">return</span> users;<br>}</div></div>
-  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#fb923c;margin-bottom:8px;">Why We Used This Here</div>
+<div class="vs-grid"><div class="vs-bad"><strong>❌ With Strings:</strong> "paid", "PAID", "Paid" all pass compilation but break equality checks at runtime.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ With Enums:</strong> Only .CONFIRMED, .PENDING, .CANCELLED compile. Compiler is the gatekeeper.</div></div>'''))
+
+# S18 File Serialization
+slides.append(oop_slide(18,"8 of 8","tag-orange","File Serialization","File Serialization — Persistent Object State",
+'''<div class="code"><span class="cc">// DataStore.java — serialize User to pipe-delimited line</span><br><span class="ck">public static void</span> <span class="cm">saveUser</span>(<span class="cv">User</span> user) {<br>&nbsp;&nbsp;<span class="cs">String</span> line = user.<span class="cm">getId</span>() + <span class="ct">"|"</span><br>&nbsp;&nbsp;&nbsp;&nbsp;+ user.<span class="cm">getName</span>() + <span class="ct">"|"</span> + user.<span class="cm">getEmail</span>()<br>&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="ct">"|"</span> + user.<span class="cm">getPasswordHash</span>()<br>&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="ct">"|"</span> + user.<span class="cm">getAddress</span>();<br>&nbsp;&nbsp;<span class="cm">appendLine</span>(USERS_FILE, line);<br>}<br><br><span class="cc">// Deserialize — reconstruct User from line</span><br><span class="ck">public static</span> List&lt;<span class="cv">User</span>&gt; <span class="cm">loadUsers</span>() {<br>&nbsp;&nbsp;List&lt;<span class="cv">User</span>&gt; users = <span class="ck">new</span> ArrayList&lt;&gt;();<br>&nbsp;&nbsp;<span class="ck">for</span> (<span class="cs">String</span> line : <span class="cm">readLines</span>(USERS_FILE)) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs">String</span>[] p = line.<span class="cm">split</span>(<span class="ct">"\\|"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">if</span> (p.length >= 8)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;users.<span class="cm">add</span>(<span class="ck">new</span> <span class="ct">User</span>(Integer.<span class="cm">parseInt</span>(p[0]),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p[1], p[2], ...));<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;<span class="ck">return</span> users;<br>}</div>''',
+'''<div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#fb923c;margin-bottom:8px;">Why We Used This Here</div>
 <div class="bullet"><strong>State persistence</strong> — every User, Booking, Bill, Payment, and Review survives between restarts via pipe-delimited .txt files.</div>
 <div class="bullet">DataStore is a <strong>dedicated data-access layer</strong> — all read/write logic in one class, keeping models pure and services clean.</div>
 <div class="bullet"><strong>Append vs Overwrite</strong>: saveUser() appends (fast). saveAllBookings() overwrites entire file (needed to update status mid-list after cancellation).</div></div>
-<div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:var(--muted);margin-bottom:6px;">File Format — users.txt</div><div style="font-family:JetBrains Mono,monospace;font-size:10.5px;color:#94a3b8;line-height:1.8;">1|Abdul Rehman|abdul@mail.com|+92-300-1234|pass123|2025-01-01|Rawalpindi|2025-01-01<br>2|Hamza Basit|hamza@mail.com|+92-321-5678|pass456|2025-01-02|Lahore|2025-01-02</div></div></div>
-</div></div>
-<div class="sn">18 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+<div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:var(--muted);margin-bottom:6px;">File Format — users.txt</div><div style="font-family:JetBrains Mono,monospace;font-size:10.5px;color:#94a3b8;line-height:1.8;">1|Abdul Rehman|abdul@mail.com|+92-300-1234|pass123|2025-01-01|Rawalpindi|2025-01-01<br>2|Hamza Basit|hamza@mail.com|+92-321-5678|pass456|2025-01-02|Lahore|2025-01-02</div></div>'''))
+
+# ── S19 LSP ───────────────────────────────────────────────────────────────────
+slides.append(slide(19, '''
 <div style="display:flex;gap:10px;align-items:center;"><div class="label">SOLID Principle</div><span class="concept-tag tag-purple">Liskov Substitution</span></div>
 <div class="heading grad" style="font-size:40px;">Liskov Substitution — Subclasses Don't Break Contracts</div>
 <div class="two-col">
@@ -567,12 +498,10 @@ src/
     <div class="bullet">User and Admin are both valid substitutes for Person — neither breaks toString() or any shared logic.</div></div>
     <div class="vs-grid"><div class="vs-bad"><strong>❌ LSP Violation:</strong> Subclass overrides getPrice() to throw UnsupportedOperationException — code using Transport reference crashes unexpectedly.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ LSP Satisfied:</strong> Every concrete Transport subclass maintains the parent's contract — substitution is always safe.</div></div>
   </div>
-</div></div>
-<div class="sn">19 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+</div>'''))
+
+# ── S20 SRP ───────────────────────────────────────────────────────────────────
+slides.append(slide(20, '''
 <div style="display:flex;gap:10px;align-items:center;"><div class="label">SOLID Principle</div><span class="concept-tag tag-green">Single Responsibility</span></div>
 <div class="heading grad" style="font-size:40px;">Single Responsibility — One Class, One Job</div>
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;flex:1;">
@@ -588,218 +517,90 @@ src/
     <div class="card" style="flex:1;"><div style="color:var(--g3);font-weight:700;font-family:Syne,sans-serif;font-size:13px;margin-bottom:8px;">💾 DataStore</div><div style="font-size:12px;color:var(--muted);line-height:1.6;">All file I/O in one place. Reads and writes .txt files. No business logic whatsoever.</div><div style="margin-top:8px;font-family:JetBrains Mono,monospace;font-size:10px;color:#475569;">saveUser, loadUsers,<br>saveFlight, loadFlights,<br>saveBooking, ...</div></div>
     <div class="card"><div style="color:var(--g3);font-weight:700;font-size:12px;margin-bottom:4px;">Responsibility</div><div style="font-size:11.5px;color:var(--muted);">Serialization only. Never applies business rules.</div></div>
   </div>
-</div></div>
-<div class="sn">20 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+</div>'''))
+
+# ── S21–24 UI Screenshots ─────────────────────────────────────────────────────
+def ss_placeholder(key, label, caption=""):
+    return f'''<div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">{label}</div>
+      <div class="ph">
+        <!-- REPLACE: <img src="{key}.png" style="max-width:100%;max-height:100%;object-fit:contain;"/> -->
+        <div style="font-size:26px;">🖼️</div><div style="font-size:10px;">{key}</div>
+      </div>
+      {"<div style='font-size:11px;color:var(--muted);'>" + caption + "</div>" if caption else ""}
+    </div>'''
+
+slides.append(slide(21, f'''
 <div class="label">Application UI</div>
 <div class="heading grad" style="font-size:42px;">Guest Flow — Register, Login, Welcome</div>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;flex:1;">
-  <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">① Guest Menu</div>
-      <div class="ph">
-        <!-- REPLACE: <img src="guest_menu.png" style="max-width:100%;max-height:100%;object-fit:contain;"/> -->
-        <div style="font-size:26px;">🖼️</div><div style="font-size:10px;">guest_menu</div>
-      </div>
-      <div style='font-size:11px;color:var(--muted);'>JOptionPane multi-option dialog — guest chooses Register, Login, or Exit.</div>
-    </div>
-  <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">② Registration Form</div>
-      <div class="ph">
-        <!-- REPLACE: <img src="register.png" style="max-width:100%;max-height:100%;object-fit:contain;"/> -->
-        <div style="font-size:26px;">🖼️</div><div style="font-size:10px;">register</div>
-      </div>
-      <div style='font-size:11px;color:var(--muted);'>Collects name, email, phone, password, address via JOptionPane.</div>
-    </div>
-  <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">③ Account Confirmed</div>
-      <div class="ph">
-        <!-- REPLACE: <img src="account_ok.png" style="max-width:100%;max-height:100%;object-fit:contain;"/> -->
-        <div style="font-size:26px;">🖼️</div><div style="font-size:10px;">account_ok</div>
-      </div>
-      <div style='font-size:11px;color:var(--muted);'>Success dialog after registration. User persisted to users.txt.</div>
-    </div>
-</div></div>
-<div class="sn">21 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+  {ss_placeholder("guest_menu","① Guest Menu","JOptionPane multi-option dialog — guest chooses Register, Login, or Exit.")}
+  {ss_placeholder("register","② Registration Form","Collects name, email, phone, password, address via JOptionPane.")}
+  {ss_placeholder("account_ok","③ Account Confirmed","Success dialog after registration. User persisted to users.txt.")}
+</div>'''))
+
+slides.append(slide(22, f'''
 <div class="label">Application UI</div>
 <div class="heading grad" style="font-size:42px;">Main Menu & Flight Browsing</div>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;flex:1;">
-  <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">① Main Menu (Logged In)</div>
-      <div class="ph">
-        <!-- REPLACE: <img src="main_menu.png" style="max-width:100%;max-height:100%;object-fit:contain;"/> -->
-        <div style="font-size:26px;">🖼️</div><div style="font-size:10px;">main_menu</div>
-      </div>
-      <div style='font-size:11px;color:var(--muted);'>Personalized greeting. 6 options: Flights, Tours, Hotels, My Bookings, Reviews, Logout.</div>
-    </div>
-  <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">② Flights Sub-Menu</div>
-      <div class="ph">
-        <!-- REPLACE: <img src="flights_menu.png" style="max-width:100%;max-height:100%;object-fit:contain;"/> -->
-        <div style="font-size:26px;">🖼️</div><div style="font-size:10px;">flights_menu</div>
-      </div>
-      <div style='font-size:11px;color:var(--muted);'>Search by destination or airline, view all, read reviews, or book by ID.</div>
-    </div>
-  <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">③ All Flights Listing</div>
-      <div class="ph">
-        <!-- REPLACE: <img src="all_flights.png" style="max-width:100%;max-height:100%;object-fit:contain;"/> -->
-        <div style="font-size:26px;">🖼️</div><div style="font-size:10px;">all_flights</div>
-      </div>
-      <div style='font-size:11px;color:var(--muted);'>Output from FlightService.showAllFlights() via ByteArrayOutputStream → JScrollPane.</div>
-    </div>
-</div></div>
-<div class="sn">22 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+  {ss_placeholder("main_menu","① Main Menu (Logged In)","Personalized greeting. 6 options: Flights, Tours, Hotels, My Bookings, Reviews, Logout.")}
+  {ss_placeholder("flights_menu","② Flights Sub-Menu","Search by destination or airline, view all, read reviews, or book by ID.")}
+  {ss_placeholder("all_flights","③ All Flights Listing","Output from FlightService.showAllFlights() via ByteArrayOutputStream → JScrollPane.")}
+</div>'''))
+
+slides.append(slide(23, f'''
 <div class="label">Application UI</div>
 <div class="heading grad" style="font-size:42px;">Hotels, Tours & Booking Management</div>
 <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:1;">
-  <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">All Hotels</div>
-      <div class="ph">
-        <!-- REPLACE: <img src="all_hotels.png" style="max-width:100%;max-height:100%;object-fit:contain;"/> -->
-        <div style="font-size:26px;">🖼️</div><div style="font-size:10px;">all_hotels</div>
-      </div>
-      <div style='font-size:11px;color:var(--muted);'>Pearl Continental, Shangrila — star ratings, prices.</div>
-    </div>
-  <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">All Tour Plans</div>
-      <div class="ph">
-        <!-- REPLACE: <img src="all_tours.png" style="max-width:100%;max-height:100%;object-fit:contain;"/> -->
-        <div style="font-size:26px;">🖼️</div><div style="font-size:10px;">all_tours</div>
-      </div>
-      <div style='font-size:11px;color:var(--muted);'>Multan Heritage, Lahore Cultural, Skardu Mountain.</div>
-    </div>
-  <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Bookings Menu</div>
-      <div class="ph">
-        <!-- REPLACE: <img src="bookings_menu.png" style="max-width:100%;max-height:100%;object-fit:contain;"/> -->
-        <div style="font-size:26px;">🖼️</div><div style="font-size:10px;">bookings_menu</div>
-      </div>
-      <div style='font-size:11px;color:var(--muted);'>View, Cancel, Pay — complete booking lifecycle.</div>
-    </div>
-  <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">My Bookings</div>
-      <div class="ph">
-        <!-- REPLACE: <img src="my_bookings.png" style="max-width:100%;max-height:100%;object-fit:contain;"/> -->
-        <div style="font-size:26px;">🖼️</div><div style="font-size:10px;">my_bookings</div>
-      </div>
-      <div style='font-size:11px;color:var(--muted);'>Bookings with bill amounts and payment status.</div>
-    </div>
-</div></div>
-<div class="sn">23 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+  {ss_placeholder("all_hotels","All Hotels","Pearl Continental, Shangrila — star ratings, prices.")}
+  {ss_placeholder("all_tours","All Tour Plans","Multan Heritage, Lahore Cultural, Skardu Mountain.")}
+  {ss_placeholder("bookings_menu","Bookings Menu","View, Cancel, Pay — complete booking lifecycle.")}
+  {ss_placeholder("my_bookings","My Bookings","Bookings with bill amounts and payment status.")}
+</div>'''))
+
+slides.append(slide(24, f'''
 <div class="label">Application UI</div>
 <div class="heading grad" style="font-size:42px;">Extended UI Screenshots</div>
 <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;flex:1;">
-  <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Screen 1</div>
-      <div class="ph">
-        <!-- REPLACE: <img src="new_ss_1.png" style="max-width:100%;max-height:100%;object-fit:contain;"/> -->
-        <div style="font-size:26px;">🖼️</div><div style="font-size:10px;">new_ss_1</div>
-      </div>
-      
+  {ss_placeholder("new_ss_1","Screen 1")}
+  {ss_placeholder("new_ss_2","Screen 2")}
+  {ss_placeholder("new_ss_3","Screen 3")}
+  {ss_placeholder("new_ss_4","Screen 4")}
+  {ss_placeholder("new_ss_5","Screen 5")}
+</div>'''))
+
+# ── S25 Billing Pipeline ──────────────────────────────────────────────────────
+def step(n, grad1, grad2, title, desc):
+    return f'''<div style="display:flex;align-items:center;gap:10px;">
+    <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,{grad1},{grad2});display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#000;flex-shrink:0;">{n}</div>
+    <div style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
+      <div style="font-weight:700;font-size:12.5px;margin-bottom:2px;">{title}</div>
+      <div style="font-size:11.5px;color:var(--muted);">{desc}</div>
     </div>
-  <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Screen 2</div>
-      <div class="ph">
-        <!-- REPLACE: <img src="new_ss_2.png" style="max-width:100%;max-height:100%;object-fit:contain;"/> -->
-        <div style="font-size:26px;">🖼️</div><div style="font-size:10px;">new_ss_2</div>
-      </div>
-      
-    </div>
-  <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Screen 3</div>
-      <div class="ph">
-        <!-- REPLACE: <img src="new_ss_3.png" style="max-width:100%;max-height:100%;object-fit:contain;"/> -->
-        <div style="font-size:26px;">🖼️</div><div style="font-size:10px;">new_ss_3</div>
-      </div>
-      
-    </div>
-  <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Screen 4</div>
-      <div class="ph">
-        <!-- REPLACE: <img src="new_ss_4.png" style="max-width:100%;max-height:100%;object-fit:contain;"/> -->
-        <div style="font-size:26px;">🖼️</div><div style="font-size:10px;">new_ss_4</div>
-      </div>
-      
-    </div>
-  <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Screen 5</div>
-      <div class="ph">
-        <!-- REPLACE: <img src="new_ss_5.png" style="max-width:100%;max-height:100%;object-fit:contain;"/> -->
-        <div style="font-size:26px;">🖼️</div><div style="font-size:10px;">new_ss_5</div>
-      </div>
-      
-    </div>
-</div></div>
-<div class="sn">24 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+  </div>'''
+
+pipeline_steps = "".join([
+    step(1,"var(--g1)","var(--g2)","User calls bookFlight(userId, flightId)","BookingService entry point — userId from AuthService session"),
+    step(2,"var(--g2)","var(--g3)","FlightService.getFlightById() validates","Throws SmartGoException if flight not found"),
+    step(3,"var(--g3)","#f59e0b","Booking object created, saved to bookings.txt","ID auto-incremented, status = CONFIRMED, timestamp recorded"),
+    step(4,"var(--g1)","var(--g2)","Bill auto-created: platformFee = price × 5%","totalAmount computed in Bill constructor — immutable"),
+    step(5,"var(--g2)","var(--g3)","Bill saved to bills.txt (status = UNPAID)","Booking ↔ Bill linked via bookingId foreign key"),
+    step(6,"var(--g3)","var(--g1)","User calls payBill(bookingId, method)","Validates ownership, marks bill PAID, saves Payment record"),
+])
+
+slides.append(slide(25, f'''
 <div class="label">Technical Deep Dive</div>
 <div class="heading grad" style="font-size:42px;">Booking → Auto-Bill → Payment Pipeline</div>
 <div class="two-col">
-  <div style="display:flex;flex-direction:column;gap:7px;justify-content:center;"><div style="display:flex;align-items:center;gap:10px;">
-    <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--g1),var(--g2));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#000;flex-shrink:0;">1</div>
-    <div style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
-      <div style="font-weight:700;font-size:12.5px;margin-bottom:2px;">User calls bookFlight(userId, flightId)</div>
-      <div style="font-size:11.5px;color:var(--muted);">BookingService entry point — userId from AuthService session</div>
-    </div>
-  </div><div style="display:flex;align-items:center;gap:10px;">
-    <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--g2),var(--g3));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#000;flex-shrink:0;">2</div>
-    <div style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
-      <div style="font-weight:700;font-size:12.5px;margin-bottom:2px;">FlightService.getFlightById() validates</div>
-      <div style="font-size:11.5px;color:var(--muted);">Throws SmartGoException if flight not found</div>
-    </div>
-  </div><div style="display:flex;align-items:center;gap:10px;">
-    <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--g3),#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#000;flex-shrink:0;">3</div>
-    <div style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
-      <div style="font-weight:700;font-size:12.5px;margin-bottom:2px;">Booking object created, saved to bookings.txt</div>
-      <div style="font-size:11.5px;color:var(--muted);">ID auto-incremented, status = CONFIRMED, timestamp recorded</div>
-    </div>
-  </div><div style="display:flex;align-items:center;gap:10px;">
-    <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--g1),var(--g2));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#000;flex-shrink:0;">4</div>
-    <div style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
-      <div style="font-weight:700;font-size:12.5px;margin-bottom:2px;">Bill auto-created: platformFee = price × 5%</div>
-      <div style="font-size:11.5px;color:var(--muted);">totalAmount computed in Bill constructor — immutable</div>
-    </div>
-  </div><div style="display:flex;align-items:center;gap:10px;">
-    <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--g2),var(--g3));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#000;flex-shrink:0;">5</div>
-    <div style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
-      <div style="font-weight:700;font-size:12.5px;margin-bottom:2px;">Bill saved to bills.txt (status = UNPAID)</div>
-      <div style="font-size:11.5px;color:var(--muted);">Booking ↔ Bill linked via bookingId foreign key</div>
-    </div>
-  </div><div style="display:flex;align-items:center;gap:10px;">
-    <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--g3),var(--g1));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#000;flex-shrink:0;">6</div>
-    <div style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
-      <div style="font-weight:700;font-size:12.5px;margin-bottom:2px;">User calls payBill(bookingId, method)</div>
-      <div style="font-size:11.5px;color:var(--muted);">Validates ownership, marks bill PAID, saves Payment record</div>
-    </div>
-  </div></div>
+  <div style="display:flex;flex-direction:column;gap:7px;justify-content:center;">{pipeline_steps}</div>
   <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;">
     <div class="code" style="font-size:10px;"><span class="cc">// BookingService.java — auto-billing on every booking</span><br><span class="ck">public static final double</span> PLATFORM_FEE_RATE = <span class="cy">0.05</span>;<br><br><span class="cv">Booking</span> booking = <span class="ck">new</span> <span class="ct">Booking</span>(<br>&nbsp;&nbsp;nextBookingId++, userId, <span class="ct">"FLIGHT"</span>,<br>&nbsp;&nbsp;0, flight.<span class="cm">getId</span>(), bookedAt, <span class="cv">BookingStatus</span>.CONFIRMED<br>);<br>DataStore.<span class="cm">saveBooking</span>(booking);<br><br><span class="ck">double</span> fee = flight.<span class="cm">getPrice</span>() * PLATFORM_FEE_RATE;<br><span class="cv">Bill</span> bill = <span class="ck">new</span> <span class="ct">Bill</span>(<br>&nbsp;&nbsp;nextBillId++, booking.<span class="cm">getId</span>(),<br>&nbsp;&nbsp;flight.<span class="cm">getPrice</span>(), fee <span class="cc">// total auto-computed</span><br>);<br>DataStore.<span class="cm">saveBill</span>(bill);</div>
     <div class="hl"><div style="font-size:12.5px;color:var(--muted);line-height:1.6;">The <strong style="color:var(--text);">5% platform fee</strong> is a single constant — changing it in one place updates flights, hotels, and tours simultaneously.</div></div>
   </div>
-</div></div>
-<div class="sn">25 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+</div>'''))
+
+# ── S26 Output Capture Pattern ────────────────────────────────────────────────
+slides.append(slide(26, '''
 <div class="label">Technical Deep Dive</div>
 <div class="heading grad" style="font-size:42px;">Clever Pattern — Capturing Console Output for Swing</div>
 <div class="two-col">
@@ -814,12 +615,10 @@ src/
     <div class="bullet">stdout is always restored after capture — System.out works normally outside the dialog.</div></div>
     <div class="card"><div style="font-size:12px;color:var(--muted);line-height:1.5;">Usage throughout Main.java:<br><code style="font-family:JetBrains Mono,monospace;font-size:10.5px;color:#94a3b8;">captureOutput(() -&gt; FlightService.showAllFlights(), "All Flights");</code></div></div>
   </div>
-</div></div>
-<div class="sn">26 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+</div>'''))
+
+# ── S27 Design Patterns ───────────────────────────────────────────────────────
+slides.append(slide(27, '''
 <div class="label">Design Patterns</div>
 <div class="heading grad" style="font-size:42px;">Design Patterns Employed in SmartGo</div>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;flex:1;">
@@ -830,12 +629,10 @@ src/
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
   <div class="card" style="display:flex;gap:14px;align-items:flex-start;"><div style="font-size:22px;">🔌</div><div><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#f59e0b;margin-bottom:4px;">Strategy via Interface (Reviewable)</div><div style="font-size:12px;color:var(--muted);line-height:1.5;">ReviewService operates on the Reviewable interface — the concrete review strategy is decided at runtime by the implementing class.</div></div></div>
   <div class="card" style="display:flex;gap:14px;align-items:flex-start;"><div style="font-size:22px;">📡</div><div><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#fb923c;margin-bottom:4px;">Façade — Main.java</div><div style="font-size:12px;color:var(--muted);line-height:1.5;">Main.java presents a simple menu interface while hiding the complexity of 6 service classes and DataStore behind clean method calls.</div></div></div>
-</div></div>
-<div class="sn">27 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
+</div>'''))
+
+# ── S28 Security ──────────────────────────────────────────────────────────────
+slides.append(slide(28, '''
 <div class="label">Technical Decisions</div>
 <div class="heading grad" style="font-size:42px;">Security & Data Integrity Choices</div>
 <div class="two-col">
@@ -852,12 +649,17 @@ src/
     <div class="bullet">Already-cancelled bookings cannot be cancelled again; already-paid bills cannot be paid again.</div></div>
     <div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#f59e0b;margin-bottom:8px;">💾 Data Consistency</div><div style="font-size:12.5px;color:var(--muted);line-height:1.5;">Cancellation loads ALL bookings, modifies the right one, then writes ALL back — atomic update preventing partial writes. Same pattern for bill payments.</div></div>
   </div>
-</div></div>
-<div class="sn">28 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(0,144,255,.08) 0%,transparent 60%),var(--dark2);"></div>
-<div class="pad">
+</div>'''))
+
+# ── S29 Learnings ─────────────────────────────────────────────────────────────
+tags = [("tag-green","Abstraction"),("tag-blue","Encapsulation"),("tag-purple","Inheritance"),
+        ("tag-orange","Polymorphism"),("tag-purple","Interfaces"),("tag-green","Custom Exceptions"),
+        ("tag-blue","Enumerations"),("tag-orange","Serialization"),("tag-purple","LSP"),
+        ("tag-green","SRP"),("tag-blue","Template Method"),("tag-orange","DAO Pattern"),
+        ("tag-purple","Façade Pattern"),("tag-green","Method Overloading"),("tag-blue","Method Overriding")]
+tag_html = " ".join(f'<span class="concept-tag {c}">{t}</span>' for c,t in tags)
+
+slides.append(slide(29, f'''
 <div class="label">Reflection</div>
 <div class="heading grad" style="font-size:44px;">Key Learnings & OOP Insights</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;">
@@ -873,14 +675,18 @@ src/
     <div class="bullet"><strong>BCrypt password hashing</strong> — the passwordHash field name shows intent; production version would use BCrypt.hashpw().</div>
     <div class="bullet"><strong>Replace flat files with SQLite</strong> — relational queries (JOIN bookings to bills) would be far cleaner than nested Java loops.</div>
     <div class="bullet"><strong>Observer pattern for notifications</strong> — booking confirmation could trigger email via an event system, decoupled from BookingService.</div></div>
-    <div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g3);margin-bottom:8px;">OOP Concepts Covered</div><div style="display:flex;flex-wrap:wrap;gap:6px;"><span class="concept-tag tag-green">Abstraction</span> <span class="concept-tag tag-blue">Encapsulation</span> <span class="concept-tag tag-purple">Inheritance</span> <span class="concept-tag tag-orange">Polymorphism</span> <span class="concept-tag tag-purple">Interfaces</span> <span class="concept-tag tag-green">Custom Exceptions</span> <span class="concept-tag tag-blue">Enumerations</span> <span class="concept-tag tag-orange">Serialization</span> <span class="concept-tag tag-purple">LSP</span> <span class="concept-tag tag-green">SRP</span> <span class="concept-tag tag-blue">Template Method</span> <span class="concept-tag tag-orange">DAO Pattern</span> <span class="concept-tag tag-purple">Façade Pattern</span> <span class="concept-tag tag-green">Method Overloading</span> <span class="concept-tag tag-blue">Method Overriding</span></div></div>
+    <div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g3);margin-bottom:8px;">OOP Concepts Covered</div><div style="display:flex;flex-wrap:wrap;gap:6px;">{tag_html}</div></div>
   </div>
-</div></div>
-<div class="sn">29 / 30</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:radial-gradient(ellipse 100% 80% at 50% 50%,rgba(0,200,150,.1) 0%,rgba(0,144,255,.06) 40%,transparent 70%),var(--dark2);"></div>
-<div class="pad">
+</div>''', bg="radial-gradient(ellipse 80% 60% at 50% 100%,rgba(0,144,255,.08) 0%,transparent 60%),var(--dark2)"))
+
+# ── S30 Thank You ─────────────────────────────────────────────────────────────
+footer_tags = [("tag-green","Java"),("tag-blue","OOP"),("tag-green","Abstraction"),
+               ("tag-purple","Inheritance"),("tag-orange","Polymorphism"),("tag-blue","Encapsulation"),
+               ("tag-purple","Interfaces"),("tag-green","Enums"),("tag-orange","File I/O"),
+               ("tag-blue","Swing GUI"),("tag-purple","Design Patterns"),("tag-green","SOLID Principles")]
+footer_tag_html = " ".join(f'<span class="concept-tag {c}">{t}</span>' for c,t in footer_tags)
+
+slides.append(slide(30, f'''
 <div style="height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:14px;">
   <div>
     <div class="display grad" style="font-size:120px;letter-spacing:-0.06em;">Conclusion</div>
@@ -893,11 +699,17 @@ src/
     <div class="card" style="text-align:left;"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;">Hamza Basit</div><div style="font-size:11px;color:var(--muted);margin-top:3px;">Reg. 557844</div></div>
     <div class="card" style="text-align:left;"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;">Rehan Ahmad</div><div style="font-size:11px;color:var(--muted);margin-top:3px;">Reg. 553327</div></div>
   </div>
-  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;"><span class="concept-tag tag-green">Java</span> <span class="concept-tag tag-blue">OOP</span> <span class="concept-tag tag-green">Abstraction</span> <span class="concept-tag tag-purple">Inheritance</span> <span class="concept-tag tag-orange">Polymorphism</span> <span class="concept-tag tag-blue">Encapsulation</span> <span class="concept-tag tag-purple">Interfaces</span> <span class="concept-tag tag-green">Enums</span> <span class="concept-tag tag-orange">File I/O</span> <span class="concept-tag tag-blue">Swing GUI</span> <span class="concept-tag tag-purple">Design Patterns</span> <span class="concept-tag tag-green">SOLID Principles</span></div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">{footer_tag_html}</div>
 </div>
 <!-- REPLACE 🎓 div with:
      <img src="your_goodbye.png" style="height:100px;object-fit:contain;border-radius:12px;border:1px solid var(--border);"/>  -->
-</div>
-<div class="sn">30 / 30</div>
-</div></div>
-</body></html>
+''', bg="radial-gradient(ellipse 100% 80% at 50% 50%,rgba(0,200,150,.1) 0%,rgba(0,144,255,.06) 40%,transparent 70%),var(--dark2)"))
+
+# ── Write file ────────────────────────────────────────────────────────────────
+import os
+html = CSS + "\n".join(slides) + "\n</body></html>"
+script_dir = os.path.dirname(os.path.abspath(__file__))
+path = os.path.join(script_dir, "SmartGo_Final_Presentation.html")
+with open(path, "w", encoding="utf-8") as f:
+    f.write(html)
+print(f"Done — {len(slides)} slides, {len(html):,} bytes ({len(html)//1024} KB)")

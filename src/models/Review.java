@@ -7,6 +7,7 @@ package models;
 
 public class Review {
 
+    // These fields capture the identity of the reviewer and the target of the feedback
     private int id;
     private int userId;
     private String reviewableType;
@@ -15,6 +16,7 @@ public class Review {
     private String comment;
     private String createdAt;
 
+    // This constructor initializes the review with the specific rating and descriptive comments
     public Review(int id, int userId, String reviewableType, int reviewableId,
                   int rating, String comment, String createdAt) {
         this.id = id;
@@ -36,6 +38,7 @@ public class Review {
 
     @Override
     public String toString() {
+        // This provides a helpful textual summary of the user's feedback for the interface
         return "Review ID: " + id + " | For: " + reviewableType + " #" + reviewableId
                 + " | Rating: " + rating + "/5 | Comment: " + comment
                 + " | Posted: " + createdAt;

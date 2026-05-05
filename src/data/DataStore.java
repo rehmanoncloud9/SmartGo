@@ -13,8 +13,10 @@ import java.util.List;
 
 public class DataStore {
 
+    // This is the main folder where we keep all our text database files
     private static final String DATA_FOLDER = "data/";
 
+    // We define each file name here so we can change them easily if needed
     private static final String USERS_FILE        = DATA_FOLDER + "users.txt";
     private static final String FLIGHTS_FILE      = DATA_FOLDER + "flights.txt";
     private static final String HOTELS_FILE       = DATA_FOLDER + "hotels.txt";
@@ -27,7 +29,7 @@ public class DataStore {
     private static final String REVIEWS_FILE      = DATA_FOLDER + "reviews.txt";
     private static final String HOTEL_BOOKINGS_FILE = DATA_FOLDER + "hotel_bookings.txt";
 
-    // Make sure the data folder exists when the app starts
+    // This method runs when the app starts to make sure the data folder actually exists
     public static void init() {
         File folder = new File(DATA_FOLDER);
         if (!folder.exists()) {
@@ -35,7 +37,7 @@ public class DataStore {
         }
     }
 
-    // Write a single line to a file (appending to the end)
+    // This is a helper that adds one new line to the end of any file
     private static void appendLine(String filename, String line) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
             writer.write(line);
@@ -45,7 +47,7 @@ public class DataStore {
         }
     }
 
-    // Read all lines from a file and return them as a list
+    // This reads everything from a file and gives us a list of every line it found
     private static List<String> readLines(String filename) {
         List<String> lines = new ArrayList<>();
         File file = new File(filename);
@@ -54,6 +56,7 @@ public class DataStore {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
+                // We ignore empty lines to prevent crashes during parsing
                 if (!line.trim().isEmpty()) {
                     lines.add(line.trim());
                 }
@@ -64,7 +67,7 @@ public class DataStore {
         return lines;
     }
 
-    // Overwrite a file completely with a new list of lines
+    // This wipes a file clean and writes a whole new set of data to it
     private static void writeAllLines(String filename, List<String> lines) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, false))) {
             for (String line : lines) {
@@ -76,8 +79,7 @@ public class DataStore {
         }
     }
 
-    // Save a user to the users file
-    // Format: id|name|email|phone|passwordHash|createdAt|address|lastLogin
+    // We convert a User object into a single line of text with pipes as dividers
     public static void saveUser(User user) {
         String line = user.getId() + "|" + user.getName() + "|" + user.getEmail()
                 + "|" + user.getPhone() + "|" + user.getPasswordHash()
@@ -85,10 +87,11 @@ public class DataStore {
         appendLine(USERS_FILE, line);
     }
 
-    // Load all users from the file
+    // We read the users file and turn each line of text back into a real Java object
     public static List<User> loadUsers() {
         List<User> users = new ArrayList<>();
         for (String line : readLines(USERS_FILE)) {
+            // Split the line by the pipe symbol to get the individual fields
             String[] parts = line.split("\\|");
             if (parts.length >= 8) {
                 users.add(new User(

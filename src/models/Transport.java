@@ -6,12 +6,14 @@ package models;
 
 public abstract class Transport {
 
+    // We use private variables to protect the data from being changed accidentally
     private int id;
     private int destinationId;
     private String type;
     private double price;
     private int capacity;
 
+    // This constructor handles all the basic information every vehicle needs to have
     public Transport(int id, int destinationId, String type, double price, int capacity) {
         this.id = id;
         this.destinationId = destinationId;
@@ -29,7 +31,7 @@ public abstract class Transport {
     public void setPrice(double price) { this.price = price; }
     public void setCapacity(int capacity) { this.capacity = capacity; }
 
-    // Every transport type must describe its schedule
+    // Every specific transport type like Flight must implement this method
     public abstract String getScheduleSummary();
 
     @Override
