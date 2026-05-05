@@ -1,0 +1,3 @@
+1|Multan|Punjab|Pakistan|Shah Rukn-e-Alam Shrine, Multan Fort, Ghanta Ghar|multan.jpg
+2|Lahore|Punjab|Pakistan|Badshahi Mosque, Lahore Fort, Shalimar Gardens|lahore.jpg
+3|Skardu|Gilgit-Baltistan|Pakistan|Shangrila Resort, Deosai Plains, Upper Kachura Lake|skardu.jpg

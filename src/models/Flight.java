@@ -3,7 +3,7 @@ package models;
 // A flight is one type of transport.
 // It extends Transport and adds airline, flight number, class, and times.
 
-public class Flight extends Transport {
+public class Flight extends Transport implements Reviewable {
 
     private String airline;
     private String flightNumber;
@@ -31,6 +31,16 @@ public class Flight extends Transport {
     @Override
     public String getScheduleSummary() {
         return "Departs: " + departureTime + " | Returns: " + returnTime;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return airline + " " + flightNumber;
+    }
+
+    @Override
+    public String getReviewType() {
+        return "FLIGHT";
     }
 
     @Override

@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartGo — OOP Final Presentation (Comprehensive)</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+    :root {
+      --em: #059669; --sky: #0284c7; --pur: #7c3aed; --text: #0f172a;
+      --muted: #64748b; --glass: rgba(255, 255, 255, 0.98);
+      --border: rgba(0, 0, 0, 0.1); --slide-w: 1280px; --slide-h: 720px;
+    }
+    body {
+      font-family: "Plus Jakarta Sans", sans-serif; background: #f1f5f9; color: var(--text);
+      padding: 40px 20px; font-size: 15px;
+    }
+    @media print {
+      body { padding: 0; background: #fff; margin: 0; }
+      .slide-wrap { page-break-after: always; margin: 0; padding: 0; display: block; }
+      .slide { box-shadow: none !important; border-radius: 0 !important; border: none !important; width: 100% !important; height: 100vh !important; }
+      .full-print { position: absolute; inset: 0; z-index: 100; background: #fff; }
+      .full-print img { height: 100%; width: 100%; object-fit: contain; }
+    }
+    .slide-wrap { display: flex; justify-content: center; margin-bottom: 60px }
+    .slide {
+      width: var(--slide-w); height: var(--slide-h); border-radius: 24px;
+      overflow: hidden; position: relative; border: 1px solid var(--border);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.08); flex-shrink: 0; background: #fff
+    }
+    .bg { position: absolute; inset: 0; z-index: 0; background: #ffffff }
+    .bg::before {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(circle at 0% 0%, rgba(5, 150, 105, 0.05) 0%, transparent 35%),
+                  radial-gradient(circle at 100% 100%, rgba(124, 58, 237, 0.05) 0%, transparent 35%);
+    }
+    .pad { position: relative; z-index: 2; padding: 40px 60px; height: 100%; display: flex; flex-direction: column; gap: 15px }
+    .display { font-family: "Outfit", sans-serif; font-weight: 800; line-height: 1; letter-spacing: -0.04em; }
+    .heading { font-family: "Outfit", sans-serif; font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; }
+    .label { font-family: "Outfit", sans-serif; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; font-size: 11px; color: var(--muted); }
+    .grad { background: linear-gradient(135deg, #059669 0%, #0284c7 50%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text }
+    .sn { position: absolute; bottom: 30px; right: 40px; font-size: 14px; font-weight: 800; color: var(--muted); opacity: 0.4; }
+    
+    .code-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: start; }
+    .code { background: #0f172a; border-radius: 12px; padding: 18px; font-family: "JetBrains Mono", monospace; font-size: 11.5px; color: #e2e8f0; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.15); line-height: 1.4; }
+    .ck { color: #f472b6 } .cv { color: #818cf8 } .cs { color: #38bdf8 } .cc { color: #94a3b8 } .ct { color: #4ade80 }
+
+    .browser-frame { border-radius: 14px; overflow: hidden; border: 1px solid var(--border); background: #f8fafc; flex: 1; display: flex; flex-direction: column; }
+    .browser-top { height: 26px; padding: 0 16px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--border); background: #f1f5f9; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #cbd5e1; }
+    .browser-content { flex: 1; background: #fff; position: relative; }
+    .browser-content img { width: 100%; height: 100%; object-fit: contain; }
+
+    .rationale-box { border-left: 5px solid var(--pur); padding: 5px 25px; background: #fdfaff; border-radius: 0 12px 12px 0; }
+    .rationale-box h4 { font-family: "Outfit", sans-serif; font-size: 18px; color: var(--pur); margin-bottom: 4px; }
+    .rationale-box p { font-size: 14px; color: var(--muted); line-height: 1.5; }
+    
+    .decision-card { background: #f8fafc; border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+    .decision-card h5 { font-family: "Outfit", sans-serif; font-size: 15px; margin-bottom: 10px; color: var(--sky); font-weight: 700; }
+    
+    .bullet { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
+    .bullet::before { content: "→"; color: var(--sky); font-weight: 900; font-size: 16px; }
+
+    .vs-box { display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px; align-items: center; margin-top: 10px; }
+    .vs-item { padding: 15px; border-radius: 10px; font-size: 13px; line-height: 1.4; }
+    .vs-bad { background: #fff1f2; border: 1px solid #fecdd3; color: #9f1239; }
+    .vs-good { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+    .vs-circle { width: 30px; height: 30px; border-radius: 50%; background: var(--text); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; }
+
+    .uml-box { background: #fff; border: 1.5px solid #475569; border-radius: 3px; width: 300px; display: flex; flex-direction: column; }
+    .uml-name { background: #f1f5f9; padding: 8px; text-align: center; font-weight: 800; font-size: 13px; border-bottom: 1.5px solid #475569; font-family: "Outfit", sans-serif; }
+    .uml-fields { padding: 8px 12px; font-size: 10px; font-family: "Courier New", monospace; border-bottom: 1.5px solid #475569; min-height: 40px; line-height: 1.3; }
+    .uml-methods { padding: 8px 12px; font-size: 10px; font-family: "Courier New", monospace; min-height: 40px; line-height: 1.3; }
+    .uml-arrow-line { height: 2px; background: #475569; flex: 1; position: relative; display: flex; align-items: center; }
+    .uml-triangle { width: 0; height: 0; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-right: 15px solid #475569; position: absolute; left: -2px; }
+    .uml-triangle-white { width: 0; height: 0; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-right: 13px solid #fff; position: absolute; left: 1px; z-index: 2; }
+  </style>
+</head>
+
+<body>
+
+  <!-- SLIDE 1: COVER -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad" style="justify-content:center; align-items:center; text-align:center;">
+        <div class="display grad" style="font-size:120px; margin-bottom:15px">SmartGo</div>
+        <div class="heading" style="font-size:30px; font-weight:400; color:var(--muted); margin-bottom:60px">A Unified Travel Ecosystem Built with Object-Oriented Logic</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:50px; text-align:left; max-width:1000px; width:100%;">
+          <div style="background:#f8fafc; padding:35px; border-radius:18px; border:1px solid var(--border)">
+            <div class="label" style="margin-bottom:20px">Engineering Team</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+               <div style="font-size:17px; font-weight:700;">Abdul Rehman <br><span style="font-weight:400; font-size:14px; color:var(--muted);">Reg. 576841</span></div>
+               <div style="font-size:17px; font-weight:700;">M. Yousaf Khan <br><span style="font-weight:400; font-size:14px; color:var(--muted);">Reg. 572229</span></div>
+               <div style="font-size:17px; font-weight:700;">Hamza Basit <br><span style="font-weight:400; font-size:14px; color:var(--muted);">Reg. 557844</span></div>
+               <div style="font-size:17px; font-weight:700;">Rehan Ahmad <br><span style="font-weight:400; font-size:14px; color:var(--muted);">Reg. 553327</span></div>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; justify-content:center; gap:12px;">
+             <div class="bullet">25 High-Density Technical Slides.</div>
+             <div class="bullet">Full OOP Principle Comparison.</div>
+             <div class="bullet">Live Code & UML Architecture.</div>
+          </div>
+        </div>
+      </div>
+      <div class="sn">01 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: THE REAL TRAVEL PROBLEM -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">Project Motivation</div>
+        <div class="heading grad" style="font-size:48px">The Problem: Fragmented Travel Systems</div>
+        <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:30px; flex:1;">
+          <div style="background:#fff; padding:40px; border-radius:18px; border-left:12px solid #ef4444; border:1px solid var(--border)">
+            <p style="font-size:17px; line-height:1.6; color:var(--text); margin-bottom:20px; font-weight:500;">
+              Travelers currently struggle with disconnected logistics:
+            </p>
+            <div style="display:flex; flex-direction:column; gap:12px; font-size:15px;">
+              <div class="bullet"><strong>Data Silos</strong>: Flights, Hotels, and Tours exist in separate systems, making planning impossible.</div>
+              <div class="bullet"><strong>Manual Processing</strong>: Agencies manually calculate platform fees (5%) and taxes, leading to massive financial errors.</div>
+              <div class="bullet"><strong>Inventory Lag</strong>: Without automation, seat availability is never up-to-date, causing overbooking issues.</div>
+              <div class="bullet"><strong>Security Risks</strong>: Personal traveler details and payment records are often stored in insecure, open formats.</div>
+            </div>
+          </div>
+          <div class="decision-card" style="display:flex; flex-direction:column; gap:10px;">
+             <h5>Why SmartGo?</h5>
+             <p style="font-size:13px; color:var(--muted); line-height:1.6;">
+               SmartGo provides a <strong>Single Point of Truth</strong>. By treating every travel entity as an Object, we ensure that a booking automatically updates inventory and calculates the exact bill instantly. This removes human error and provides a seamless traveler journey.
+             </p>
+          </div>
+        </div>
+      </div>
+      <div class="sn">02 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: UML PART 1 -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">System Design</div>
+        <div class="heading grad" style="font-size:48px">UML: Person & User Hierarchy</div>
+        <div style="flex:1; display:flex; align-items:center; justify-content:center; gap:20px;">
+          <div class="uml-box">
+            <div class="uml-name"><i>Person (Abstract)</i></div>
+            <div class="uml-fields">- id: int<br>- name: String<br>- email: String<br>- phone: String<br>- passwordHash: String<br>- createdAt: String</div>
+            <div class="uml-methods">+ getId(): int<br>+ <i>getRole(): String</i></div>
+          </div>
+          <div class="uml-arrow-line" style="width:100px;"><div class="uml-triangle"></div><div class="uml-triangle-white"></div></div>
+          <div class="uml-box">
+            <div class="uml-name">User</div>
+            <div class="uml-fields">- address: String<br>- lastLogin: String</div>
+            <div class="uml-methods">+ getRole(): String<br>+ getAddress(): String</div>
+          </div>
+        </div>
+        <div class="vs-box">
+           <div class="vs-item vs-bad"><strong>Manual Data</strong>: Creating separate classes for User and Admin with no common parent.</div>
+           <div class="vs-circle">VS</div>
+           <div class="vs-item vs-good"><strong>Abstraction</strong>: Using Person as a template to ensure all users have the same basic identity logic.</div>
+        </div>
+      </div>
+      <div class="sn">03 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: UML PART 2 -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">System Design</div>
+        <div class="heading grad" style="font-size:48px">UML: Transport & Flight Details</div>
+        <div style="flex:1; display:flex; align-items:center; justify-content:center; gap:20px;">
+          <div class="uml-box">
+            <div class="uml-name"><i>Transport (Abstract)</i></div>
+            <div class="uml-fields">- id: int<br>- destinationId: int<br>- type: String<br>- price: double<br>- capacity: int</div>
+            <div class="uml-methods">+ <i>getScheduleSummary(): String</i></div>
+          </div>
+          <div class="uml-arrow-line" style="width:100px;"><div class="uml-triangle"></div><div class="uml-triangle-white"></div></div>
+          <div class="uml-box">
+            <div class="uml-name">Flight</div>
+            <div class="uml-fields">- airline: String<br>- flightNumber: String<br>- flightClass: String<br>- departureTime: String<br>- returnTime: String</div>
+            <div class="uml-methods">+ getScheduleSummary(): String</div>
+          </div>
+        </div>
+        <div class="vs-box">
+           <div class="vs-item vs-bad"><strong>Redundant Code</strong>: Writing price and capacity logic separately for every transport type.</div>
+           <div class="vs-circle">VS</div>
+           <div class="vs-item vs-good"><strong>Inheritance</strong>: Transport handles the price/ID, and Flight only handles airline-specific data.</div>
+        </div>
+      </div>
+      <div class="sn">04 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: UML PART 3 -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">System Design</div>
+        <div class="heading grad" style="font-size:48px">UML: Reviewable Interface</div>
+        <div style="flex:1; display:flex; align-items:center; justify-content:center; gap:20px;">
+          <div class="uml-box" style="border-style:dashed;">
+            <div class="uml-name">&laquo;interface&raquo;<br>Reviewable</div>
+            <div class="uml-methods">+ getDisplayName(): String<br>+ getReviewType(): String</div>
+          </div>
+          <div class="uml-arrow-line" style="width:100px; border-top:2.5px dashed #475569; background:transparent;"><div class="uml-triangle"></div><div class="uml-triangle-white"></div></div>
+          <div class="uml-box">
+            <div class="uml-name">Hotel</div>
+            <div class="uml-fields">- name: String<br>- rating: int<br>- address: String<br>- pricePerNight: double</div>
+            <div class="uml-methods">+ getDisplayName(): String<br>+ getRating(): int</div>
+          </div>
+        </div>
+        <div class="vs-box">
+           <div class="vs-item vs-bad"><strong>Rigid Hierarchy</strong>: Trying to force Hotels and Flights into the same parent class just to use reviews.</div>
+           <div class="vs-circle">VS</div>
+           <div class="vs-item vs-good"><strong>Interface</strong>: Decoupling reviews so any class can be "Reviewable" without changing its parent.</div>
+        </div>
+      </div>
+      <div class="sn">05 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: MASTER UML -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="full-print">
+         <img src="assets/erd.png" alt="Full UML Diagram" onerror="this.src='https://placehold.co/2400x1600/ffffff/0f172a?text=Full+SmartGo+Master+UML+Diagram'">
+      </div>
+      <div class="sn">06 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: ENCAPSULATION -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">OOP Pillar 1</div>
+        <div class="heading grad" style="font-size:48px">Encapsulation (Privacy & Protection)</div>
+        <div class="code-grid">
+          <div class="code">
+            <span class="cc">// From Person.java - The Shield</span><br>
+            <span class="ck">public abstract class</span> <span class="cs">Person</span> {<br>
+            &nbsp;&nbsp;<span class="ck">private</span> <span class="cs">int</span> id;<br>
+            &nbsp;&nbsp;<span class="ck">private</span> <span class="cs">String</span> name;<br>
+            &nbsp;&nbsp;<span class="ck">private</span> <span class="cs">String</span> passwordHash;<br><br>
+            &nbsp;&nbsp;<span class="cc">// Controlled Reader</span><br>
+            &nbsp;&nbsp;<span class="ck">public</span> <span class="cs">int</span> <span class="cv">getId</span>() { <span class="ck">return</span> id; }<br>
+            }
+          </div>
+          <div class="code">
+            <span class="cc">// From User.java - Validation</span><br>
+            <span class="ck">public class</span> <span class="cs">User</span> <span class="ck">extends</span> <span class="cs">Person</span> {<br>
+            &nbsp;&nbsp;<span class="ck">private</span> <span class="cs">String</span> address;<br><br>
+            &nbsp;&nbsp;<span class="cc">// Setter with logic</span><br>
+            &nbsp;&nbsp;<span class="ck">public void</span> <span class="cv">setAddress</span>(<span class="cs">String</span> a) {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">if</span>(a != <span class="ck">null</span>) <span class="ck">this</span>.address = a;<br>
+            &nbsp;&nbsp;}<br>
+            }
+          </div>
+        </div>
+        <div class="vs-box">
+           <div class="vs-item vs-bad"><strong>Public Fields</strong>: Letting anyone change a User ID or Password directly from the UI code.</div>
+           <div class="vs-circle">VS</div>
+           <div class="vs-item vs-good"><strong>Encapsulation</strong>: Using private fields and public getters. This ensures data can only be changed through our approved logic.</div>
+        </div>
+      </div>
+      <div class="sn">07 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: ABSTRACTION -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">OOP Pillar 2</div>
+        <div class="heading grad" style="font-size:48px">Abstraction (Standard Templates)</div>
+        <div class="code-grid">
+          <div class="code">
+            <span class="cc">// From Transport.java - The Idea</span><br>
+            <span class="ck">public abstract class</span> <span class="cs">Transport</span> {<br>
+            &nbsp;&nbsp;<span class="ck">private</span> <span class="cs">double</span> price;<br>
+            &nbsp;&nbsp;<span class="ck">private</span> <span class="cs">int</span> capacity;<br><br>
+            &nbsp;&nbsp;<span class="cc">// Abstract rule for all travel modes</span><br>
+            &nbsp;&nbsp;<span class="ck">public abstract</span> <span class="cs">String</span> <span class="cv">getScheduleSummary</span>();<br>
+            }
+          </div>
+          <div class="code">
+            <span class="cc">// From Flight.java - The Specifics</span><br>
+            <span class="ck">@Override</span><br>
+            <span class="ck">public</span> <span class="cs">String</span> <span class="cv">getScheduleSummary</span>() {<br>
+            &nbsp;&nbsp;<span class="ck">return</span> <span class="cs">"Departs: "</span> + departureTime + <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs">" | Airline: "</span> + airline;<br>
+            }
+          </div>
+        </div>
+        <div class="vs-box">
+           <div class="vs-item vs-bad"><strong>Concrete Transport</strong>: Allowing the app to create a generic "Transport" object that has no departure time or airline name.</div>
+           <div class="vs-circle">VS</div>
+           <div class="vs-item vs-good"><strong>Abstraction</strong>: Making Transport abstract forces us to define specific types like Flight or Bus, ensuring no "empty" objects exist.</div>
+        </div>
+      </div>
+      <div class="sn">08 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: INHERITANCE -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">OOP Pillar 3</div>
+        <div class="heading grad" style="font-size:48px">Inheritance (Logical Reuse)</div>
+        <div class="code-grid">
+          <div class="code">
+            <span class="cc">// From Person.java - The Foundation</span><br>
+            <span class="ck">public</span> <span class="cv">Person</span>(<span class="cs">int</span> id, <span class="cs">String</span> name, <span class="cs">String</span> email) {<br>
+            &nbsp;&nbsp;<span class="ck">this</span>.id = id;<br>
+            &nbsp;&nbsp;<span class="ck">this</span>.name = name;<br>
+            &nbsp;&nbsp;<span class="ck">this</span>.email = email;<br>
+            }
+          </div>
+          <div class="code">
+            <span class="cc">// From User.java - Building Upon</span><br>
+            <span class="ck">public</span> <span class="cv">User</span>(<span class="cs">int</span> id, <span class="cs">String</span> name, ...) {<br>
+            &nbsp;&nbsp;<span class="cc">// Link to the parent foundation</span><br>
+            &nbsp;&nbsp;<span class="ck">super</span>(id, name, email, phone, password, ...);<br>
+            &nbsp;&nbsp;<span class="ck">this</span>.address = address;<br>
+            }
+          </div>
+        </div>
+        <div class="vs-box">
+           <div class="vs-item vs-bad"><strong>Duplication</strong>: Manually copying the Name, ID, and Email variables into every account class (User, Admin, Agent).</div>
+           <div class="vs-circle">VS</div>
+           <div class="vs-item vs-good"><strong>Inheritance</strong>: Defining common traveler data once in Person. If we update the Name logic, every account type is fixed instantly.</div>
+        </div>
+      </div>
+      <div class="sn">09 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: INTERFACES -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">OOP Pillar 4</div>
+        <div class="heading grad" style="font-size:48px">Interfaces (Feature Contracts)</div>
+        <div class="code-grid">
+          <div class="code">
+            <span class="cc">// From Reviewable.java - The Ability</span><br>
+            <span class="ck">public interface</span> <span class="cs">Reviewable</span> {<br>
+            &nbsp;&nbsp;<span class="cs">String</span> <span class="cv">getDisplayName</span>();<br>
+            &nbsp;&nbsp;<span class="cs">String</span> <span class="cv">getReviewType</span>();<br>
+            }
+          </div>
+          <div class="code">
+            <span class="cc">// From Hotel.java - Adopting the Feature</span><br>
+            <span class="ck">public class</span> <span class="cs">Hotel</span> <span class="ck">implements</span> <span class="cs">Reviewable</span> {<br>
+            &nbsp;&nbsp;<span class="ck">@Override</span><br>
+            &nbsp;&nbsp;<span class="ck">public</span> <span class="cs">String</span> <span class="cv">getDisplayName</span>() { <span class="ck">return</span> name; }<br>
+            }
+          </div>
+        </div>
+        <div class="vs-box">
+           <div class="vs-item vs-bad"><strong>Multiple Inheritance</strong>: Trying to make a Hotel inherit from both 'Destination' and 'Transport' just to get common methods.</div>
+           <div class="vs-circle">VS</div>
+           <div class="vs-item vs-good"><strong>Interface</strong>: Bridging unrelated classes. A Hotel and a Flight can both be "Reviewable" without being the same type of object.</div>
+        </div>
+      </div>
+      <div class="sn">10 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: POLYMORPHISM - OVERRIDING -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">OOP Pillar 5 (A)</div>
+        <div class="heading grad" style="font-size:48px">Polymorphism (Dynamic Method Dispatch)</div>
+        <div class="code-grid">
+          <div class="code">
+            <span class="cc">// From Person.java</span><br>
+            <span class="ck">public abstract</span> <span class="cs">String</span> <span class="cv">getRole</span>();<br><br>
+            <span class="cc">// From User.java - Specialized Version</span><br>
+            <span class="ck">@Override</span><br>
+            <span class="ck">public</span> <span class="cs">String</span> <span class="cv">getRole</span>() { <span class="ck">return</span> <span class="cs">"Standard User"</span>; }
+          </div>
+          <div class="code">
+            <span class="cc">// Dynamic Execution in Main.java</span><br>
+            <span class="cs">Person</span> p = AuthService.<span class="cv">getLoggedInUser</span>();<br>
+            <span class="cc">// Java determines type at RUNTIME</span><br>
+            <span class="cs">System</span>.out.println(<span class="cs">"Login as: "</span> + p.<span class="cv">getRole</span>());
+          </div>
+        </div>
+        <div class="vs-box">
+           <div class="vs-item vs-bad"><strong>Switch/Case</strong>: Using "if(p.type == ADMIN)" everywhere in the code to decide which role text to show.</div>
+           <div class="vs-circle">VS</div>
+           <div class="vs-item vs-good"><strong>Overriding</strong>: Telling the object to show its own role. This makes the code shorter and removes 100s of 'if' statements.</div>
+        </div>
+      </div>
+      <div class="sn">11 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 12: POLYMORPHISM - OVERLOADING -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">OOP Pillar 5 (B)</div>
+        <div class="heading grad" style="font-size:48px">Polymorphism (Compile-Time)</div>
+        <div class="code-grid">
+          <div class="code">
+            <span class="cc">// From AuthService.java - Entry 1</span><br>
+            <span class="ck">public static User login</span>(<span class="cs">String</span> email, <span class="cs">String</span> pw) {<br>
+            &nbsp;&nbsp;<span class="cc">// User can use their email address</span><br>
+            }
+          </div>
+          <div class="code">
+            <span class="cc">// From AuthService.java - Entry 2</span><br>
+            <span class="ck">public static User login</span>(<span class="cs">int</span> userId, <span class="cs">String</span> pw) {<br>
+            &nbsp;&nbsp;<span class="cc">// User can use their unique ID number</span><br>
+            }
+          </div>
+        </div>
+        <div class="vs-box">
+           <div class="vs-item vs-bad"><strong>Name Clutter</strong>: Creating names like <code>loginWithEmail()</code>, <code>loginWithID()</code>, and <code>loginWithPhone()</code>.</div>
+           <div class="vs-circle">VS</div>
+           <div class="vs-item vs-good"><strong>Overloading</strong>: Using one intuitive name "login" for all scenarios. The compiler picks the right one based on the input type.</div>
+        </div>
+      </div>
+      <div class="sn">12 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 13: LISKOV SUBSTITUTION -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">SOLID Principles</div>
+        <div class="heading grad" style="font-size:48px">Liskov Substitution (Predictability)</div>
+        <div style="display:grid; grid-template-columns:1fr 1.2fr; gap:30px; flex:1; align-items:center;">
+           <div class="decision-card">
+             <p style="font-size:15px; line-height:1.6;"><strong>The Rule</strong>: A child class (User) must be 100% compatible with its parent (Person). If you expect a Person, a User should never break that expectation.</p>
+             <p style="font-size:14px; color:var(--muted); margin-top:15px;">In SmartGo, we treat every account as a 'Person' during data loading. Because we follow LSP, the app never crashes when switching between Users and Admins.</p>
+           </div>
+           <div class="code">
+             <span class="cc">// LSP in our Loading Logic</span><br>
+             <span class="cs">List</span>&lt;<span class="cs">Person</span>&gt; members = DataStore.<span class="cv">loadUsers</span>();<br><br>
+             <span class="ck">for</span>(<span class="cs">Person</span> p : members) {<br>
+             &nbsp;&nbsp;<span class="cc">// We treat everyone as 'Person' safely</span><br>
+             &nbsp;&nbsp;<span class="cs">System</span>.out.println(p.<span class="cv">toString</span>());<br>
+             }
+           </div>
+        </div>
+        <div class="rationale-box">
+          <p><strong>Why this over Type Casting?</strong> Checking <code>instanceof User</code> every time is slow and prone to errors. LSP makes our code generic and stable.</p>
+        </div>
+      </div>
+      <div class="sn">13 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 14: SYSTEM LAYERS -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">System Design</div>
+        <div class="heading grad" style="font-size:48px">The 4-Layer Architecture</div>
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:15px; margin-top:5px;">
+          <div style="background:#f8fafc; padding:20px; border-radius:15px; border:1px solid var(--border); border-bottom:6px solid var(--sky);">
+            <div class="label" style="color:var(--sky)">UI</div>
+            <div style="font-size:13px; margin-top:10px; line-height:1.4;">Swing Dialogs. Only handles buttons and text boxes.</div>
+          </div>
+          <div style="background:#f8fafc; padding:20px; border-radius:15px; border:1px solid var(--border); border-bottom:6px solid var(--em);">
+            <div class="label" style="color:var(--em)">Service</div>
+            <div style="font-size:13px; margin-top:10px; line-height:1.4;">The Brain. Validates balances and inventory.</div>
+          </div>
+          <div style="background:#f8fafc; padding:20px; border-radius:15px; border:1px solid var(--border); border-bottom:6px solid var(--pur);">
+            <div class="label" style="color:var(--pur)">Domain</div>
+            <div style="font-size:13px; margin-top:10px; line-height:1.4;">The Models. Classes like Flight, User, and Bill.</div>
+          </div>
+          <div style="background:#f8fafc; padding:20px; border-radius:15px; border:1px solid var(--border); border-bottom:6px solid var(--text);">
+            <div class="label" style="color:var(--text)">Data</div>
+            <div style="font-size:13px; margin-top:10px; line-height:1.4;">Persistence. Saves everything to files using pipes.</div>
+          </div>
+        </div>
+        <div class="vs-box" style="margin-top:20px;">
+           <div class="vs-item vs-bad"><strong>Spaghetti Code</strong>: Writing the file-saving logic directly inside the 'Book Flight' button.</div>
+           <div class="vs-circle">VS</div>
+           <div class="vs-item vs-good"><strong>Layered Design</strong>: Keeping UI separate from Data. If we want to move to a Database later, we only change 1 layer.</div>
+        </div>
+      </div>
+      <div class="sn">14 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 15: USER FEATURES -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">System Scope</div>
+        <div class="heading grad" style="font-size:48px">Core Functionalities</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:30px; flex:1;">
+          <div style="background:#f8fafc; padding:30px; border-radius:20px; border:1px solid var(--border)">
+            <div class="label" style="color:var(--em)">The Traveler Hub</div>
+            <div style="margin-top:20px; font-size:15px;">
+              <div class="bullet">Secure registration and last-login tracking.</div>
+              <div class="bullet">Smart Search: Filter by Airline, City, or Rating.</div>
+              <div class="bullet">Automated Billing: Platform fees added instantly.</div>
+              <div class="bullet">Review Engine: Feedback loop for all services.</div>
+            </div>
+          </div>
+          <div style="background:#f8fafc; padding:30px; border-radius:20px; border:1px solid var(--border)">
+            <div class="label" style="color:var(--pur)">The Admin Console</div>
+            <div style="margin-top:20px; font-size:15px;">
+              <div class="bullet">Inventory Control: Add flights and hotels.</div>
+              <div class="bullet">Dynamic Pricing: Adjust prices in real-time.</div>
+              <div class="bullet">Booking Audit: Monitor all system transactions.</div>
+              <div class="bullet">Global Settings: Manage destinations and tags.</div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:13px; color:var(--muted); text-align:center;">All features are powered by <strong>DataStore</strong> for permanent storage.</p>
+      </div>
+      <div class="sn">15 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 16: SYSTEM QUALITY -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">Engineering Quality</div>
+        <div class="heading grad" style="font-size:48px">Stability & Maintenance</div>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px; flex:1;">
+          <div class="feature-card" style="padding:22px; border-radius:15px; border:1px solid var(--border); background:#f8fafc; border-top:6px solid var(--em);">
+            <div class="heading em" style="font-size:20px; margin-bottom:10px">Resilience</div>
+            <p style="font-size:13px; line-height:1.5;">SmartGo automatically reconstructs the /data/ folder if it's missing, preventing crashes.</p>
+          </div>
+          <div class="feature-card" style="padding:22px; border-radius:15px; border:1px solid var(--border); background:#f8fafc; border-top:6px solid var(--sky);">
+            <div class="heading sky" style="font-size:20px; margin-bottom:10px">Modularity</div>
+            <p style="font-size:13px; line-height:1.5;">Each service (Auth, Booking, Flight) is isolated. Changes in one don't break the others.</p>
+          </div>
+          <div class="feature-card" style="padding:22px; border-radius:15px; border:1px solid var(--border); background:#f8fafc; border-top:6px solid var(--pur);">
+            <div class="heading pur" style="font-size:20px; margin-bottom:10px">Optimization</div>
+            <p style="font-size:13px; line-height:1.5;">Buffered I/O ensures that even with 1000s of flights, the search results show instantly.</p>
+          </div>
+        </div>
+      </div>
+      <div class="sn">16 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 17: LOGIC FLOW -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">Process Flow</div>
+        <div class="heading grad" style="font-size:48px">The Anatomy of a Booking</div>
+        <div style="flex:1; display:flex; align-items:center; justify-content:center; gap:20px; text-align:center;">
+           <div style="background:#fff; border:3px solid var(--sky); border-radius:50%; width:130px; height:130px; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:800; box-shadow:0 10px 20px rgba(0,0,0,0.05);">UI Layer<br>(Click Book)</div>
+           <div style="font-size:24px; color:var(--muted)">→</div>
+           <div style="background:#fff; border:3px solid var(--em); border-radius:50%; width:130px; height:130px; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:800; box-shadow:0 10px 20px rgba(0,0,0,0.05);">Service<br>(Calc Price)</div>
+           <div style="font-size:24px; color:var(--muted)">→</div>
+           <div style="background:#fff; border:3px solid var(--pur); border-radius:50%; width:130px; height:130px; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:800; box-shadow:0 10px 20px rgba(0,0,0,0.05);">Model<br>(Set ID)</div>
+           <div style="font-size:24px; color:var(--muted)">→</div>
+           <div style="background:#fff; border:3px solid var(--text); border-radius:50%; width:130px; height:130px; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:800; box-shadow:0 10px 20px rgba(0,0,0,0.05);">Data<br>(Write Pipe)</div>
+        </div>
+        <div class="vs-box" style="margin-top:10px;">
+           <div class="vs-item vs-bad"><strong>Manual Billing</strong>: Asking the user to calculate their own total before booking.</div>
+           <div class="vs-circle">VS</div>
+           <div class="vs-item vs-good"><strong>Automated Service</strong>: The Service layer calculates 5% fee and base price in the background.</div>
+        </div>
+      </div>
+      <div class="sn">17 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 18: DASHBOARD UI -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">User Experience</div>
+        <div class="heading grad" style="font-size:48px">User Dashboard Interface</div>
+        <div class="browser-frame">
+           <div class="browser-top"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+           <div class="browser-content">
+              <img src="assets/main_menu.png" alt="Dashboard" onerror="this.src='https://placehold.co/1200x600/0f172a/ffffff?text=Main+Menu+Screenshot'">
+           </div>
+        </div>
+        <p style="font-size:13px; color:var(--muted); text-align:center;">Simple, distraction-free navigation built using <strong>JOptionPane</strong> logic.</p>
+      </div>
+      <div class="sn">18 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 19: BOOKING UI -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">User Experience</div>
+        <div class="heading grad" style="font-size:48px">Flight Management UI</div>
+        <div class="browser-frame">
+           <div class="browser-top"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+           <div class="browser-content">
+              <img src="assets/all_flights.png" alt="Search" onerror="this.src='https://placehold.co/1200x600/0f172a/ffffff?text=Booking+Screen+Screenshot'">
+           </div>
+        </div>
+        <p style="font-size:13px; color:var(--muted); text-align:center;">Formatted text areas provide clear, readable travel itineraries to the user.</p>
+      </div>
+      <div class="sn">19 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 20: EXCEPTIONS -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">OOP Topic 6</div>
+        <div class="heading grad" style="font-size:48px">Custom Exception Handling</div>
+        <div class="code-grid">
+          <div class="code">
+            <span class="cc">// From SmartGoException.java</span><br>
+            <span class="ck">public class</span> <span class="cs">SmartGoException</span> <span class="ck">extends</span> <span class="cs">Exception</span> {<br>
+            &nbsp;&nbsp;<span class="ck">public</span> <span class="cv">SmartGoException</span>(<span class="cs">String</span> message) {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">super</span>(message);<br>
+            &nbsp;&nbsp;}<br>
+            }
+          </div>
+          <div class="code">
+            <span class="cc">// Handling in AuthService.java</span><br>
+            <span class="ck">if</span>(userFound) {<br>
+            &nbsp;&nbsp;<span class="ck">throw new</span> <span class="cs">SmartGoException</span>(<span class="cs">"Email already exists!"</span>);<br>
+            }
+          </div>
+        </div>
+        <div class="vs-box">
+           <div class="vs-item vs-bad"><strong>Error Codes</strong>: Returning -1 or 'False' when an error occurs. The developer never knows WHY it failed.</div>
+           <div class="vs-circle">VS</div>
+           <div class="vs-item vs-good"><strong>Custom Exceptions</strong>: Throwing a SmartGoException with a human-readable message that can be shown in the UI.</div>
+        </div>
+      </div>
+      <div class="sn">20 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 21: FILE HANDLING -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">System Resilience</div>
+        <div class="heading grad" style="font-size:48px">Safe & Fast Persistence</div>
+        <div class="code-grid">
+          <div class="code">
+            <span class="cc">// From DataStore.java - The Writer</span><br>
+            <span class="ck">private static void</span> <span class="cv">appendLine</span>(<span class="cs">String</span> file, <span class="cs">String</span> line) {<br>
+            &nbsp;&nbsp;<span class="ck">try</span> (<span class="cs">BufferedWriter</span> w = <span class="ck">new</span> <span class="cs">BufferedWriter</span>(<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">new</span> <span class="cs">FileWriter</span>(file, <span class="ck">true</span>))) {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;w.<span class="cv">write</span>(line); w.<span class="cv">newLine</span>();<br>
+            &nbsp;&nbsp;} <span class="ck">catch</span> (<span class="cs">IOException</span> e) { ... }<br>
+            }
+          </div>
+          <div class="code">
+            <span class="cc">// From DataStore.java - The Reader</span><br>
+            <span class="ck">private static List&lt;String&gt; readLines</span>(<span class="cs">String</span> file) {<br>
+            &nbsp;&nbsp;<span class="cs">List</span>&lt;<span class="cs">String</span>&gt; lines = <span class="ck">new</span> <span class="cs">ArrayList</span>&lt;&gt;();<br>
+            &nbsp;&nbsp;<span class="ck">try</span> (<span class="cs">BufferedReader</span> r = <span class="ck">new</span> <span class="cs">BufferedReader</span>(...) ) { ... }<br>
+            }
+          </div>
+        </div>
+        <div class="vs-box">
+           <div class="vs-item vs-bad"><strong>Unbuffered I/O</strong>: Saving every single character to the disk one-by-one. This is very slow and can wear out a hard drive.</div>
+           <div class="vs-circle">VS</div>
+           <div class="vs-item vs-good"><strong>Buffered I/O</strong>: Collecting data in memory first and saving it all at once. It's 10x faster and much safer for data integrity.</div>
+        </div>
+      </div>
+      <div class="sn">21 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 22: SERIALIZATION -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">OOP Topic 7 (A)</div>
+        <div class="heading grad" style="font-size:48px">Object Serialization (Pipe Format)</div>
+        <div class="code-grid">
+          <div class="code">
+            <span class="cc">// From DataStore.saveUser()</span><br>
+            <span class="ck">public static void</span> <span class="cv">saveUser</span>(<span class="cs">User</span> user) {<br>
+            &nbsp;&nbsp;<span class="cs">String</span> line = user.<span class="cv">getId</span>() + <span class="cs">"|"</span> + <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;user.<span class="cv">getName</span>() + <span class="cs">"|"</span> + <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;user.<span class="cv">getEmail</span>() + <span class="cs">"|"</span> + ...;<br>
+            &nbsp;&nbsp;<span class="cv">appendLine</span>(USERS_FILE, line);<br>
+            }
+          </div>
+          <div class="code">
+            <span class="cc">// Why Pipe Delimiters?</span><br>
+            <span class="ct">// 1|Abdul Rehman|rehman@email.com|...</span><br><br>
+            <span class="cc">// This allows for infinite fields</span><br>
+            <span class="cc">// without confusing the parser.</span>
+          </div>
+        </div>
+        <div class="vs-box">
+           <div class="vs-item vs-bad"><strong>Comma Separated (CSV)</strong>: Comma-based files break if a user types a comma in their address (e.g., "Street 1, Apt 2").</div>
+           <div class="vs-circle">VS</div>
+           <div class="vs-item vs-good"><strong>Pipe Delimited</strong>: The pipe symbol (|) is rarely used in text, making our data storage 100% reliable for addresses and comments.</div>
+        </div>
+      </div>
+      <div class="sn">22 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 23: DESERIALIZATION -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">OOP Topic 7 (B)</div>
+        <div class="heading grad" style="font-size:48px">Reconstructing Objects (Parsing)</div>
+        <div class="code-grid">
+          <div class="code">
+            <span class="cc">// From DataStore.loadUsers() Logic</span><br>
+            <span class="cs">String</span>[] parts = line.<span class="cv">split</span>(<span class="cs">"\\|"</span>);<br>
+            <span class="ck">if</span> (parts.length &gt;= 8) {<br>
+            &nbsp;&nbsp;<span class="cs">User</span> u = <span class="ck">new</span> <span class="cs">User</span>(<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Integer.<span class="cv">parseInt</span>(parts[0]), <span class="cc">// ID</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;parts[1], <span class="cc">// Name</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;...<br>
+            &nbsp;&nbsp;);<br>
+            }
+          </div>
+          <div class="code">
+            <span class="cc">// Safety Check</span><br>
+            <span class="ck">try</span> {<br>
+            &nbsp;&nbsp;<span class="cc">// Reconstruct from string</span><br>
+            &nbsp;&nbsp;flights.<span class="cv">add</span>(parseFlight(line));<br>
+            } <span class="ck">catch</span>(Exception e) {<br>
+            &nbsp;&nbsp;<span class="cc">// Skip corrupt lines</span><br>
+            }
+          </div>
+        </div>
+        <div class="vs-box">
+           <div class="vs-item vs-bad"><strong>Binary Storage</strong>: Saving data in raw binary format. It's unreadable by humans and hard to debug.</div>
+           <div class="vs-circle">VS</div>
+           <div class="vs-item vs-good"><strong>Text-Based Parsing</strong>: Saving as readable text. We can easily check the "data.txt" file to see if the bookings are correct.</div>
+        </div>
+      </div>
+      <div class="sn">23 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 24: SUMMARY & FUTURE -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div class="label">Project Conclusion</div>
+        <div class="heading grad" style="font-size:48px">Results & Future Roadmap</div>
+        <div style="background:#f8fafc; padding:35px; border-radius:20px; flex:1; display:flex; flex-direction:column; justify-content:center; border:1px solid var(--border)">
+           <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px;">
+              <div>
+                <div class="label em" style="margin-bottom:15px;">Project Achievements</div>
+                <div class="bullet">Unified 3 travel modes into 1 engine.</div>
+                <div class="bullet">Zero code duplication via inheritance.</div>
+                <div class="bullet">100% data safety via encapsulation.</div>
+                <div class="bullet">Clean UI with automated billing.</div>
+              </div>
+              <div>
+                <div class="label pur" style="margin-bottom:15px;">Future Roadmap</div>
+                <div class="bullet">Migration to MySQL Database.</div>
+                <div class="bullet">Integration with Live Flight APIs.</div>
+                <div class="bullet">Credit Card Payment Gateway.</div>
+                <div class="bullet">Desktop to Web App Migration.</div>
+              </div>
+           </div>
+        </div>
+        <div class="rationale-box">
+          <p>SmartGo isn't just a project—it's a foundation for a real travel business.</p>
+        </div>
+      </div>
+      <div class="sn">24 / 25</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 25: THANK YOU -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad" style="justify-content:center; align-items:center; text-align:center;">
+        <div class="display grad" style="font-size:120px; margin-bottom:20px">Thank You</div>
+        <div class="heading" style="font-size:28px; font-weight:500; color:var(--muted);">SmartGo Travel System - Final Evaluation</div>
+        <div style="margin-top:50px; font-size:16px; color:var(--pur); font-weight:800; border:1.5px solid var(--pur); padding:10px 30px; border-radius:30px;">Questions & Feedback</div>
+      </div>
+      <div class="sn">25 / 25</div>
+    </div>
+  </div>
+
+</body>
+</html>
