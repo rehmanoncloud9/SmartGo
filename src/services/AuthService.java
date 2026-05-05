@@ -65,6 +65,21 @@ public class AuthService {
         throw new SmartGoException("Incorrect email or password. Please try again.");
     }
 
+    // Overloaded login method - Polymorphism (Compile-time)
+    public static User login(int userId, String password) throws SmartGoException {
+        List<User> users = DataStore.loadUsers();
+
+        for (User u : users) {
+            if (u.getId() == userId && u.getPasswordHash().equals(password)) {
+                loggedInUser = u;
+                System.out.println("Welcome back, " + u.getName() + "!");
+                return u;
+            }
+        }
+
+        throw new SmartGoException("Incorrect ID or password. Please try again.");
+    }
+
     // Logout the current user
     public static void logout() {
         if (loggedInUser != null) {

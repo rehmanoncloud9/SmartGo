@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartGo Diagram Editor</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Georgia&display=swap');
+        
+        :root {
+            --bg-color: #FDF6EC;
+            --caramel: #C8813A;
+            --espresso: #3D2B1F;
+            --abstract-bg: #F5EBDD;
+            --concrete-bg: #FFFBF7;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--espresso);
+            font-family: 'Calibri', sans-serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--caramel);
+            background: rgba(253, 246, 236, 0.9);
+            z-index: 10;
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: 'Georgia', serif;
+            color: var(--caramel);
+            font-size: 24px;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        #canvas-container {
+            flex-grow: 1;
+            position: relative;
+            cursor: grab;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .class-box {
+            cursor: move;
+            user-select: none;
+        }
+
+        .abstract-box rect {
+            fill: var(--abstract-bg);
+            stroke: var(--caramel);
+            stroke-width: 1px;
+        }
+
+        .abstract-box .stripe {
+            fill: var(--caramel);
+        }
+
+        .concrete-box rect {
+            fill: var(--concrete-bg);
+            stroke: var(--caramel);
+            stroke-width: 1px;
+        }
+
+        .label {
+            pointer-events: none;
+            fill: var(--espresso);
+        }
+
+        .abstract-label {
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .concrete-label {
+            font-size: 18px;
+        }
+
+        .sub-label {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 12px;
+        }
+
+        .inheritance-line {
+            stroke: var(--caramel);
+            stroke-width: 2.5px;
+            fill: none;
+        }
+
+        .association-line {
+            stroke: var(--caramel);
+            stroke-width: 2.5px;
+            fill: none;
+            stroke-dasharray: 6,6;
+        }
+
+        .legend {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            background: white;
+            padding: 15px;
+            border: 1px solid var(--caramel);
+            pointer-events: none;
+            box-shadow: 0 4px 15px rgba(61, 43, 31, 0.05);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .legend-swatch {
+            width: 30px;
+            height: 15px;
+            margin-right: 10px;
+            border: 1px solid var(--caramel);
+        }
+
+        .controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 20;
+        }
+
+        button {
+            background: var(--caramel);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        button:hover {
+            background: #b06f30;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>SmartGo Class Hierarchy Interactive Editor</h1>
+    <p>Drag the boxes to rearrange your diagram for the presentation. Connections will follow automatically.</p>
+</header>
+
+<div class="controls">
+    <button onclick="resetLayout()">Reset Layout</button>
+    <button onclick="downloadSVG()">Download SVG</button>
+</div>
+
+<div id="canvas-container">
+    <svg id="main-svg" viewBox="0 0 1600 900">
+        <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+                <path d="M0,0 L10,5 L0,10 Z" fill="#C8813A" />
+            </marker>
+        </defs>
+
+        <!-- Lines will be rendered here by JS -->
+        <g id="lines-group"></g>
+        
+        <!-- Boxes will be rendered here by JS -->
+        <g id="boxes-group"></g>
+    </svg>
+
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-swatch" style="background: var(--abstract-bg); border-left: 4px solid var(--caramel);"></div>
+            Abstract (Georgia Bold)
+        </div>
+        <div class="legend-item">
+            <div class="legend-swatch" style="background: var(--concrete-bg);"></div>
+            Concrete (Calibri Regular)
+        </div>
+        <div class="legend-item">
+            <div class="legend-swatch" style="height: 2px; background: var(--caramel); border: none;"></div>
+            Inheritance
+        </div>
+        <div class="legend-item">
+            <div class="legend-swatch" style="height: 2px; border: 1px dashed var(--caramel); background: transparent;"></div>
+            Association
+        </div>
+    </div>
+</div>
+
+<script>
+    const svg = document.getElementById('main-svg');
+    const boxesGroup = document.getElementById('boxes-group');
+    const linesGroup = document.getElementById('lines-group');
+
+    const classes = {
+        'Person': { x: 300, y: 100, w: 240, h: 90, type: 'abstract', label: 'Person' },
+        'User': { x: 100, y: 300, w: 200, h: 70, type: 'concrete', label: 'User' },
+        'Admin': { x: 450, y: 300, w: 200, h: 70, type: 'concrete', label: 'Admin' },
+        'Booking': { x: 680, y: 450, w: 240, h: 70, type: 'concrete', label: 'Booking' },
+        'Transport': { x: 1050, y: 100, w: 260, h: 90, type: 'abstract', label: 'Transport' },
+        'Flight': { x: 900, y: 650, w: 180, h: 70, type: 'concrete', label: 'Flight' },
+        'Bus': { x: 1120, y: 650, w: 180, h: 70, type: 'concrete', label: 'Bus' },
+        'Train': { x: 1340, y: 650, w: 180, h: 70, type: 'concrete', label: 'Train' }
+    };
+
+    const connections = [
+        { from: 'User', to: 'Person', type: 'inheritance' },
+        { from: 'Admin', to: 'Person', type: 'inheritance' },
+        { from: 'Flight', to: 'Transport', type: 'inheritance' },
+        { from: 'Bus', to: 'Transport', type: 'inheritance' },
+        { from: 'Train', to: 'Transport', type: 'inheritance' },
+        { from: 'Booking', to: 'User', type: 'association', label: 'belongs to' },
+        { from: 'Booking', to: 'Transport', type: 'association', label: 'references' }
+    ];
+
+    let selectedBox = null;
+    let offset = { x: 0, y: 0 };
+
+    function render() {
+        boxesGroup.innerHTML = '';
+        linesGroup.innerHTML = '';
+
+        // Render Lines
+        connections.forEach(conn => {
+            const from = classes[conn.from];
+            const to = classes[conn.to];
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            
+            // Logic for calculating connection points
+            let d = '';
+            const x1 = from.x + from.w / 2;
+            const y1 = from.y + (conn.type === 'inheritance' ? 0 : from.h / 2);
+            const x2 = to.x + to.w / 2;
+            const y2 = to.y + (conn.type === 'inheritance' ? to.h : to.h / 2);
+
+            if (conn.type === 'inheritance') {
+                d = `M ${x1} ${from.y} L ${x2} ${to.y + to.h}`;
+                path.setAttribute('class', 'inheritance-line');
+                path.setAttribute('marker-end', 'url(#arrow)');
+            } else {
+                // Orthogonal routing for association
+                d = `M ${from.x + from.w} ${from.y + from.h / 2} L ${to.x} ${to.y + to.h / 2}`;
+                // If it's Booking to User (backward), route differently
+                if (conn.from === 'Booking' && conn.to === 'User') {
+                    d = `M ${from.x} ${from.y + from.h / 2} L ${to.x + to.w} ${to.y + to.h / 2}`;
+                }
+                path.setAttribute('class', 'association-line');
+            }
+            
+            path.setAttribute('d', d);
+            linesGroup.appendChild(path);
+
+            if (conn.label) {
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', (x1 + x2) / 2);
+                text.setAttribute('y', (y1 + y2) / 2 - 5);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('class', 'label');
+                text.style.fontSize = '12px';
+                text.textContent = conn.label;
+                linesGroup.appendChild(text);
+            }
+        });
+
+        // Render Boxes
+        Object.entries(classes).forEach(([id, data]) => {
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            g.setAttribute('class', `class-box ${data.type}-box`);
+            g.setAttribute('transform', `translate(${data.x}, ${data.y})`);
+            g.addEventListener('mousedown', (e) => startDrag(e, id));
+
+            const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            rect.setAttribute('width', data.w);
+            rect.setAttribute('height', data.h);
+            g.appendChild(rect);
+
+            if (data.type === 'abstract') {
+                const stripe = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                stripe.setAttribute('width', 6);
+                stripe.setAttribute('height', data.h);
+                stripe.setAttribute('class', 'stripe');
+                g.appendChild(stripe);
+
+                const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                label.setAttribute('x', 20);
+                label.setAttribute('y', 40);
+                label.setAttribute('class', 'label abstract-label');
+                label.textContent = data.label;
+                g.appendChild(label);
+
+                const sub = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                sub.setAttribute('x', 20);
+                sub.setAttribute('y', 60);
+                sub.setAttribute('class', 'label sub-label');
+                sub.textContent = '<<abstract>>';
+                g.appendChild(sub);
+            } else {
+                const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                label.setAttribute('x', data.w / 2);
+                label.setAttribute('y', data.h / 2 + 7);
+                label.setAttribute('text-anchor', 'middle');
+                label.setAttribute('class', 'label concrete-label');
+                label.textContent = data.label;
+                g.appendChild(label);
+            }
+
+            boxesGroup.appendChild(g);
+        });
+    }
+
+    function startDrag(e, id) {
+        selectedBox = id;
+        const box = classes[id];
+        const pt = getSVGPoint(e);
+        offset = {
+            x: pt.x - box.x,
+            y: pt.y - box.y
+        };
+        document.body.style.cursor = 'grabbing';
+    }
+
+    function getSVGPoint(e) {
+        const pt = svg.createSVGPoint();
+        pt.x = e.clientX;
+        pt.y = e.clientY;
+        return pt.matrixTransform(svg.getScreenCTM().inverse());
+    }
+
+    window.addEventListener('mousemove', (e) => {
+        if (!selectedBox) return;
+        const pt = getSVGPoint(e);
+        classes[selectedBox].x = pt.x - offset.x;
+        classes[selectedBox].y = pt.y - offset.y;
+        render();
+    });
+
+    window.addEventListener('mouseup', () => {
+        selectedBox = null;
+        document.body.style.cursor = 'default';
+    });
+
+    function resetLayout() {
+        const original = {
+            'Person': { x: 300, y: 100 },
+            'User': { x: 100, y: 320 },
+            'Admin': { x: 440, y: 320 },
+            'Booking': { x: 680, y: 450 },
+            'Transport': { x: 1050, y: 100 },
+            'Flight': { x: 900, y: 650 },
+            'Bus': { x: 1100, y: 650 },
+            'Train': { x: 1300, y: 650 }
+        };
+        Object.entries(original).forEach(([id, pos]) => {
+            classes[id].x = pos.x;
+            classes[id].y = pos.y;
+        });
+        render();
+    }
+
+    function downloadSVG() {
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'smartgo_class_diagram.svg';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    render();
+</script>
+
+</body>
+</html>

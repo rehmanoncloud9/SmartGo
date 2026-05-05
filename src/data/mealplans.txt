@@ -1,0 +1,4 @@
+1|1|Full Board|All meals included|40.0
+2|2|Breakfast and Dinner|Breakfast and dinner included|35.0
+3|3|Standard Meals|Breakfast and dinner included|50.0
+4|3|Premium Meals|All meals plus room service|90.0

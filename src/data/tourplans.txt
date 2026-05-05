@@ -1,0 +1,3 @@
+1|1|1|Multan Heritage Tour|4|180.0|ACTIVE
+2|2|1|Lahore Cultural Experience|5|220.0|ACTIVE
+3|3|1|Skardu Mountain Adventure|7|350.0|ACTIVE

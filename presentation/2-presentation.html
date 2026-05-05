@@ -1,0 +1,2415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartGo - Integrated Travel Management System</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --em: #059669;
+      --em-l: rgba(5, 150, 105, .13);
+      --sky: #0284c7;
+      --sky-l: rgba(2, 132, 199, .13);
+      --pur: #7c3aed;
+      --pur-l: rgba(124, 58, 237, .13);
+      --red: #dc2626;
+      --text: #0f172a;
+      --sub: #334155;
+      --muted: #64748b;
+      --glass: rgba(255, 255, 255, .92);
+      --b1: rgba(0, 0, 0, .08);
+      --b2: rgba(0, 0, 0, .14);
+      --W: 1080px;
+      --H: 720px;
+    }
+
+    html {
+      background: #dde3ee
+    }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      background: #dde3ee;
+      color: var(--text);
+      padding: 40px 20px 80px;
+      line-height: 1.5;
+    }
+
+    @media print {
+      @page {
+        size: 1080px 720px;
+        margin: 0;
+      }
+      body {
+        padding: 0;
+        background: #fff;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .slide-wrap {
+        page-break-after: always;
+        page-break-inside: avoid;
+        margin: 0;
+        padding: 0;
+        height: 720px;
+      }
+      .slide-wrap:last-child {
+        page-break-after: auto;
+      }
+      .slide {
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        width: 1080px !important;
+        height: 720px !important;
+      }
+      .hint {
+        display: none;
+      }
+    }
+
+    .hint {
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 28px;
+      letter-spacing: .04em;
+    }
+
+    .slide-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 52px
+    }
+
+    .slide {
+      width: var(--W);
+      height: var(--H);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid var(--b2);
+      box-shadow: 0 40px 100px rgba(0, 0, 0, .55), 0 0 0 1px rgba(255, 255, 255, .06);
+      flex-shrink: 0;
+      background: #ffffff;
+    }
+
+    /* ── shared bg ── */
+    .bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background: #fff;
+    }
+
+    .bg::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 55% 45% at 10% 15%, rgba(0, 200, 150, .09) 0%, transparent 65%),
+        radial-gradient(ellipse 45% 55% at 90% 85%, rgba(56, 189, 248, .07) 0%, transparent 65%),
+        radial-gradient(ellipse 35% 35% at 55% 50%, rgba(99, 102, 241, .04) 0%, transparent 65%);
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(65px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── glass / cards ── */
+    .glass {
+      background: var(--glass);
+      backdrop-filter: blur(24px) saturate(1.4);
+      -webkit-backdrop-filter: blur(24px) saturate(1.4);
+      border: 1px solid var(--b1);
+      border-radius: 14px;
+    }
+
+    .glass-s {
+      background: var(--glass);
+      backdrop-filter: blur(40px) saturate(1.6);
+      -webkit-backdrop-filter: blur(40px) saturate(1.6);
+      border: 1px solid var(--b2);
+      border-radius: 14px;
+    }
+
+    .clay {
+      background: linear-gradient(145deg, rgba(0, 200, 150, .15), rgba(56, 189, 248, .09));
+      border: 1px solid rgba(0, 200, 150, .22);
+      border-radius: 14px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .07), inset 0 1px 0 rgba(255, 255, 255, .25)
+    }
+
+    .clay-b {
+      background: linear-gradient(145deg, rgba(56, 189, 248, .15), rgba(99, 102, 241, .09));
+      border: 1px solid rgba(56, 189, 248, .22);
+      border-radius: 14px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .07), inset 0 1px 0 rgba(255, 255, 255, .25)
+    }
+
+    .clay-p {
+      background: linear-gradient(145deg, rgba(124, 58, 237, .15), rgba(56, 189, 248, .07));
+      border: 1px solid rgba(124, 58, 237, .22);
+      border-radius: 14px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .07), inset 0 1px 0 rgba(255, 255, 255, .25)
+    }
+
+    /* ── typography ── */
+    .disp {
+      font-family: "Syne", sans-serif;
+      font-weight: 800;
+      line-height: 1
+    }
+
+    .head {
+      font-family: "Syne", sans-serif;
+      font-weight: 700;
+      line-height: 1.15
+    }
+
+    .label {
+      font-family: "DM Sans", sans-serif;
+      font-weight: 700;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      font-size: 13px
+    }
+
+    .mono {
+      font-family: "Courier New", monospace;
+      font-weight: 700
+    }
+
+    .grad {
+      background: linear-gradient(130deg, #00c896 0%, #38bdf8 50%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text
+    }
+
+    .em {
+      color: var(--em)
+    }
+
+    .sky {
+      color: var(--sky)
+    }
+
+    .pur {
+      color: var(--pur)
+    }
+
+    .mut {
+      color: var(--muted)
+    }
+
+    /* ── pills ── */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .p-em {
+      background: rgba(0, 200, 150, .12);
+      border: 1px solid rgba(0, 200, 150, .3);
+      color: var(--em)
+    }
+
+    .p-sky {
+      background: rgba(56, 189, 248, .12);
+      border: 1px solid rgba(56, 189, 248, .3);
+      color: var(--sky)
+    }
+
+    .p-pur {
+      background: rgba(124, 58, 237, .12);
+      border: 1px solid rgba(124, 58, 237, .3);
+      color: var(--pur)
+    }
+
+    .p-red {
+      background: rgba(220, 38, 38, .09);
+      border: 1px solid rgba(220, 38, 38, .25);
+      color: var(--red)
+    }
+
+    /* ── layout helpers ── */
+    .pad {
+      position: relative;
+      z-index: 2;
+      padding: 40px 50px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .pad-sm {
+      position: relative;
+      z-index: 2;
+      padding: 32px 44px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .sn {
+      position: absolute;
+      bottom: 18px;
+      right: 24px;
+      z-index: 10;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: .1em;
+      font-weight: 600;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 200, 150, .3), transparent);
+      margin: 6px 0
+    }
+
+    /* ── tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse
+    }
+
+    th {
+      text-align: left;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 13px;
+      padding: 6px 8px;
+      border-bottom: 2px solid var(--b2)
+    }
+
+    td {
+      padding: 6px 8px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--b1);
+      vertical-align: top
+    }
+
+    tr:last-child td {
+      border-bottom: none
+    }
+
+    .pass {
+      color: var(--em);
+      font-weight: 700
+    }
+
+    .fail {
+      color: var(--red);
+      font-weight: 700
+    }
+
+    /* ── code block ── */
+    .code {
+      background: #0d1117;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-family: "Courier New", monospace;
+      font-size: 13px;
+      line-height: 1.75;
+      color: #c9d1d9;
+    }
+
+    .ck {
+      color: #ff7b72
+    }
+
+    .cv {
+      color: #d2a8ff
+    }
+
+    .cs {
+      color: #a5d6ff
+    }
+
+    .cc {
+      color: #8b949e
+    }
+
+    .cn {
+      color: #79c0ff
+    }
+
+    /* ── UML boxes ── */
+    .uml-box {
+      border: 2px solid var(--b2);
+      border-radius: 8px;
+      background: #fff;
+      font-family: "Courier New", monospace;
+    }
+
+    .uml-head {
+      background: linear-gradient(135deg, rgba(0, 200, 150, .12), rgba(56, 189, 248, .08));
+      padding: 5px 10px;
+      border-bottom: 2px solid var(--b2);
+      font-weight: 700;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .uml-sec {
+      padding: 4px 8px;
+      border-bottom: 1px solid var(--b1);
+      font-size: 11px;
+      line-height: 1.55
+    }
+
+    .uml-sec:last-child {
+      border-bottom: none
+    }
+
+    /* ── ER entities ── */
+    .er-ent {
+      border: 2px solid var(--b2);
+      border-radius: 8px;
+      background: #fff;
+      text-align: center;
+      min-width: 115px
+    }
+
+    .er-head {
+      background: linear-gradient(135deg, rgba(56, 189, 248, .16), rgba(0, 200, 150, .08));
+      padding: 5px 8px;
+      font-weight: 700;
+      font-size: 11px;
+      border-bottom: 1px solid var(--b2);
+      border-radius: 6px 6px 0 0
+    }
+
+    .er-body {
+      padding: 4px 7px;
+      font-size: 10px;
+      color: var(--muted);
+      font-family: "Courier New", monospace;
+      line-height: 1.6;
+      text-align: left
+    }
+
+    /* ── connectors ── */
+    .conn-h {
+      height: 1px;
+      background: var(--sky);
+      position: relative;
+      align-self: center
+    }
+
+    .conn-h::after {
+      content: "▶";
+      position: absolute;
+      right: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--sky);
+      font-size: 9px
+    }
+
+    .conn-v {
+      width: 1px;
+      background: rgba(0, 0, 0, .2);
+      margin: 0 auto
+    }
+
+    /* ── use-case diagram ── */
+    .uc-oval {
+      border: 2px solid;
+      border-radius: 50px;
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .uc-user {
+      border-color: var(--sky);
+      color: var(--sky);
+      background: rgba(56, 189, 248, .06)
+    }
+
+    .uc-admin {
+      border-color: var(--pur);
+      color: var(--pur);
+      background: rgba(124, 58, 237, .06)
+    }
+
+    .uc-guest {
+      border-color: var(--em);
+      color: var(--em);
+      background: rgba(0, 200, 150, .06)
+    }
+
+    /* ── sequence diagram ── */
+    .seq-head {
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      min-width: 105px
+    }
+
+    .seq-line {
+      width: 1px;
+      background: rgba(0, 0, 0, .15);
+      flex: 1;
+      min-height: 8px
+    }
+
+    .seq-arr {
+      height: 1px;
+      background: var(--sky);
+      position: relative
+    }
+
+    .seq-arr::after {
+      content: "▶";
+      position: absolute;
+      right: -7px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--sky);
+      font-size: 9px
+    }
+
+    .seq-arr.ret {
+      background: rgba(0, 0, 0, .25)
+    }
+
+    .seq-arr.ret::after {
+      content: "▶";
+      color: rgba(0, 0, 0, .4)
+    }
+
+    .seq-arr.dashed {
+      background: repeating-linear-gradient(90deg, var(--sky) 0, var(--sky) 5px, transparent 5px, transparent 10px)
+    }
+
+    .seq-arr.dashed::after {
+      color: var(--sky)
+    }
+
+    .seq-lbl {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--sub);
+      text-align: center;
+      margin-bottom: 2px;
+      white-space: nowrap
+    }
+
+    .seq-box {
+      border: 1px solid var(--b2);
+      border-radius: 6px;
+      background: rgba(56, 189, 248, .06);
+      padding: 6px 10px;
+      margin: 4px 0;
+      font-size: 11px;
+      text-align: center
+    }
+
+    /* ── activity diagram ── */
+    .act-box {
+      border: 2px solid var(--sky);
+      border-radius: 8px;
+      background: rgba(56, 189, 248, .06);
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      white-space: nowrap
+    }
+
+    .act-dec {
+      width: 56px;
+      height: 56px;
+      border: 2px solid var(--pur);
+      background: rgba(124, 58, 237, .07);
+      transform: rotate(45deg);
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .act-dec span {
+      transform: rotate(-45deg);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--pur);
+      white-space: nowrap
+    }
+
+    .act-term {
+      border: 2px solid var(--em);
+      border-radius: 50px;
+      padding: 6px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--em);
+      background: rgba(0, 200, 150, .08);
+      text-align: center
+    }
+
+    .act-v {
+      width: 1px;
+      background: rgba(0, 0, 0, .2);
+      margin: 0 auto;
+      position: relative
+    }
+
+    .act-v::after {
+      content: "▼";
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--muted);
+      font-size: 10px
+    }
+
+    .act-h {
+      height: 1px;
+      background: rgba(0, 0, 0, .18);
+      position: relative;
+      align-self: center
+    }
+
+    .ss-frame {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      min-height: 0;
+    }
+
+    .ss-frame img {
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .ss-placeholder {
+      width: 100%;
+      height: 100%;
+      min-height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .ss-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .ss-pair>div {
+      min-height: 0;
+    }
+
+    /* ── glass card ── */
+    .glass {
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <p class="hint">Chrome → File → Print → Save as PDF &nbsp;|&nbsp; Margins: None · Scale: 100% · Background graphics:
+    ON</p>
+
+  <!-- ══════════════════════
+       SLIDE 1 — COVER
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s1">
+      <div class="bg"></div>
+      <div class="blob"
+        style="width:600px;height:600px;left:50%;top:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(0,200,150,.12),rgba(56,189,248,.10),transparent 70%)">
+      </div>
+      <div class="blob"
+        style="width:400px;height:400px;left:-100px;top:-100px;background:radial-gradient(circle,rgba(0,200,150,.18),transparent 70%)">
+      </div>
+      <div class="blob"
+        style="width:400px;height:400px;right:-100px;bottom:-100px;background:radial-gradient(circle,rgba(124,58,237,.15),transparent 70%)">
+      </div>
+      <!-- Extra liquid glass blobs -->
+      <div class="blob"
+        style="width:300px;height:300px;right:60px;top:40px;background:radial-gradient(circle,rgba(56,189,248,.14),transparent 70%)">
+      </div>
+      <div class="blob"
+        style="width:250px;height:250px;left:80px;bottom:60px;background:radial-gradient(circle,rgba(124,58,237,.10),transparent 70%)">
+      </div>
+      <div class="blob"
+        style="width:350px;height:350px;left:40%;top:-80px;background:radial-gradient(circle,rgba(0,200,150,.08),rgba(56,189,248,.06),transparent 70%)">
+      </div>
+
+      <div
+        style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;text-align:center;padding:60px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+          <span class="pill p-em" style="font-size:14px;padding:6px 20px">Production-Ready Architecture</span>
+        </div>
+
+        <!-- Frosted glass title panel -->
+        <div
+          style="background:rgba(255,255,255,.45);backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);border:1px solid rgba(255,255,255,.6);border-radius:20px;padding:36px 60px;box-shadow:0 8px 32px rgba(0,0,0,.06),inset 0 1px 0 rgba(255,255,255,.5)">
+          <div class="disp grad" style="font-size:130px;letter-spacing:-6px">SmartGo</div>
+          <div
+            style="width:80px;height:4px;background:linear-gradient(90deg,var(--em),var(--sky));border-radius:2px;margin:16px auto 0">
+          </div>
+        </div>
+
+        <div style="max-width:800px">
+          <div style="font-size:26px;color:var(--sub);font-weight:600;line-height:1.4;margin-bottom:12px">Integrated
+            Travel & Tourism Management System</div>
+          <div style="font-size:18px;color:var(--muted);font-weight:500">A high-fidelity Java application architected on
+            Enterprise Design Patterns and OOP Principles</div>
+        </div>
+
+        <div style="display:flex;gap:14px;margin-top:12px">
+          <span class="pill p-em">Encapsulation</span>
+          <span class="pill p-sky">Inheritance</span>
+          <span class="pill p-pur">Abstraction</span>
+          <span class="pill p-em">Polymorphism</span>
+        </div>
+
+        <!-- Frosted glass attribution card -->
+        <div
+          style="margin-top:24px;padding:18px 44px;background:rgba(255,255,255,.35);backdrop-filter:blur(24px) saturate(1.6);-webkit-backdrop-filter:blur(24px) saturate(1.6);border:1px solid rgba(255,255,255,.5);border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,.05),inset 0 1px 0 rgba(255,255,255,.4);display:flex;flex-direction:column;gap:4px">
+          <div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.14em;font-weight:700">
+            Slides prepared by</div>
+          <div style="font-size:20px;color:var(--sub);font-weight:700;letter-spacing:-.01em">Abdul Rehman</div>
+        </div>
+      </div>
+      <div class="sn">01 / 23</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       SLIDE 2 — PROBLEM & SOLUTION
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s2">
+      <div class="bg"></div>
+      <div class="blob"
+        style="width:360px;height:360px;right:-70px;top:-70px;background:radial-gradient(circle,rgba(56,189,248,.11),transparent 70%)">
+      </div>
+      <div class="pad">
+        <div>
+          <div class="label mut" style="margin-bottom:6px">Project Motivation</div>
+          <div class="head grad" style="font-size:40px">Problem &amp; Solution</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="glass" style="padding:22px;border-left:6px solid var(--red);flex:1">
+              <div class="label" style="color:var(--red);margin-bottom:14px;font-size:12px">Problem</div>
+              <ul style="font-size:17px;padding-left:20px;color:var(--sub);line-height:2;font-weight:500">
+                <li>Travel booking requires juggling multiple providers</li>
+                <li>No single offline system handles flights, hotels &amp; tours together</li>
+                <li>Enterprise platforms often present significant overhead for localized solutions</li>
+              </ul>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="glass" style="padding:22px;border-left:6px solid var(--em);flex:1">
+              <div class="label em" style="margin-bottom:14px;font-size:12px">Solution: SmartGo</div>
+              <ul style="font-size:17px;padding-left:20px;color:var(--sub);line-height:2;font-weight:500">
+                <li>Single Java Swing desktop application</li>
+                <li>Book flights, hotels &amp; tour plans in one session</li>
+                <li>File-based persistence (no database required)</li>
+                <li>Clean OOP architecture showcasing all four pillars</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="glass-s" style="padding:18px 22px;display:flex;gap:28px;align-items:center">
+          <div style="font-size:17px;color:var(--sub);font-weight:600;line-height:1.5">Goal: Deliver a robust
+            application utilizing <strong>Encapsulation, Inheritance, Abstraction &amp; Polymorphism</strong> within a
+            scalable production architecture.</div>
+        </div>
+      </div>
+      <div class="sn">02 / 23</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       SLIDE 3 — SYSTEM ARCHITECTURE
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s3">
+      <div class="bg"></div>
+      <div class="blob"
+        style="width:380px;height:380px;left:-80px;bottom:-80px;background:radial-gradient(circle,rgba(0,200,150,.10),transparent 70%)">
+      </div>
+      <div class="pad-sm">
+        <div>
+          <div class="label mut" style="margin-bottom:4px">3-Layer Architecture</div>
+          <div class="head grad" style="font-size:36px">System Architecture</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;flex:1;justify-content:center">
+          <!-- Layer 1 -->
+          <div class="clay-b" style="padding:16px 24px">
+            <div style="display:flex;align-items:center;gap:16px">
+              <div style="flex:1">
+                <div style="font-size:18px;font-weight:700;color:var(--sky)">Presentation Layer: Main.java (Java Swing
+                  GUI)</div>
+                <div style="font-size:14px;color:var(--muted);margin-top:4px">JOptionPane dialogs · JTextField inputs ·
+                  captureOutput() bridge · navigation flow control</div>
+              </div>
+              <div
+                style="font-size:13px;font-family:'Courier New',monospace;color:var(--sky);font-weight:700;white-space:nowrap">
+                Main.java</div>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:18px;color:var(--muted)">↕ calls / receives data</div>
+          <!-- Layer 2 -->
+          <div class="clay" style="padding:16px 24px">
+            <div style="display:flex;align-items:center;gap:16px">
+              <div style="flex:1">
+                <div style="font-size:18px;font-weight:700;color:var(--em)">Service Layer: Business Logic</div>
+                <div style="font-size:14px;color:var(--muted);margin-top:6px;display:flex;gap:10px;flex-wrap:wrap">
+                  <span class="pill p-em" style="font-size:11px">AuthService</span>
+                  <span class="pill p-em" style="font-size:11px">BookingService</span>
+                  <span class="pill p-em" style="font-size:11px">FlightService</span>
+                  <span class="pill p-em" style="font-size:11px">HotelService</span>
+                  <span class="pill p-em" style="font-size:11px">TourPlanService</span>
+                  <span class="pill p-em" style="font-size:11px">ReviewService</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:18px;color:var(--muted)">↕ read / write</div>
+          <!-- Layer 3 -->
+          <div class="clay-p" style="padding:16px 24px">
+            <div style="display:flex;align-items:center;gap:16px">
+              <div style="flex:1">
+                <div style="font-size:18px;font-weight:700;color:var(--pur)">Data Layer: DataStore.java + .txt files
+                </div>
+                <div style="font-size:14px;color:var(--muted);margin-top:4px">appendLine() · readLines() ·
+                  writeAllLines() · 11 pipe-delimited text files</div>
+              </div>
+              <div
+                style="font-size:13px;font-family:'Courier New',monospace;color:var(--pur);font-weight:700;white-space:nowrap">
+                DataStore.java</div>
+            </div>
+          </div>
+          <!-- supporting -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+            <div class="glass" style="padding:12px 16px;text-align:center">
+              <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">19 Model Classes</div>
+              <div style="font-size:12px;color:var(--muted)">Person, Transport hierarchies + 15 domain models</div>
+            </div>
+            <div class="glass" style="padding:12px 16px;text-align:center">
+              <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">3 Enumerations</div>
+              <div style="font-size:12px;color:var(--muted)">BookingStatus · PaymentStatus · PaymentMethod</div>
+            </div>
+            <div class="glass" style="padding:12px 16px;text-align:center">
+              <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">SmartGoException</div>
+              <div style="font-size:12px;color:var(--muted)">Custom checked exception for all business rule violations
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sn">03 / 23</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       SLIDE 4 — USE CASE DIAGRAM
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s4">
+      <div class="bg"></div>
+      <div class="blob"
+        style="width:360px;height:360px;right:-60px;top:-60px;background:radial-gradient(circle,rgba(124,58,237,.10),transparent 70%)">
+      </div>
+      <div class="pad-sm">
+        <div>
+          <div class="label mut" style="margin-bottom:4px">UML · Three Actor Types</div>
+          <div class="head grad" style="font-size:36px">Use Case Diagram</div>
+        </div>
+
+        <!-- System boundary -->
+        <div
+          style="flex:1;border:2px dashed rgba(0,0,0,.15);border-radius:14px;padding:16px 20px;display:flex;gap:20px;align-items:stretch;position:relative">
+          <div
+            style="position:absolute;top:-12px;left:24px;background:white;padding:0 10px;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.08em">
+            « SmartGo System »</div>
+
+          <!-- Guest column -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-width:90px;padding-top:10px">
+            <div style="font-size:13px;font-weight:700;color:var(--em)">Guest</div>
+            <div style="font-size:11px;color:var(--muted);text-align:center">(Not logged in)</div>
+            <div style="flex:1;width:1px;background:rgba(0,200,150,.3);margin-top:8px"></div>
+          </div>
+
+          <!-- Guest use cases -->
+          <div style="display:flex;flex-direction:column;justify-content:center;gap:10px;flex:1">
+            <div
+              style="font-size:11px;font-weight:700;color:var(--em);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">
+              Guest Actions</div>
+            <div class="uc-oval uc-guest" style="font-size:11px;padding:5px 8px">UC-01 · Register Account</div>
+            <div class="uc-oval uc-guest" style="font-size:11px;padding:5px 8px">UC-02 · Login</div>
+          </div>
+
+          <!-- divider -->
+          <div style="width:1px;background:var(--b2);margin:0 8px"></div>
+
+          <!-- User use cases -->
+          <div style="display:flex;flex-direction:column;justify-content:center;gap:8px;flex:2">
+            <div
+              style="font-size:11px;font-weight:700;color:var(--sky);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">
+              Authenticated User Actions</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div class="uc-oval uc-user" style="font-size:11px;padding:5px 8px">UC-03 · Browse Flights</div>
+              <div class="uc-oval uc-user" style="font-size:11px;padding:5px 8px">UC-04 · Book Flight</div>
+              <div class="uc-oval uc-user" style="font-size:11px;padding:5px 8px">UC-05 · Book Hotel</div>
+              <div class="uc-oval uc-user" style="font-size:11px;padding:5px 8px">UC-06 · Book Tour Plan</div>
+              <div class="uc-oval uc-user" style="font-size:11px;padding:5px 8px">UC-07 · Cancel Booking</div>
+              <div class="uc-oval uc-user" style="font-size:11px;padding:5px 8px">UC-08 · View My Bookings</div>
+              <div class="uc-oval uc-user" style="font-size:11px;padding:5px 8px">UC-09 · Pay Bill</div>
+              <div class="uc-oval uc-user" style="font-size:11px;padding:5px 8px">UC-10 · Submit Review</div>
+              <div class="uc-oval uc-user" style="font-size:11px;padding:5px 8px">UC-11 · Logout</div>
+            </div>
+          </div>
+
+          <!-- divider -->
+          <div style="width:1px;background:var(--b2);margin:0 8px"></div>
+
+          <!-- Admin use cases -->
+          <div style="display:flex;flex-direction:column;justify-content:center;gap:8px;flex:1.2">
+            <div
+              style="font-size:11px;font-weight:700;color:var(--pur);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">
+              Admin Actions</div>
+            <div class="uc-oval uc-admin" style="font-size:11px;padding:5px 8px">UC-12 · Add Flight</div>
+            <div class="uc-oval uc-admin" style="font-size:11px;padding:5px 8px">UC-13 · Add Hotel</div>
+            <div class="uc-oval uc-admin" style="font-size:11px;padding:5px 8px">UC-14 · Add Tour Plan</div>
+            <div class="uc-oval uc-admin" style="font-size:11px;padding:5px 8px">UC-15 · View All Reviews</div>
+          </div>
+
+          <!-- Admin actor -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-width:90px;padding-top:10px">
+            <div style="font-size:13px;font-weight:700;color:var(--pur)">Admin</div>
+            <div style="font-size:11px;color:var(--muted);text-align:center">(System Manager)</div>
+            <div style="flex:1;width:1px;background:rgba(124,58,237,.3);margin-top:8px"></div>
+          </div>
+        </div>
+
+        <!-- User actor label at bottom -->
+        <div style="display:flex;justify-content:center;gap:10px;align-items:center">
+          <div style="display:flex;align-items:center;gap:8px"><span
+              style="font-size:14px;font-weight:700;color:var(--sky)">Authenticated User</span></div>
+          <span style="color:var(--muted)">·</span>
+          <div style="font-size:13px;color:var(--muted)">Lines from actor to use case oval = "performs" relationship
+          </div>
+        </div>
+      </div>
+      <div class="sn">04 / 23</div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════
+       SLIDE 5 — OOP PRINCIPLES
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s5">
+      <div class="bg"></div>
+      <div class="blob"
+        style="width:420px;height:420px;right:-90px;top:-90px;background:radial-gradient(circle,rgba(124,58,237,.11),transparent 70%)">
+      </div>
+      <div class="pad">
+        <div>
+          <div class="label mut" style="margin-bottom:6px">Architectural Implementation</div>
+          <div class="head grad" style="font-size:40px">Design Principles in Practice</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:16px;flex:1">
+          <div class="glass" style="border-left:6px solid var(--em);padding:22px;position:relative;overflow:hidden">
+            <div
+              style="position:absolute;right:14px;top:6px;font-size:60px;font-weight:800;opacity:.05;font-family:Syne,sans-serif">
+              1</div>
+            <span class="pill p-em" style="margin-bottom:12px;display:inline-block;font-size:13px">Encapsulation</span>
+            <ul style="font-size:16px;line-height:1.8;padding-left:20px;font-weight:500;color:var(--sub)">
+              <li>All 19 models use <span class="mono" style="font-size:14px">private</span> fields + public
+                getters/setters</li>
+              <li>Bill fee calculation sealed inside <span class="mono" style="font-size:14px">BookingService</span>;
+                GUI never touches it</li>
+              <li>DataStore I/O is <span class="mono" style="font-size:14px">private static</span>, so services call
+                exposed API only</li>
+            </ul>
+          </div>
+          <div class="glass" style="border-left:6px solid var(--sky);padding:22px;position:relative;overflow:hidden">
+            <div
+              style="position:absolute;right:14px;top:6px;font-size:60px;font-weight:800;opacity:.05;font-family:Syne,sans-serif">
+              2</div>
+            <span class="pill p-sky" style="margin-bottom:12px;display:inline-block;font-size:13px">Inheritance</span>
+            <ul style="font-size:16px;line-height:1.8;padding-left:20px;font-weight:500;color:var(--sub)">
+              <li><span class="mono" style="font-size:14px">Person</span> → <span class="mono"
+                  style="font-size:14px">User</span> &amp; <span class="mono" style="font-size:14px">Admin</span>:
+                shares id, name, email, phone, password</li>
+              <li><span class="mono" style="font-size:14px">Transport</span> → <span class="mono"
+                  style="font-size:14px">Flight</span>, <span class="mono" style="font-size:14px">Bus</span>, <span
+                  class="mono" style="font-size:14px">Train</span>: shares price, capacity, destinationId</li>
+              <li>Subclasses call <span class="mono" style="font-size:14px">super()</span> to pass common fields to
+                parent</li>
+            </ul>
+          </div>
+          <div class="glass" style="border-left:6px solid var(--pur);padding:22px;position:relative;overflow:hidden">
+            <div
+              style="position:absolute;right:14px;top:6px;font-size:60px;font-weight:800;opacity:.05;font-family:Syne,sans-serif">
+              3</div>
+            <span class="pill p-pur" style="margin-bottom:12px;display:inline-block;font-size:13px">Abstraction</span>
+            <ul style="font-size:16px;line-height:1.8;padding-left:20px;font-weight:500;color:var(--sub)">
+              <li><span class="mono" style="font-size:14px">abstract Person</span> declares <span class="mono"
+                  style="font-size:14px">getRole()</span> and cannot be instantiated</li>
+              <li><span class="mono" style="font-size:14px">abstract Transport</span> declares <span class="mono"
+                  style="font-size:14px">getScheduleSummary()</span>, forcing a concrete implementation</li>
+              <li>Service layer hides all file I/O details from the GUI layer</li>
+            </ul>
+          </div>
+          <div class="glass" style="border-left:6px solid var(--em);padding:22px;position:relative;overflow:hidden">
+            <div
+              style="position:absolute;right:14px;top:6px;font-size:60px;font-weight:800;opacity:.05;font-family:Syne,sans-serif">
+              4</div>
+            <span class="pill p-em" style="margin-bottom:12px;display:inline-block;font-size:13px">Polymorphism</span>
+            <ul style="font-size:16px;line-height:1.8;padding-left:20px;font-weight:500;color:var(--sub)">
+              <li><span class="mono" style="font-size:14px">getRole()</span> overridden: User returns "User", Admin
+                returns "Admin"</li>
+              <li><span class="mono" style="font-size:14px">getScheduleSummary()</span> returns different string per
+                transport type</li>
+              <li>ReviewService dispatches to flight/hotel/tour target at runtime via <span class="mono"
+                  style="font-size:14px">type</span> field</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="sn">05 / 23</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       SLIDE 6 — CLASS HIERARCHY DIAGRAM
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s6">
+      <div class="bg"></div>
+      <div class="blob"
+        style="width:360px;height:360px;right:80px;bottom:-70px;background:radial-gradient(circle,rgba(0,200,150,.08),transparent 70%)">
+      </div>
+      <div class="pad-sm">
+        <div>
+          <div class="label mut" style="margin-bottom:4px">System Data Architecture</div>
+          <div class="head grad" style="font-size:36px">Class Hierarchy &amp; Domain Structure</div>
+        </div>
+
+        <div style="display:flex;gap:20px;flex:1;align-items:flex-start">
+
+          <!-- Person tree -->
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0">
+            <div class="label mut" style="font-size:11px;margin-bottom:10px">Person Hierarchy</div>
+            <!-- Person abstract -->
+            <div class="uml-box" style="width:210px">
+              <div class="uml-head" style="font-size:12px"><span
+                  style="font-size:10px;color:var(--pur);display:block">«abstract»</span>Person</div>
+              <div class="uml-sec">- id: int<br>- name: String<br>- email: String<br>- phone: String<br>- password:
+                String<br>- createdAt: String</div>
+              <div class="uml-sec em">+ getRole(): String <em style="color:var(--pur)">{abstract}</em><br>+ getters /
+                setters</div>
+            </div>
+            <!-- line -->
+            <div style="width:1px;height:16px;background:var(--em)"></div>
+            <!-- triangle marker -->
+            <div
+              style="width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:10px solid var(--em)">
+            </div>
+            <div style="display:flex;gap:16px;margin-top:0">
+              <!-- User -->
+              <div style="display:flex;flex-direction:column;align-items:center">
+                <div style="width:1px;height:14px;background:rgba(0,0,0,.2)"></div>
+                <div class="uml-box" style="width:120px">
+                  <div class="uml-head sky" style="font-size:12px">User</div>
+                  <div class="uml-sec">- address: String<br>- lastLogin: String</div>
+                  <div class="uml-sec em" style="font-size:11px">getRole() → "User"</div>
+                </div>
+              </div>
+              <!-- Admin -->
+              <div style="display:flex;flex-direction:column;align-items:center">
+                <div style="width:1px;height:14px;background:rgba(0,0,0,.2)"></div>
+                <div class="uml-box" style="width:120px">
+                  <div class="uml-head pur" style="font-size:12px">Admin</div>
+                  <div class="uml-sec">- role: String<br>- lastLogin: String</div>
+                  <div class="uml-sec em" style="font-size:11px">getRole() → "Admin"</div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:16px" class="glass" style="padding:10px 16px">
+              <div style="font-size:12px;color:var(--muted);font-style:italic;text-align:center;padding:8px 12px">
+                Shared: id, name, email, phone,<br>password, createdAt</div>
+            </div>
+          </div>
+
+          <!-- divider -->
+          <div style="width:1px;background:var(--b2);align-self:stretch;margin:0 10px"></div>
+
+          <!-- Transport tree -->
+          <div style="flex:1.3;display:flex;flex-direction:column;align-items:center;gap:0">
+            <div class="label mut" style="font-size:11px;margin-bottom:10px">Transport Hierarchy</div>
+            <div class="uml-box" style="width:240px">
+              <div class="uml-head" style="font-size:12px"><span
+                  style="font-size:10px;color:var(--pur);display:block">«abstract»</span>Transport</div>
+              <div class="uml-sec">- id: int<br>- destinationId: int<br>- type: String<br>- price: double<br>- capacity:
+                int</div>
+              <div class="uml-sec sky">+ getScheduleSummary(): String <em style="color:var(--pur)">{abstract}</em><br>+
+                setPrice() / setCapacity()</div>
+            </div>
+            <div style="width:1px;height:16px;background:var(--sky)"></div>
+            <div
+              style="width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:10px solid var(--sky)">
+            </div>
+            <div style="display:flex;gap:10px;margin-top:0">
+              <div style="display:flex;flex-direction:column;align-items:center">
+                <div style="width:1px;height:14px;background:rgba(0,0,0,.2)"></div>
+                <div class="uml-box" style="width:105px">
+                  <div class="uml-head sky" style="font-size:11px">Flight</div>
+                  <div class="uml-sec" style="font-size:10px">- airline<br>- flightNumber<br>- flightClass<br>-
+                    departureTime<br>- returnTime</div>
+                  <div class="uml-sec sky" style="font-size:10px">getSchedule()<br>→ "Departs: …"</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center">
+                <div style="width:1px;height:14px;background:rgba(0,0,0,.2)"></div>
+                <div class="uml-box" style="width:105px">
+                  <div class="uml-head sky" style="font-size:11px">Bus</div>
+                  <div class="uml-sec" style="font-size:10px">- operator<br>- busType<br>- busNumber<br>- departure<br>-
+                    arrival</div>
+                  <div class="uml-sec sky" style="font-size:10px">getSchedule()<br>→ "Bus departs: …"</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center">
+                <div style="width:1px;height:14px;background:rgba(0,0,0,.2)"></div>
+                <div class="uml-box" style="width:105px">
+                  <div class="uml-head sky" style="font-size:11px">Train</div>
+                  <div class="uml-sec" style="font-size:10px">- trainOperator<br>- trainNumber<br>- trainClass<br>-
+                    departure<br>- arrival</div>
+                  <div class="uml-sec sky" style="font-size:10px">getSchedule()<br>→ "Train departs: …"</div>
+                </div>
+              </div>
+            </div>
+            <div
+              style="margin-top:14px;font-size:12px;color:var(--muted);font-style:italic;text-align:center;padding:8px 14px"
+              class="glass">
+              Shared: id, destinationId, type, price, capacity
+            </div>
+          </div>
+
+          <!-- divider -->
+          <div style="width:1px;background:var(--b2);align-self:stretch;margin:0 10px"></div>
+
+          <!-- Legend + other classes -->
+          <div style="flex:0.8;display:flex;flex-direction:column;gap:10px">
+            <div class="label mut" style="font-size:11px">Legend</div>
+            <div class="glass" style="padding:12px 14px;font-size:12px;color:var(--sub);line-height:2">
+              <div>▷── Inheritance (extends)</div>
+              <div style="color:var(--pur)">«abstract» · Type Blueprint</div>
+              <div>{abstract} · Method Requirement</div>
+            </div>
+            <div class="label mut" style="font-size:11px;margin-top:6px">Other Domain Classes</div>
+            <div class="glass" style="padding:12px 14px">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+                <div class="pill"
+                  style="background:rgba(15,23,42,.04);border:1px solid rgba(15,23,42,.1);font-family:'Courier New',monospace;font-size:11px">
+                  Booking</div>
+                <div class="pill"
+                  style="background:rgba(15,23,42,.04);border:1px solid rgba(15,23,42,.1);font-family:'Courier New',monospace;font-size:11px">
+                  Bill</div>
+                <div class="pill"
+                  style="background:rgba(15,23,42,.04);border:1px solid rgba(15,23,42,.1);font-family:'Courier New',monospace;font-size:11px">
+                  Payment</div>
+                <div class="pill"
+                  style="background:rgba(15,23,42,.04);border:1px solid rgba(15,23,42,.1);font-family:'Courier New',monospace;font-size:11px">
+                  Hotel</div>
+                <div class="pill"
+                  style="background:rgba(15,23,42,.04);border:1px solid rgba(15,23,42,.1);font-family:'Courier New',monospace;font-size:11px">
+                  HotelBooking</div>
+                <div class="pill"
+                  style="background:rgba(15,23,42,.04);border:1px solid rgba(15,23,42,.1);font-family:'Courier New',monospace;font-size:11px">
+                  TourPlan</div>
+                <div class="pill"
+                  style="background:rgba(15,23,42,.04);border:1px solid rgba(15,23,42,.1);font-family:'Courier New',monospace;font-size:11px">
+                  MealPlan</div>
+                <div class="pill"
+                  style="background:rgba(15,23,42,.04);border:1px solid rgba(15,23,42,.1);font-family:'Courier New',monospace;font-size:11px">
+                  MealBooking</div>
+                <div class="pill"
+                  style="background:rgba(15,23,42,.04);border:1px solid rgba(15,23,42,.1);font-family:'Courier New',monospace;font-size:11px">
+                  Review</div>
+                <div class="pill"
+                  style="background:rgba(15,23,42,.04);border:1px solid rgba(15,23,42,.1);font-family:'Courier New',monospace;font-size:11px">
+                  Destination</div>
+                <div class="pill"
+                  style="background:rgba(15,23,42,.04);border:1px solid rgba(15,23,42,.1);font-family:'Courier New',monospace;font-size:11px">
+                  TourPlanHotel</div>
+                <div class="pill"
+                  style="background:rgba(15,23,42,.04);border:1px solid rgba(15,23,42,.1);font-family:'Courier New',monospace;font-size:11px">
+                  TourPlanTransport</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sn">06 / 23</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       SLIDE 7 — SEQUENCE DIAGRAM
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s7">
+      <div class="bg"></div>
+      <div class="blob"
+        style="width:380px;height:380px;left:-70px;bottom:-70px;background:radial-gradient(circle,rgba(56,189,248,.09),transparent 70%)">
+      </div>
+      <div class="pad-sm">
+        <div>
+          <div class="label mut" style="margin-bottom:4px">Core Operational Flow</div>
+          <div class="head grad" style="font-size:36px">Transaction Lifecycle: Flight Booking</div>
+        </div>
+
+        <!-- Sequence diagram hand-coded in HTML -->
+        <div style="flex:1;display:flex;gap:0;padding:10px 0">
+
+          <!-- Actor headers -->
+          <div style="display:flex;width:100%;flex-direction:column">
+            <!-- Participant heads -->
+            <div style="display:flex;width:100%;gap:0">
+              <div style="flex:1;display:flex;justify-content:center">
+                <div class="seq-head" style="background:rgba(0,200,150,.12);border:2px solid var(--em);color:var(--em)">
+                  User Interface</div>
+              </div>
+              <div style="flex:1;display:flex;justify-content:center">
+                <div class="seq-head"
+                  style="background:rgba(2,132,199,.12);border:2px solid var(--sky);color:var(--sky)">Auth Service</div>
+              </div>
+              <div style="flex:1;display:flex;justify-content:center">
+                <div class="seq-head"
+                  style="background:rgba(2,132,199,.12);border:2px solid var(--sky);color:var(--sky)">Flight Service
+                </div>
+              </div>
+              <div style="flex:1;display:flex;justify-content:center">
+                <div class="seq-head"
+                  style="background:rgba(2,132,199,.12);border:2px solid var(--sky);color:var(--sky)">Booking Service
+                </div>
+              </div>
+              <div style="flex:1;display:flex;justify-content:center">
+                <div class="seq-head"
+                  style="background:rgba(124,58,237,.12);border:2px solid var(--pur);color:var(--pur)">Persistence Layer
+                </div>
+              </div>
+            </div>
+
+            <!-- Lifelines + messages -->
+            <div style="display:flex;width:100%;flex:1;position:relative;margin-top:6px">
+              <!-- Lifelines -->
+              <div style="flex:1;display:flex;justify-content:center">
+                <div
+                  style="width:2px;height:100%;background:repeating-linear-gradient(to bottom,rgba(0,200,150,.4) 0,rgba(0,200,150,.4) 6px,transparent 6px,transparent 12px)">
+                </div>
+              </div>
+              <div style="flex:1;display:flex;justify-content:center">
+                <div
+                  style="width:2px;height:100%;background:repeating-linear-gradient(to bottom,rgba(2,132,199,.3) 0,rgba(2,132,199,.3) 6px,transparent 6px,transparent 12px)">
+                </div>
+              </div>
+              <div style="flex:1;display:flex;justify-content:center">
+                <div
+                  style="width:2px;height:100%;background:repeating-linear-gradient(to bottom,rgba(2,132,199,.3) 0,rgba(2,132,199,.3) 6px,transparent 6px,transparent 12px)">
+                </div>
+              </div>
+              <div style="flex:1;display:flex;justify-content:center">
+                <div
+                  style="width:2px;height:100%;background:repeating-linear-gradient(to bottom,rgba(2,132,199,.3) 0,rgba(2,132,199,.3) 6px,transparent 6px,transparent 12px)">
+                </div>
+              </div>
+              <div style="flex:1;display:flex;justify-content:center">
+                <div
+                  style="width:2px;height:100%;background:repeating-linear-gradient(to bottom,rgba(124,58,237,.3) 0,rgba(124,58,237,.3) 6px,transparent 6px,transparent 12px)">
+                </div>
+              </div>
+
+              <!-- Messages overlay -->
+              <div
+                style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-around;padding:6px 0">
+
+                <!-- 1: login check -->
+                <div style="display:flex;align-items:center">
+                  <div style="width:10%"></div>
+                  <div style="width:20%;display:flex;flex-direction:column;align-items:center">
+                    <div class="seq-lbl">login(email, password)</div>
+                    <div style="width:100%;height:1px;background:var(--sky);position:relative"><span
+                        style="position:absolute;right:-7px;top:-5px;color:var(--sky);font-size:10px">▶</span></div>
+                  </div>
+                  <div style="width:70%"></div>
+                </div>
+
+                <!-- 2: login result -->
+                <div style="display:flex;align-items:center">
+                  <div style="width:10%"></div>
+                  <div style="width:20%;display:flex;flex-direction:column;align-items:center">
+                    <div class="seq-lbl" style="color:var(--muted)">← User object (session)</div>
+                    <div style="width:100%;height:1px;background:var(--muted);position:relative;transform:scaleX(-1)">
+                      <span style="position:absolute;right:-7px;top:-5px;color:var(--muted);font-size:10px">▶</span>
+                    </div>
+                  </div>
+                  <div style="width:70%"></div>
+                </div>
+
+                <!-- 3: search flights -->
+                <div style="display:flex;align-items:center">
+                  <div style="width:10%"></div>
+                  <div style="width:40%;display:flex;flex-direction:column;align-items:center">
+                    <div class="seq-lbl">searchByCity("Lahore")</div>
+                    <div style="width:100%;height:1px;background:var(--sky);position:relative"><span
+                        style="position:absolute;right:-7px;top:-5px;color:var(--sky);font-size:10px">▶</span></div>
+                  </div>
+                  <div style="width:50%"></div>
+                </div>
+
+                <!-- 4: readLines -->
+                <div style="display:flex;align-items:center">
+                  <div style="width:50%"></div>
+                  <div style="width:40%;display:flex;flex-direction:column;align-items:center">
+                    <div class="seq-lbl">readLines("flights.txt")</div>
+                    <div style="width:100%;height:1px;background:var(--sky);position:relative"><span
+                        style="position:absolute;right:-7px;top:-5px;color:var(--sky);font-size:10px">▶</span></div>
+                  </div>
+                  <div style="width:10%"></div>
+                </div>
+
+                <!-- 5: raw data return -->
+                <div style="display:flex;align-items:center">
+                  <div style="width:50%"></div>
+                  <div style="width:40%;display:flex;flex-direction:column;align-items:center">
+                    <div class="seq-lbl" style="color:var(--muted)">← raw lines</div>
+                    <div style="width:100%;height:1px;background:var(--muted);position:relative;transform:scaleX(-1)">
+                      <span style="position:absolute;right:-7px;top:-5px;color:var(--muted);font-size:10px">▶</span>
+                    </div>
+                  </div>
+                  <div style="width:10%"></div>
+                </div>
+
+                <!-- 6: List<Flight> to user -->
+                <div style="display:flex;align-items:center">
+                  <div style="width:10%"></div>
+                  <div style="width:40%;display:flex;flex-direction:column;align-items:center">
+                    <div class="seq-lbl" style="color:var(--muted)">← List&lt;Flight&gt; returned to UI</div>
+                    <div style="width:100%;height:1px;background:var(--muted);position:relative;transform:scaleX(-1)">
+                      <span style="position:absolute;right:-7px;top:-5px;color:var(--muted);font-size:10px">▶</span>
+                    </div>
+                  </div>
+                  <div style="width:50%"></div>
+                </div>
+
+                <!-- 7: bookFlight -->
+                <div style="display:flex;align-items:center">
+                  <div style="width:10%"></div>
+                  <div style="width:60%;display:flex;flex-direction:column;align-items:center">
+                    <div class="seq-lbl">bookFlight(userId, flightId)</div>
+                    <div style="width:100%;height:1px;background:var(--sky);position:relative"><span
+                        style="position:absolute;right:-7px;top:-5px;color:var(--sky);font-size:10px">▶</span></div>
+                  </div>
+                  <div style="width:30%"></div>
+                </div>
+
+                <!-- 8: Validation boxes -->
+                <div style="display:flex;align-items:center">
+                  <div style="width:70%"></div>
+                  <div style="width:25%;display:flex;flex-direction:column;gap:6px">
+                    <div
+                      style="border:1.5px dashed var(--pur);border-radius:8px;padding:6px 10px;background:rgba(124,58,237,.02)">
+                      <div style="font-size:9px;font-weight:700;color:var(--pur);margin-bottom:2px">INVENTORY: OK</div>
+                      <div style="font-size:10px;color:var(--sub);line-height:1.3">Update .txt files<br>→ Success</div>
+                    </div>
+                    <div
+                      style="border:1.5px dashed var(--red);border-radius:8px;padding:6px 10px;background:rgba(220,38,38,.04)">
+                      <div style="font-size:9px;font-weight:700;color:var(--red);margin-bottom:2px">INVENTORY: SOLD OUT
+                      </div>
+                      <div style="font-size:10px;color:var(--sub);line-height:1.3">Exception thrown<br>→ Error dialog
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width:5%"></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sn">07 / 23</div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════
+       SLIDE 8 — FULL CLASS DIAGRAM
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s8">
+      <div class="bg"></div>
+      <div class="blob"
+        style="width:380px;height:380px;right:-80px;bottom:-80px;background:radial-gradient(circle,rgba(56,189,248,.09),transparent 70%)">
+      </div>
+      <div class="pad-sm">
+        <div>
+          <div class="label mut" style="margin-bottom:4px">UML · All 19 Entities &amp; Relationships</div>
+          <div class="head grad" style="font-size:32px">Full Class Diagram</div>
+        </div>
+        <div style="flex:1;display:flex;gap:10px;align-items:flex-start">
+          <!-- Person hierarchy column -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;min-width:135px">
+            <div class="uml-box" style="width:132px">
+              <div class="uml-head"><span style="font-size:9px;color:var(--pur)">«abstract»</span><br>Person</div>
+              <div class="uml-sec">- id: int<br>- name: String<br>- email: String<br>- phone: String<br>- passwordHash
+              </div>
+              <div class="uml-sec em" style="font-size:10px">+ getRole(): String*<br>+ getters/setters</div>
+            </div>
+            <div style="width:1px;background:var(--em);height:10px"></div>
+            <div
+              style="width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:8px solid var(--em)">
+            </div>
+            <div style="display:flex;gap:4px;margin-top:2px">
+              <div class="uml-box" style="min-width:60px">
+                <div class="uml-head" style="font-size:10px">User</div>
+                <div class="uml-sec">- address<br>- lastLogin</div>
+                <div class="uml-sec em" style="font-size:9px">→ "User"</div>
+              </div>
+              <div class="uml-box" style="min-width:60px">
+                <div class="uml-head" style="font-size:10px">Admin</div>
+                <div class="uml-sec">- role<br>- lastLogin</div>
+                <div class="uml-sec em" style="font-size:9px">→ "Admin"</div>
+              </div>
+            </div>
+          </div>
+          <!-- Transport hierarchy column -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;min-width:170px">
+            <div class="uml-box" style="width:170px">
+              <div class="uml-head"><span style="font-size:9px;color:var(--pur)">«abstract»</span><br>Transport</div>
+              <div class="uml-sec">- id: int<br>- destinationId: int<br>- type: String<br>- price: double<br>- capacity:
+                int</div>
+              <div class="uml-sec sky" style="font-size:10px">+ getScheduleSummary()*</div>
+            </div>
+            <div style="width:1px;background:var(--sky);height:10px"></div>
+            <div
+              style="width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:8px solid var(--sky)">
+            </div>
+            <div style="display:flex;gap:3px;margin-top:2px">
+              <div class="uml-box" style="min-width:50px">
+                <div class="uml-head sky" style="font-size:9px">Flight</div>
+                <div class="uml-sec" style="font-size:9px">airline<br>flightNo<br>class<br>dep/ret</div>
+              </div>
+              <div class="uml-box" style="min-width:50px">
+                <div class="uml-head sky" style="font-size:9px">Bus</div>
+                <div class="uml-sec" style="font-size:9px">operator<br>busType<br>dep<br>arrival</div>
+              </div>
+              <div class="uml-box" style="min-width:50px">
+                <div class="uml-head sky" style="font-size:9px">Train</div>
+                <div class="uml-sec" style="font-size:9px">operator<br>trainNo<br>dep<br>arrival</div>
+              </div>
+            </div>
+          </div>
+          <!-- Core domain entities -->
+          <div style="display:flex;flex-direction:column;gap:6px;flex:1">
+            <div style="display:flex;gap:5px">
+              <div class="uml-box" style="flex:1">
+                <div class="uml-head">Booking</div>
+                <div class="uml-sec">- id &nbsp;- userId<br>- type: String<br>- tourId &nbsp;- transId<br>- date:
+                  String<br>- status: BookingStatus</div>
+              </div>
+              <div class="uml-box" style="flex:1">
+                <div class="uml-head">Bill</div>
+                <div class="uml-sec">- id<br>- bookingId<br>- basePrice<br>- fee (5%)<br>- total<br>- status</div>
+                <div class="uml-sec em" style="font-size:9px">+getTotalAmount()</div>
+              </div>
+              <div class="uml-box" style="flex:1">
+                <div class="uml-head">Payment</div>
+                <div class="uml-sec">- id<br>- billId<br>- amount<br>- type<br>- method<br>- date<br>- status</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:5px">
+              <div class="uml-box" style="flex:1">
+                <div class="uml-head">Hotel</div>
+                <div class="uml-sec">- id &nbsp;- destId<br>- name &nbsp;- stars<br>- contact<br>- pricePerNight</div>
+              </div>
+              <div class="uml-box" style="flex:1">
+                <div class="uml-head">HotelBooking</div>
+                <div class="uml-sec">- id<br>- bookingId<br>- hotelId<br>- checkIn<br>- checkOut<br>- guests</div>
+              </div>
+              <div class="uml-box" style="flex:1">
+                <div class="uml-head">Destination</div>
+                <div class="uml-sec">- id<br>- city<br>- region<br>- country<br>- attractions<br>- imgUrl</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:5px">
+              <div class="uml-box" style="flex:1">
+                <div class="uml-head">TourPlan</div>
+                <div class="uml-sec">- id &nbsp;- destId<br>- adminId<br>- title<br>- duration<br>- basePrice<br>-
+                  status</div>
+              </div>
+              <div class="uml-box" style="flex:1">
+                <div class="uml-head">MealPlan</div>
+                <div class="uml-sec">- id<br>- tourId<br>- name<br>- description<br>- price</div>
+              </div>
+              <div class="uml-box" style="flex:1">
+                <div class="uml-head">Review</div>
+                <div class="uml-sec">- id &nbsp;- userId<br>- type: String<br>- targetId<br>- stars: int<br>-
+                  comment<br>- date</div>
+              </div>
+            </div>
+          </div>
+          <!-- Relationships -->
+          <div style="min-width:110px;display:flex;flex-direction:column;gap:8px">
+            <div class="label mut" style="font-size:9px;margin-bottom:2px">Relationships</div>
+            <div style="font-size:11px;line-height:1.7;color:var(--sub)">
+              <div>▷── Inheritance</div>
+              <div>◆── Composition</div>
+              <div>→&nbsp; Association</div>
+            </div>
+            <div class="divider"></div>
+            <div style="font-size:10px;color:var(--muted);line-height:1.7">
+              User 1 → Booking ∞<br>
+              Booking 1 ◆ Bill 1<br>
+              Bill 1 → Payment ∞<br>
+              Hotel 1 → HotelBooking ∞<br>
+              TourPlan 1 → MealPlan ∞<br>
+              Destination 1 → Flight ∞<br>
+              TourPlanHotel: bridge<br>
+              TourPlanTransport: bridge
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sn">08 / 23</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       SLIDE 9 — AUTH & PASSWORD
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s9">
+      <div class="bg"></div>
+      <div class="blob"
+        style="width:360px;height:360px;right:-60px;top:-60px;background:radial-gradient(circle,rgba(0,200,150,.10),transparent 70%)">
+      </div>
+      <div class="pad">
+        <div>
+          <div class="label mut" style="margin-bottom:6px">AuthService.java: Honest Assessment</div>
+          <div class="head grad" style="font-size:40px">Authentication &amp; User Management</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;flex:1">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="glass" style="padding:20px;border-left:5px solid var(--em);flex:1">
+              <div class="label em" style="margin-bottom:12px">What Works</div>
+              <ul style="font-size:16px;line-height:1.9;padding-left:20px;color:var(--sub);font-weight:500">
+                <li>Email uniqueness check on registration</li>
+                <li>Session management via <span class="mono" style="font-size:14px">loggedInUser</span> static field
+                </li>
+                <li><span class="mono" style="font-size:14px">isLoggedIn()</span> guards all user-only actions</li>
+                <li>Login throws <span class="mono" style="font-size:14px">SmartGoException</span> on bad credentials
+                </li>
+                <li>ID continuity on startup using max existing ID + 1</li>
+              </ul>
+            </div>
+            <div class="glass" style="padding:18px;border-left:5px solid var(--pur)">
+              <div class="label pur" style="margin-bottom:10px">OOP Highlight</div>
+              <div style="font-size:15px;color:var(--sub);line-height:1.7">
+                <span class="mono" style="font-size:14px">User</span> and <span class="mono"
+                  style="font-size:14px">Admin</span> both extend <span class="mono" style="font-size:14px">abstract
+                  Person</span>. Shared fields are inherited, <span class="mono" style="font-size:14px">getRole()</span>
+                is overridden differently in each. <strong>Polymorphism + Inheritance</strong> in practice.
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="glass" style="padding:20px;border-left:5px solid #d97706;background:rgba(217,119,6,.04);flex:1">
+              <div class="label" style="color:#d97706;margin-bottom:12px">⚠️ Acknowledged Limitation: Password Storage
+              </div>
+              <div style="font-size:16px;color:var(--sub);line-height:1.8;font-weight:500">
+                Passwords are stored as <strong>plain text</strong> in <span class="mono"
+                  style="font-size:14px">users.txt</span>. The code comment explicitly acknowledges this:
+              </div>
+              <div class="code" style="margin-top:10px;font-size:12px">
+                <span class="cc">// In a real app you would hash the password</span><br>
+                <span class="cc">// properly. For this project we store it as-is</span><br>
+                <span class="cc">// to keep things simple.</span><br>
+                <span class="ck">User</span> newUser = <span class="ck">new</span> <span
+                  class="cv">User</span>(nextUserId++, name,<br>&nbsp;&nbsp;email, phone, <span
+                  class="cs">password</span>, createdAt, addr, ...);
+              </div>
+              <div style="font-size:14px;color:#d97706;margin-top:12px;font-weight:600">
+                In production: use BCrypt / PBKDF2 hashing before saving. The field is already named <span class="mono"
+                  style="font-size:12px">passwordHash</span> in Person.java, so it is ready for an upgrade.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sn">09 / 23</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       SLIDE 10 — DATA LAYER
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s10">
+      <div class="bg"></div>
+      <div class="blob"
+        style="width:440px;height:260px;left:-100px;bottom:-60px;background:radial-gradient(circle,rgba(56,189,248,.09),transparent 70%)">
+      </div>
+      <div class="pad-sm">
+        <div style="display:flex;align-items:baseline;gap:14px">
+          <div class="head grad" style="font-size:34px">Data Layer</div>
+          <span class="label mut">DataStore.java: Single I/O Choke-Point</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div class="glass" style="padding:16px">
+              <div class="label em" style="margin-bottom:10px">Three Core Methods</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div class="glass" style="padding:9px 13px;border-left:3px solid var(--em)">
+                  <div class="mono em" style="font-size:15px">appendLine(file, data)</div>
+                  <div style="font-size:13px;color:var(--muted);margin-top:2px">Adds new record. O(1) write.
+                    FileWriter(append=true) so no full rewrite is needed.</div>
+                </div>
+                <div class="glass" style="padding:9px 13px;border-left:3px solid var(--sky)">
+                  <div class="mono sky" style="font-size:15px">readLines(file)</div>
+                  <div style="font-size:13px;color:var(--muted);margin-top:2px">Returns List&lt;String&gt;. Skips blank
+                    lines. Splits on "|" delimiter. Safe on empty/missing file.</div>
+                </div>
+                <div class="glass" style="padding:9px 13px;border-left:3px solid var(--pur)">
+                  <div class="mono pur" style="font-size:15px">writeAllLines(file, lines)</div>
+                  <div style="font-size:13px;color:var(--muted);margin-top:2px">Used for cancellations &amp; updates
+                    only (full rewrite). Slower but correct for in-place edits.</div>
+                </div>
+              </div>
+            </div>
+            <div class="glass-s" style="padding:14px">
+              <div class="label sky" style="margin-bottom:8px">Sample Record Format</div>
+              <div class="code" style="font-size:12px">
+                <span class="cc">// users.txt (pipe-delimited)</span><br>
+                <span class="cn">1|Abdul Rehman|rehman@mail.com|03001234567|pass123|2026-01-01 10:00|Lahore|2026-01-01
+                  10:00</span><br><br>
+                <span class="cc">// bookings.txt</span><br>
+                <span class="cn">1|1|FLIGHT|0|3|2026-01-15 09:30|CONFIRMED</span><br><br>
+                <span class="cc">// bills.txt</span><br>
+                <span class="cn">1|1|55.00|2.75|57.75|PENDING</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div class="label mut" style="margin-bottom:4px">All 11 Data Files</div>
+            <div class="glass" style="padding:10px 14px;flex:1">
+              <div style="display:flex;flex-direction:column;gap:5px">
+                <div
+                  style="display:flex;align-items:baseline;gap:8px;padding:4px 6px;border-bottom:1px solid var(--b1);background:rgba(0,200,150,.04);border-radius:4px">
+                  <span class="mono em" style="font-size:13px;min-width:155px">users.txt</span><span
+                    style="font-size:11px;color:var(--muted);font-family:'Courier New',monospace">id | name | email |
+                    phone | password | createdAt | addr | lastLogin</span></div>
+                <div
+                  style="display:flex;align-items:baseline;gap:8px;padding:4px 6px;border-bottom:1px solid var(--b1)">
+                  <span class="mono em" style="font-size:13px;min-width:155px">flights.txt</span><span
+                    style="font-size:11px;color:var(--muted);font-family:'Courier New',monospace">id | destId | price |
+                    capacity | airline | flNumber | class | dep | ret</span></div>
+                <div
+                  style="display:flex;align-items:baseline;gap:8px;padding:4px 6px;border-bottom:1px solid var(--b1)">
+                  <span class="mono em" style="font-size:13px;min-width:155px">hotels.txt</span><span
+                    style="font-size:11px;color:var(--muted);font-family:'Courier New',monospace">id | destId | name |
+                    stars | contact | address | pricePerNight</span></div>
+                <div
+                  style="display:flex;align-items:baseline;gap:8px;padding:4px 6px;border-bottom:1px solid var(--b1)">
+                  <span class="mono em" style="font-size:13px;min-width:155px">destinations.txt</span><span
+                    style="font-size:11px;color:var(--muted);font-family:'Courier New',monospace">id | city | region |
+                    country | attractions | imgUrl</span></div>
+                <div
+                  style="display:flex;align-items:baseline;gap:8px;padding:4px 6px;border-bottom:1px solid var(--b1)">
+                  <span class="mono em" style="font-size:13px;min-width:155px">tourplans.txt</span><span
+                    style="font-size:11px;color:var(--muted);font-family:'Courier New',monospace">id | destId | adminId
+                    | title | duration | basePrice | status</span></div>
+                <div
+                  style="display:flex;align-items:baseline;gap:8px;padding:4px 6px;border-bottom:1px solid var(--b1)">
+                  <span class="mono em" style="font-size:13px;min-width:155px">bookings.txt</span><span
+                    style="font-size:11px;color:var(--muted);font-family:'Courier New',monospace">id | userId | type |
+                    tourId | transId | date | status</span></div>
+                <div
+                  style="display:flex;align-items:baseline;gap:8px;padding:4px 6px;border-bottom:1px solid var(--b1)">
+                  <span class="mono em" style="font-size:13px;min-width:155px">bills.txt</span><span
+                    style="font-size:11px;color:var(--muted);font-family:'Courier New',monospace">id | bookingId | base
+                    | fee | total | status</span></div>
+                <div
+                  style="display:flex;align-items:baseline;gap:8px;padding:4px 6px;border-bottom:1px solid var(--b1)">
+                  <span class="mono em" style="font-size:13px;min-width:155px">payments.txt</span><span
+                    style="font-size:11px;color:var(--muted);font-family:'Courier New',monospace">id | billId | amount |
+                    type | method | date | status</span></div>
+                <div
+                  style="display:flex;align-items:baseline;gap:8px;padding:4px 6px;border-bottom:1px solid var(--b1)">
+                  <span class="mono em" style="font-size:13px;min-width:155px">hotel_bookings.txt</span><span
+                    style="font-size:11px;color:var(--muted);font-family:'Courier New',monospace">id | bookingId |
+                    hotelId | checkIn | checkOut | guests</span></div>
+                <div
+                  style="display:flex;align-items:baseline;gap:8px;padding:4px 6px;border-bottom:1px solid var(--b1)">
+                  <span class="mono em" style="font-size:13px;min-width:155px">mealplans.txt</span><span
+                    style="font-size:11px;color:var(--muted);font-family:'Courier New',monospace">id | tourId | name |
+                    description | price</span></div>
+                <div style="display:flex;align-items:baseline;gap:8px;padding:4px 6px"><span class="mono em"
+                    style="font-size:13px;min-width:155px">reviews.txt</span><span
+                    style="font-size:11px;color:var(--muted);font-family:'Courier New',monospace">id | userId | type |
+                    targetId | stars | comment | date</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sn">10 / 23</div>
+    </div>
+  </div>
+
+
+
+
+
+  <!-- ══════════════════════
+       SLIDE 11 — GUI LAYER
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s11">
+      <div class="bg"></div>
+      <div class="blob"
+        style="width:360px;height:360px;right:-60px;bottom:-60px;background:radial-gradient(circle,rgba(56,189,248,.09),transparent 70%)">
+      </div>
+      <div class="pad">
+        <div>
+          <div class="label mut" style="margin-bottom:6px">Main.java: Java Swing Interface</div>
+          <div class="head grad" style="font-size:40px">GUI &amp; Navigation Flow</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;flex:1">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="glass" style="padding:18px;border-left:5px solid var(--sky)">
+              <div class="label sky" style="margin-bottom:10px">How the GUI Works</div>
+              <ul style="font-size:16px;line-height:1.9;padding-left:20px;color:var(--sub);font-weight:500">
+                <li>Java Swing with <span class="mono" style="font-size:14px">JOptionPane</span> dialogs</li>
+                <li><span class="mono" style="font-size:14px">JTextField</span> and <span class="mono"
+                    style="font-size:14px">JPasswordField</span> for input</li>
+                <li>Menu-driven: <span class="mono" style="font-size:14px">showOptionDialog()</span> loops</li>
+                <li>System output captured via <span class="mono" style="font-size:14px">captureOutput()</span> bridge
+                </li>
+              </ul>
+            </div>
+            <div class="glass" style="padding:18px;border-left:5px solid var(--em);flex:1">
+              <div class="label em" style="margin-bottom:10px">Navigation Tree</div>
+              <div style="font-size:15px;color:var(--sub);line-height:2;font-family:'DM Sans',sans-serif">
+                <div style="color:var(--em);font-weight:700">Guest Menu</div>
+                <div style="padding-left:16px">→ Register &nbsp;→ Login &nbsp;→ Exit</div>
+                <div style="color:var(--sky);font-weight:700;margin-top:4px">User Main Menu</div>
+                <div style="padding-left:16px">→ Browse Flights &nbsp;→ Browse Tour Plans</div>
+                <div style="padding-left:16px">→ Browse Hotels &nbsp;→ My Bookings</div>
+                <div style="padding-left:16px">→ Reviews &nbsp;→ Logout</div>
+                <div style="color:var(--pur);font-weight:700;margin-top:4px">Admin Menu</div>
+                <div style="padding-left:16px">→ Add Flight / Hotel / Tour Plan &nbsp;→ View Reviews</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="glass" style="padding:18px;border-left:5px solid var(--pur);flex:1">
+              <div class="label pur" style="margin-bottom:10px">Startup Sequence: Main.java</div>
+              <div class="code" style="font-size:13px;flex:1">
+                <span class="cc">// Initialised in this order:</span><br>
+                <span class="cv">DataStore</span>.init();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cc">// create data/
+                  folder</span><br>
+                <span class="cv">AuthService</span>.init();&nbsp;&nbsp;&nbsp;<span class="cc">// restore user
+                  IDs</span><br>
+                <span class="cv">FlightService</span>.init();&nbsp;<span class="cc">// seed flights if empty</span><br>
+                <span class="cv">TourPlanService</span>.init();<br>
+                <span class="cv">HotelService</span>.init();<br>
+                <span class="cv">BookingService</span>.init();&nbsp;<span class="cc">// restore booking IDs</span><br>
+                <span class="cv">ReviewService</span>.init();<br><br>
+                <span class="cc">// Then launch GUI loop</span><br>
+                <span class="ck">while</span> (running) {<br>
+                &nbsp;&nbsp;<span class="ck">if</span> (!AuthService.isLoggedIn()) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;showGuestMenu();<br>
+                &nbsp;&nbsp;} <span class="ck">else</span> { showUserMenu(); }<br>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sn">11 / 23</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       SLIDE 12 — SHOWCASE 1/5: AUTHENTICATION
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s12">
+      <div class="bg"></div>
+      <div class="pad">
+        <div>
+          <div class="label mut" style="margin-bottom:6px">Application Showcase 1/5</div>
+          <div class="head grad" style="font-size:40px">Welcome &amp; Authentication</div>
+        </div>
+        <div class="ss-pair">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="ss-frame" style="flex:1">
+              <img src="assets/guest_menu.png" alt="Guest Menu"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+              <div class="ss-placeholder" style="display:none">
+                <div>[ GUEST MENU ]</div>
+              </div>
+            </div>
+            <div style="text-align:center;font-size:14px;font-weight:600;color:var(--sub)">Guest Navigation</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="ss-frame" style="flex:1">
+              <img src="assets/register.png" alt="Registration Screen"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+              <div class="ss-placeholder" style="display:none">
+                <div>[ REGISTRATION ]</div>
+              </div>
+            </div>
+            <div style="text-align:center;font-size:14px;font-weight:600;color:var(--sub)">Seamless Onboarding</div>
+          </div>
+        </div>
+      </div>
+      <div class="sn">12 / 23</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       SLIDE 13 — SHOWCASE 2/5: USER DASHBOARD
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s13">
+      <div class="bg"></div>
+      <div class="pad">
+        <div>
+          <div class="label mut" style="margin-bottom:6px">Application Showcase 2/5</div>
+          <div class="head grad" style="font-size:40px">Unified User Experience</div>
+        </div>
+        <div class="ss-pair">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="ss-frame" style="flex:1">
+              <img src="assets/account_ok.png" alt="Login Success"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+              <div class="ss-placeholder" style="display:none">
+                <div>[ LOGIN SUCCESS ]</div>
+              </div>
+            </div>
+            <div style="text-align:center;font-size:14px;font-weight:600;color:var(--sub)">Secure Authentication</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="ss-frame" style="flex:1">
+              <img src="assets/main_menu.png" alt="Main Menu"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+              <div class="ss-placeholder" style="display:none">
+                <div>[ USER MENU ]</div>
+              </div>
+            </div>
+            <div style="text-align:center;font-size:14px;font-weight:600;color:var(--sub)">Comprehensive Navigation
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sn">13 / 23</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       SLIDE 14 — SHOWCASE 3/5: DYNAMIC CATALOG
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s14">
+      <div class="bg"></div>
+      <div class="pad">
+        <div>
+          <div class="label mut" style="margin-bottom:6px">Application Showcase 3/5</div>
+          <div class="head grad" style="font-size:40px">Dynamic Content Discovery</div>
+        </div>
+        <div class="ss-pair">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="ss-frame" style="flex:1">
+              <img src="assets/flights_menu.png" alt="Flight Search"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+              <div class="ss-placeholder" style="display:none">
+                <div>[ FLIGHT SEARCH ]</div>
+              </div>
+            </div>
+            <div style="text-align:center;font-size:14px;font-weight:600;color:var(--sub)">Smart Search Filters</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="ss-frame" style="flex:1">
+              <img src="assets/all_flights.png" alt="Flight Catalog"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+              <div class="ss-placeholder" style="display:none">
+                <div>[ FLIGHT LIST ]</div>
+              </div>
+            </div>
+            <div style="text-align:center;font-size:14px;font-weight:600;color:var(--sub)">Real-Time Inventory</div>
+          </div>
+        </div>
+      </div>
+      <div class="sn">14 / 23</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       SLIDE 15 — SHOWCASE 4/5: ACCOMMODATIONS
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s15">
+      <div class="bg"></div>
+      <div class="pad">
+        <div>
+          <div class="label mut" style="margin-bottom:6px">Application Showcase 4/5</div>
+          <div class="head grad" style="font-size:40px">Accommodations &amp; Experiences</div>
+        </div>
+        <div class="ss-pair">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="ss-frame" style="flex:1">
+              <img src="assets/all_hotels.png" alt="Hotels List"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+              <div class="ss-placeholder" style="display:none">
+                <div>[ HOTELS LIST ]</div>
+              </div>
+            </div>
+            <div style="text-align:center;font-size:14px;font-weight:600;color:var(--sub)">Hotel Availability</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="ss-frame" style="flex:1">
+              <img src="assets/all_tours.png" alt="Tour Plans"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+              <div class="ss-placeholder" style="display:none">
+                <div>[ TOUR PLANS ]</div>
+              </div>
+            </div>
+            <div style="text-align:center;font-size:14px;font-weight:600;color:var(--sub)">Curated Experiences</div>
+          </div>
+        </div>
+      </div>
+      <div class="sn">15 / 23</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       SLIDE 16 — SHOWCASE 5/5: SYSTEM OPS
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s16">
+      <div class="bg"></div>
+      <div class="blob"
+        style="width:360px;height:360px;left:-60px;bottom:-60px;background:radial-gradient(circle,rgba(0,200,150,.10),transparent 70%)">
+      </div>
+      <div class="pad">
+        <div>
+          <div class="label mut" style="margin-bottom:6px">Application Showcase 5/5</div>
+          <div class="head grad" style="font-size:40px">Booking Management &amp; Payments</div>
+        </div>
+        <div class="ss-pair">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="ss-frame" style="flex:1">
+              <img src="assets/my_bookings.png" alt="User Bookings"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+              <div class="ss-placeholder" style="display:none">
+                <div>[ USER BOOKINGS ]</div>
+              </div>
+            </div>
+            <div style="text-align:center;font-size:14px;font-weight:600;color:var(--sub)">Personalized Booking History
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="ss-frame" style="flex:1">
+              <img src="assets/bookings_menu.png" alt="Booking Management Menu"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+              <div class="ss-placeholder" style="display:none">
+                <div>[ BOOKINGS MENU ]</div>
+              </div>
+            </div>
+            <div style="text-align:center;font-size:14px;font-weight:600;color:var(--sub)">Booking Management Options
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sn">16 / 23</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       SLIDE 17 — SHOWCASE: USER FLOW 1
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div>
+          <div class="label mut" style="margin-bottom:6px">User Flow Execution 1/3</div>
+          <div class="head grad" style="font-size:40px">Welcome &amp; Login Sequence</div>
+        </div>
+        <div class="ss-pair">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="ss-frame" style="flex:1">
+              <img src="assets/new_ss_1.png" alt="Welcome Splash Screen"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+              <div class="ss-placeholder" style="display:none">
+                <div>[ WELCOME SCREEN ]</div>
+              </div>
+            </div>
+            <div style="text-align:center;font-size:14px;font-weight:600;color:var(--sub)">Initial App Launch</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="ss-frame" style="flex:1">
+              <img src="assets/new_ss_2.png" alt="Login Prompt"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+              <div class="ss-placeholder" style="display:none">
+                <div>[ LOGIN PROMPT ]</div>
+              </div>
+            </div>
+            <div style="text-align:center;font-size:14px;font-weight:600;color:var(--sub)">Secure Login Process</div>
+          </div>
+        </div>
+      </div>
+      <div class="sn">17 / 23</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       SLIDE 18 — SHOWCASE: USER FLOW 2
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div>
+          <div class="label mut" style="margin-bottom:6px">User Flow Execution 2/3</div>
+          <div class="head grad" style="font-size:40px">Hotel Discovery &amp; Feedback</div>
+        </div>
+        <div class="ss-pair">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="ss-frame" style="flex:1">
+              <img src="assets/new_ss_4.png" alt="Hotels Menu"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+              <div class="ss-placeholder" style="display:none">
+                <div>[ HOTELS MENU ]</div>
+              </div>
+            </div>
+            <div style="text-align:center;font-size:14px;font-weight:600;color:var(--sub)">Interactive Hotels Menu</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="ss-frame" style="flex:1">
+              <img src="assets/new_ss_5.png" alt="Hotel Reviews"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+              <div class="ss-placeholder" style="display:none">
+                <div>[ HOTEL REVIEWS ]</div>
+              </div>
+            </div>
+            <div style="text-align:center;font-size:14px;font-weight:600;color:var(--sub)">Viewing Community Feedback
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sn">18 / 23</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       SLIDE 19 — SHOWCASE: USER FLOW 3
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide">
+      <div class="bg"></div>
+      <div class="pad">
+        <div>
+          <div class="label mut" style="margin-bottom:6px">User Flow Execution 3/3</div>
+          <div class="head grad" style="font-size:40px">Detailed Booking Confirmation</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;max-width:700px;margin:0 auto;flex:1">
+          <div class="ss-frame" style="flex:1">
+            <img src="assets/new_ss_3.png" alt="Tour Plan Booking Receipt"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+            <div class="ss-placeholder" style="display:none">
+              <div>[ BOOKING RECEIPT ]</div>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:14px;font-weight:600;color:var(--sub)">Comprehensive Tour Plan Booking
+            Summary</div>
+        </div>
+      </div>
+      <div class="sn">19 / 23</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       SLIDE 17 — ENUMS & EXCEPTION
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s17">
+      <div class="bg"></div>
+      <div class="blob"
+        style="width:360px;height:360px;right:-60px;top:-60px;background:radial-gradient(circle,rgba(124,58,237,.10),transparent 70%)">
+      </div>
+      <div class="pad">
+        <div>
+          <div class="label mut" style="margin-bottom:6px">Supporting Design Elements</div>
+          <div class="head grad" style="font-size:40px">Enumerations &amp; Custom Exception</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;flex:1">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="glass" style="padding:20px;border-left:5px solid var(--sky);flex:1">
+              <div class="label sky" style="margin-bottom:12px">Status Enumerations</div>
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <div>
+                  <div style="font-size:15px;font-weight:700;font-family:'Courier New',monospace;margin-bottom:6px">
+                    BookingStatus</div>
+                  <div style="display:flex;gap:8px"><span class="pill p-sky">PENDING</span><span
+                      class="pill p-em">CONFIRMED</span><span class="pill p-red">CANCELLED</span></div>
+                </div>
+                <div>
+                  <div style="font-size:15px;font-weight:700;font-family:'Courier New',monospace;margin-bottom:6px">
+                    PaymentStatus</div>
+                  <div style="display:flex;gap:8px"><span class="pill p-sky">PENDING</span><span
+                      class="pill p-em">COMPLETED</span><span class="pill p-red">FAILED</span></div>
+                </div>
+                <div>
+                  <div style="font-size:15px;font-weight:700;font-family:'Courier New',monospace;margin-bottom:6px">
+                    PaymentMethod</div>
+                  <div style="display:flex;gap:8px"><span class="pill p-em">CASH</span><span
+                      class="pill p-sky">CARD</span><span class="pill p-pur">ONLINE</span></div>
+                </div>
+              </div>
+              <div style="margin-top:14px;font-size:14px;color:var(--sub);line-height:1.7">Using enums prevents invalid
+                state strings like "cancelled" vs "CANCELLED" by enforcing compile-time safety instead of runtime string
+                comparison.</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="glass" style="padding:20px;border-left:5px solid var(--red);flex:1">
+              <div class="label" style="color:var(--red);margin-bottom:12px">SmartGoException</div>
+              <div class="code" style="font-size:13px;margin-bottom:12px">
+                <span class="ck">public class</span> <span class="cv">SmartGoException</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">extends</span> <span class="cs">Exception</span> {<br><br>
+                &nbsp;&nbsp;<span class="ck">public</span> <span class="cv">SmartGoException</span>(<span
+                  class="cs">String</span> msg) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">super</span>(msg);<br>
+                &nbsp;&nbsp;}<br>
+                }
+              </div>
+              <div style="font-size:14px;color:var(--sub);line-height:1.7">
+                Thrown by every service for business rule violations. GUI catches it and shows the message in a Swing
+                error dialog. Keeps error messaging consistent across the whole app.
+              </div>
+              <div style="margin-top:12px;font-size:13px;color:var(--muted)">
+                <strong>Where thrown:</strong> duplicate email · wrong credentials · flight full · bill already paid ·
+                unauthorized cancel · invalid rating
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sn">20 / 23</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       SLIDE 18 — FUNCTIONAL TESTING
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s18">
+      <div class="bg"></div>
+      <div class="blob"
+        style="width:380px;height:380px;left:-70px;bottom:-70px;background:radial-gradient(circle,rgba(0,200,150,.09),transparent 70%)">
+      </div>
+      <div class="pad-sm">
+        <div>
+          <div class="label mut" style="margin-bottom:4px">Quality Assurance: Core Scenarios</div>
+          <div class="head grad" style="font-size:36px">Validation Results: Core Workflows</div>
+        </div>
+        <div class="glass" style="flex:1;padding:12px 16px;overflow:hidden">
+          <table>
+            <tr>
+              <th style="font-size:14px">ID</th>
+              <th style="font-size:14px">Scenario</th>
+              <th style="font-size:14px">Input</th>
+              <th style="font-size:14px">Expected</th>
+              <th style="font-size:14px">Actual</th>
+              <th style="font-size:14px">Status</th>
+            </tr>
+            <tr>
+              <td class="mono" style="color:var(--muted);font-size:12px">TC-01</td>
+              <td style="font-size:14px">Register new user</td>
+              <td style="font-size:13px">Valid name, email, phone, password</td>
+              <td style="font-size:13px">Account created, session started</td>
+              <td style="font-size:13px">User saved to users.txt, login active</td>
+              <td><span class="pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td class="mono" style="color:var(--muted);font-size:12px">TC-02</td>
+              <td style="font-size:14px">Login valid credentials</td>
+              <td style="font-size:13px">Correct email + password</td>
+              <td style="font-size:13px">User menu shown</td>
+              <td style="font-size:13px">User menu displayed correctly</td>
+              <td><span class="pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td class="mono" style="color:var(--muted);font-size:12px">TC-03</td>
+              <td style="font-size:14px">Search flights by city</td>
+              <td style="font-size:13px">City = "Lahore"</td>
+              <td style="font-size:13px">Matching flights listed</td>
+              <td style="font-size:13px">2 flights returned (PA-210, PA-211)</td>
+              <td><span class="pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td class="mono" style="color:var(--muted);font-size:12px">TC-04</td>
+              <td style="font-size:14px">Book a flight</td>
+              <td style="font-size:13px">Valid flightId, logged in user</td>
+              <td style="font-size:13px">Booking + Bill saved</td>
+              <td style="font-size:13px">Records in bookings.txt + bills.txt</td>
+              <td><span class="pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td class="mono" style="color:var(--muted);font-size:12px">TC-05</td>
+              <td style="font-size:14px">5% Fee calculation</td>
+              <td style="font-size:13px">Flight price = $55.00</td>
+              <td style="font-size:13px">Fee = $2.75, Total = $57.75</td>
+              <td style="font-size:13px">Bill shows $2.75 fee, $57.75 total</td>
+              <td><span class="pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td class="mono" style="color:var(--muted);font-size:12px">TC-06</td>
+              <td style="font-size:14px">Book hotel with dates</td>
+              <td style="font-size:13px">hotelId + checkIn/Out + guests</td>
+              <td style="font-size:13px">HotelBooking + Bill saved</td>
+              <td style="font-size:13px">hotel_bookings.txt + bills.txt updated</td>
+              <td><span class="pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td class="mono" style="color:var(--muted);font-size:12px">TC-07</td>
+              <td style="font-size:14px">Book tour plan</td>
+              <td style="font-size:13px">Valid tourPlanId</td>
+              <td style="font-size:13px">Booking + Bill saved</td>
+              <td style="font-size:13px">Booking CONFIRMED in DataStore</td>
+              <td><span class="pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td class="mono" style="color:var(--muted);font-size:12px">TC-08</td>
+              <td style="font-size:14px">Cancel own booking</td>
+              <td style="font-size:13px">Own bookingId</td>
+              <td style="font-size:13px">Status = CANCELLED</td>
+              <td style="font-size:13px">bookings.txt updated to CANCELLED</td>
+              <td><span class="pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td class="mono" style="color:var(--muted);font-size:12px">TC-09</td>
+              <td style="font-size:14px">Pay bill</td>
+              <td style="font-size:13px">bookingId + payment method</td>
+              <td style="font-size:13px">Bill = PAID, Payment saved</td>
+              <td style="font-size:13px">payments.txt record created</td>
+              <td><span class="pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td class="mono" style="color:var(--muted);font-size:12px">TC-10</td>
+              <td style="font-size:14px">Submit review</td>
+              <td style="font-size:13px">type=FLIGHT, stars=5, comment</td>
+              <td style="font-size:13px">Review saved in reviews.txt</td>
+              <td style="font-size:13px">Record persisted correctly</td>
+              <td><span class="pass">PASS</span></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="sn">21 / 23</div>
+    </div>
+  </div>
+
+
+
+  <!-- ══════════════════════
+       SLIDE 19 — TEAM & FUTURE
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s19">
+      <div class="bg"></div>
+      <div class="blob"
+        style="width:380px;height:380px;right:-70px;bottom:-70px;background:radial-gradient(circle,rgba(56,189,248,.09),transparent 70%)">
+      </div>
+      <div class="pad">
+        <div>
+          <div class="head grad" style="font-size:40px">System Evolution &amp; Roadmap</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1">
+          <!-- Project Summary -->
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div class="label mut" style="font-size:11px">Engineering Summary</div>
+            <div class="glass"
+              style="padding:22px;border-left:5px solid var(--em);display:flex;flex-direction:column;gap:12px">
+              <div style="font-size:18px;font-weight:700;color:var(--em)">Core Implementation</div>
+              <div style="font-size:14px;color:var(--sub);line-height:1.7">
+                Developed a robust service-oriented architecture using Java Swing for the frontend and a custom
+                flat-file database system for persistence. Implemented comprehensive business logic for flights, hotels,
+                and tour plans, ensuring strict adherence to OOP principles.
+              </div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
+                <span class="pill p-em">Architecture Design</span>
+                <span class="pill p-em">Service Logic</span>
+                <span class="pill p-em">Data Schema</span>
+                <span class="pill p-em">GUI Implementation</span>
+                <span class="pill p-em">Unit Testing</span>
+              </div>
+            </div>
+          </div>
+          <!-- Future -->
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div class="label mut" style="font-size:11px">Future Roadmap</div>
+            <div class="clay" style="padding:16px">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span class="pill p-em">Phase 1</span>
+                <div>
+                  <div style="font-size:15px;font-weight:700">MySQL Database Migration</div>
+                  <div style="font-size:13px;color:var(--muted)">db.sql already prepared; DataStore can be swapped for
+                    JDBC layer with minimal service changes</div>
+                </div>
+              </div>
+            </div>
+            <div class="clay-b" style="padding:16px">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span class="pill p-sky">Phase 2</span>
+                <div>
+                  <div style="font-size:15px;font-weight:700">Admin Analytics Dashboard</div>
+                  <div style="font-size:13px;color:var(--muted)">JFreeChart integration for booking revenue graphs,
+                    occupancy rates, and destination popularity metrics</div>
+                </div>
+              </div>
+            </div>
+            <div class="clay-p" style="padding:16px">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span class="pill p-pur">Phase 3</span>
+                <div>
+                  <div style="font-size:15px;font-weight:700">Real Payment Gateway</div>
+                  <div style="font-size:13px;color:var(--muted)">JazzCash / EasyPaisa API integration to replace mock
+                    payment with live transaction processing</div>
+                </div>
+              </div>
+            </div>
+            <div class="glass" style="padding:16px">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span class="pill"
+                  style="background:rgba(15,23,42,.06);border:1px solid rgba(15,23,42,.15);color:var(--text)">Phase
+                  4</span>
+                <div>
+                  <div style="font-size:15px;font-weight:700">Multi-User Sessions &amp; Cloud Sync</div>
+                  <div style="font-size:13px;color:var(--muted)">Enterprise session manager · email/SMS booking
+                    confirmations · remote database integration</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sn">22 / 23</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       SLIDE 20 — CONCLUSION
+  ══════════════════════ -->
+  <div class="slide-wrap">
+    <div class="slide" id="s20">
+      <div class="bg"></div>
+      <div class="blob"
+        style="width:620px;height:620px;left:50%;top:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(0,200,150,.07),rgba(56,189,248,.05),transparent 70%)">
+      </div>
+      <div class="blob"
+        style="width:300px;height:300px;left:-60px;top:-60px;background:radial-gradient(circle,rgba(0,200,150,.14),transparent 70%)">
+      </div>
+      <div class="blob"
+        style="width:250px;height:250px;right:-40px;bottom:-40px;background:radial-gradient(circle,rgba(56,189,248,.12),transparent 70%)">
+      </div>
+
+      <div
+        style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:52px">
+        <div class="disp grad" style="font-size:108px;letter-spacing:-5px">SmartGo</div>
+        <div style="font-size:20px;color:var(--sub);max-width:750px;line-height:1.65;font-weight:500">A high-performance
+          offline Java travel booking system architected on modular service principles and robust OOP design.</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:20px">
+          <span class="pill p-em">Architecture & Persistence</span>
+          <span class="pill p-sky">GUI & Navigation Flow</span>
+          <span class="pill p-pur">Business Logic & Models</span>
+          <span class="pill p-em">Validation & Testing</span>
+        </div>
+
+        <div style="width:260px;margin-top:20px" class="ss-frame">
+          <img src="assets/goodbye.png" alt="Goodbye Message" onerror="this.style.display='none'">
+        </div>
+
+        <div style="font-size:20px;color:var(--muted);margin-top:10px;font-weight:600">Thank you &nbsp;·&nbsp; Questions
+          &amp; Discussion</div>
+      </div>
+      <div class="sn">23 / 23</div>
+    </div>
+  </div>
+
+</body>
+
+</html>

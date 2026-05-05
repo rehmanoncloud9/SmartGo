@@ -3,7 +3,7 @@ package models;
 // A hotel belongs to a destination.
 // Users can book a hotel as part of a booking.
 
-public class Hotel {
+public class Hotel implements Reviewable {
 
     private int id;
     private int destinationId;
@@ -33,6 +33,16 @@ public class Hotel {
     public double getPricePerNight() { return pricePerNight; }
 
     public void setPricePerNight(double pricePerNight) { this.pricePerNight = pricePerNight; }
+
+    @Override
+    public String getDisplayName() {
+        return name;
+    }
+
+    @Override
+    public String getReviewType() {
+        return "HOTEL";
+    }
 
     @Override
     public String toString() {
