@@ -92,7 +92,7 @@ body{font-family:"DM Sans",sans-serif;background:#f1f5f9;color:var(--text);paddi
     </div>
   </div>
 </div></div>
-<div class="sn">01 / 30</div>
+<div class="sn">01 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -145,7 +145,7 @@ body{font-family:"DM Sans",sans-serif;background:#f1f5f9;color:var(--text);paddi
     </div>
   </div>
 </div></div>
-<div class="sn">02 / 30</div>
+<div class="sn">02 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -200,7 +200,7 @@ src/
     </div>
   </div>
 </div></div>
-<div class="sn">03 / 30</div>
+<div class="sn">03 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -242,7 +242,7 @@ src/
     </div>
   </div>
 </div></div>
-<div class="sn">04 / 30</div>
+<div class="sn">04 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -285,7 +285,7 @@ src/
     </div>
   </div>
 </div></div>
-<div class="sn">05 / 30</div>
+<div class="sn">05 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -317,7 +317,7 @@ src/
     <div class="code" style="font-size:10.5px;"><span class="cc">// ReviewService works for ANY Reviewable</span><br><span class="ck">public static void</span> showReviews(<span class="cs">String</span> type, <span class="cs">int</span> id)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">throws</span> SmartGoException {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cc">// Works for "FLIGHT", "HOTEL", "TOUR_PLAN"</span><br>}</div>
   </div>
 </div></div>
-<div class="sn">06 / 30</div>
+<div class="sn">06 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -343,7 +343,7 @@ src/
     <div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:#f59e0b;margin-bottom:6px;">BookingStatus Enum</div><div style="font-family:JetBrains Mono,monospace;font-size:11px;color:#94a3b8;">PENDING &nbsp;→ CONFIRMED &nbsp;→ CANCELLED</div><div style="font-size:12px;color:var(--muted);margin-top:6px;">Using an enum prevents illegal state strings like "canceld" — compiler enforces valid states.</div></div>
   </div>
 </div></div>
-<div class="sn">07 / 30</div>
+<div class="sn">07 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -373,7 +373,7 @@ src/
     <div class="card"><div style="font-size:12px;color:var(--muted);line-height:1.6;">One TourPlan can have <strong style="color:var(--text);">multiple MealPlans</strong>, multiple <strong style="color:var(--text);">transport options</strong>, and multiple <strong style="color:var(--text);">hotels</strong> — one marked isDefault.</div></div>
   </div>
 </div></div>
-<div class="sn">08 / 30</div>
+<div class="sn">08 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -383,7 +383,7 @@ src/
 <div style="flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;min-height:0;">
   <img src="assets/erd.png" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:12px;"/>
 </div></div>
-<div class="sn">09 / 30</div>
+<div class="sn">09 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -402,7 +402,7 @@ src/
 <div class="bullet">The compiler prevents <code style="background:#020810;padding:2px 5px;border-radius:4px;font-family:JetBrains Mono,monospace;font-size:10px;">new Person()</code> — invalid object creation is impossible.</div></div>
 <div class="vs-grid"><div class="vs-bad"><strong>❌ Alternative:</strong> Concrete classes with a "type" String field and runtime checks — messy, error-prone, no compile safety.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ Our Choice:</strong> Abstract classes give compile-time safety and force correct design.</div></div></div>
 </div></div>
-<div class="sn">10 / 30</div>
+<div class="sn">10 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -421,7 +421,7 @@ src/
 <div class="bullet">Default status = "UNPAID" in constructor ensures objects always start in a valid state.</div></div>
 <div class="vs-grid"><div class="vs-bad"><strong>❌ Without:</strong> Public fields mean any class can set bill.totalAmount = 0 — silent fraud, no audit trail.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ With:</strong> Only BookingService.payBill() can transition status to PAID, after a real payment is recorded.</div></div></div>
 </div></div>
-<div class="sn">11 / 30</div>
+<div class="sn">11 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -440,7 +440,7 @@ src/
 <div class="bullet">@Override is explicit — prevents typo-based method hiding without a compiler warning.</div></div>
 <div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:var(--muted);margin-bottom:6px;">Inheritance Tree</div><div style="font-family:JetBrains Mono,monospace;font-size:11px;line-height:1.9;color:#94a3b8;">Person → User &nbsp;&nbsp;&nbsp;Person → Admin<br>Transport → Flight &nbsp;Transport → Bus &nbsp;Transport → Train<br>Exception → SmartGoException</div></div></div>
 </div></div>
-<div class="sn">12 / 30</div>
+<div class="sn">12 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -458,7 +458,7 @@ src/
 <div class="bullet">This is the <strong>Open/Closed Principle</strong>: adding a new transport type (e.g., Ferry) requires zero changes to BookingService.</div></div>
 <div class="vs-grid"><div class="vs-bad"><strong>❌ Without:</strong> if (type.equals("FLIGHT")) {...} else if (type.equals("BUS")) {...} — grows with every new type.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ With:</strong> transport.getScheduleSummary() — one line works for all transport types today and tomorrow.</div></div></div>
 </div></div>
-<div class="sn">13 / 30</div>
+<div class="sn">13 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -476,7 +476,7 @@ src/
 <div class="bullet">Cleanly separates two distinct login flows without an if-else branch inside a single method.</div></div>
 <div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:var(--muted);margin-bottom:6px;">Runtime vs Compile-time</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;"><div style="background:#020810;border-radius:8px;padding:10px;"><div style="color:var(--g1);font-weight:700;margin-bottom:4px;">Runtime (Override)</div><div style="color:var(--muted);">getScheduleSummary() — JVM picks at runtime</div></div><div style="background:#020810;border-radius:8px;padding:10px;"><div style="color:var(--g2);font-weight:700;margin-bottom:4px;">Compile-time (Overload)</div><div style="color:var(--muted);">login() — compiler picks by arg types</div></div></div></div></div>
 </div></div>
-<div class="sn">14 / 30</div>
+<div class="sn">14 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -494,7 +494,7 @@ src/
 <div class="bullet">ReviewService works with any Reviewable now or in future. Zero changes needed to add a new reviewable type.</div></div>
 <div class="vs-grid"><div class="vs-bad"><strong>❌ Abstract class for Reviewable:</strong> Forces Hotel to stop extending its own hierarchy just to be reviewable.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ Interface:</strong> Hotel and Flight keep their own hierarchies AND gain review capability — no trade-off.</div></div></div>
 </div></div>
-<div class="sn">15 / 30</div>
+<div class="sn">15 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -513,7 +513,7 @@ src/
 <div class="bullet">All service methods declare <code style="background:#020810;padding:2px 5px;border-radius:4px;font-family:JetBrains Mono,monospace;font-size:10px;">throws SmartGoException</code>.</div></div>
 <div class="vs-grid"><div class="vs-bad"><strong>❌ Without:</strong> Return null on failure — null pointer crashes, silent failures, terrible UX.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ With:</strong> Throw SmartGoException — compiler-enforced handling, user-friendly error display.</div></div></div>
 </div></div>
-<div class="sn">16 / 30</div>
+<div class="sn">16 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -532,7 +532,7 @@ src/
 <div class="bullet">Three separate enums for three separate domains — each concept stays in its own type.</div></div>
 <div class="vs-grid"><div class="vs-bad"><strong>❌ With Strings:</strong> "paid", "PAID", "Paid" all pass compilation but break equality checks at runtime.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ With Enums:</strong> Only .CONFIRMED, .PENDING, .CANCELLED compile. Compiler is the gatekeeper.</div></div></div>
 </div></div>
-<div class="sn">17 / 30</div>
+<div class="sn">17 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -550,7 +550,7 @@ src/
 <div class="bullet"><strong>Append vs Overwrite</strong>: saveUser() appends (fast). saveAllBookings() overwrites entire file (needed to update status mid-list after cancellation).</div></div>
 <div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:var(--muted);margin-bottom:6px;">File Format — users.txt</div><div style="font-family:JetBrains Mono,monospace;font-size:10.5px;color:#94a3b8;line-height:1.8;">1|Abdul Rehman|abdul@mail.com|+92-300-1234|pass123|2025-01-01|Rawalpindi|2025-01-01<br>2|Hamza Basit|hamza@mail.com|+92-321-5678|pass456|2025-01-02|Lahore|2025-01-02</div></div></div>
 </div></div>
-<div class="sn">18 / 30</div>
+<div class="sn">18 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -569,7 +569,7 @@ src/
     <div class="vs-grid"><div class="vs-bad"><strong>❌ LSP Violation:</strong> Subclass overrides getPrice() to throw UnsupportedOperationException — code using Transport reference crashes unexpectedly.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ LSP Satisfied:</strong> Every concrete Transport subclass maintains the parent's contract — substitution is always safe.</div></div>
   </div>
 </div></div>
-<div class="sn">19 / 30</div>
+<div class="sn">19 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -590,7 +590,7 @@ src/
     <div class="card"><div style="color:var(--g3);font-weight:700;font-size:12px;margin-bottom:4px;">Responsibility</div><div style="font-size:11.5px;color:var(--muted);">Serialization only. Never applies business rules.</div></div>
   </div>
 </div></div>
-<div class="sn">20 / 30</div>
+<div class="sn">20 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -614,7 +614,7 @@ src/
       <div style='font-size:11px;color:var(--muted);'>Success dialog after registration. User persisted to users.txt.</div>
     </div>
 </div></div>
-<div class="sn">21 / 30</div>
+<div class="sn">21 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -638,7 +638,7 @@ src/
       <div style='font-size:11px;color:var(--muted);'>Output from FlightService.showAllFlights() via ByteArrayOutputStream → JScrollPane.</div>
     </div>
 </div></div>
-<div class="sn">22 / 30</div>
+<div class="sn">22 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -667,7 +667,7 @@ src/
       <div style='font-size:11px;color:var(--muted);'>Bookings with bill amounts and payment status.</div>
     </div>
 </div></div>
-<div class="sn">23 / 30</div>
+<div class="sn">23 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -701,7 +701,7 @@ src/
       
     </div>
 </div></div>
-<div class="sn">24 / 30</div>
+<div class="sn">24 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -751,7 +751,7 @@ src/
     <div class="hl"><div style="font-size:12.5px;color:var(--muted);line-height:1.6;">The <strong style="color:var(--text);">5% platform fee</strong> is a single constant — changing it in one place updates flights, hotels, and tours simultaneously.</div></div>
   </div>
 </div></div>
-<div class="sn">25 / 30</div>
+<div class="sn">25 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -771,7 +771,7 @@ src/
     <div class="card"><div style="font-size:12px;color:var(--muted);line-height:1.5;">Usage throughout Main.java:<br><code style="font-family:JetBrains Mono,monospace;font-size:10.5px;color:#94a3b8;">captureOutput(() -&gt; FlightService.showAllFlights(), "All Flights");</code></div></div>
   </div>
 </div></div>
-<div class="sn">26 / 30</div>
+<div class="sn">26 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -787,7 +787,7 @@ src/
   <div class="card" style="display:flex;gap:14px;align-items:flex-start;"><div style="font-size:22px;">🔌</div><div><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#f59e0b;margin-bottom:4px;">Strategy via Interface (Reviewable)</div><div style="font-size:12px;color:var(--muted);line-height:1.5;">ReviewService operates on the Reviewable interface — the concrete review strategy is decided at runtime by the implementing class.</div></div></div>
   <div class="card" style="display:flex;gap:14px;align-items:flex-start;"><div style="font-size:22px;">📡</div><div><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#fb923c;margin-bottom:4px;">Façade — Main.java</div><div style="font-size:12px;color:var(--muted);line-height:1.5;">Main.java presents a simple menu interface while hiding the complexity of 6 service classes and DataStore behind clean method calls.</div></div></div>
 </div></div>
-<div class="sn">27 / 30</div>
+<div class="sn">27 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -809,7 +809,7 @@ src/
     <div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#f59e0b;margin-bottom:8px;">💾 Data Consistency</div><div style="font-size:12.5px;color:var(--muted);line-height:1.5;">Cancellation loads ALL bookings, modifies the right one, then writes ALL back — atomic update preventing partial writes. Same pattern for bill payments.</div></div>
   </div>
 </div></div>
-<div class="sn">28 / 30</div>
+<div class="sn">28 / 31</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(0,144,255,.08) 0%,transparent 60%),var(--dark2);"></div>
@@ -832,8 +832,52 @@ src/
     <div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g3);margin-bottom:8px;">OOP Concepts Covered</div><div style="display:flex;flex-wrap:wrap;gap:6px;"><span class="concept-tag tag-green">Abstraction</span> <span class="concept-tag tag-blue">Encapsulation</span> <span class="concept-tag tag-purple">Inheritance</span> <span class="concept-tag tag-orange">Polymorphism</span> <span class="concept-tag tag-purple">Interfaces</span> <span class="concept-tag tag-green">Custom Exceptions</span> <span class="concept-tag tag-blue">Enumerations</span> <span class="concept-tag tag-orange">Serialization</span> <span class="concept-tag tag-purple">LSP</span> <span class="concept-tag tag-green">SRP</span> <span class="concept-tag tag-blue">Template Method</span> <span class="concept-tag tag-orange">DAO Pattern</span> <span class="concept-tag tag-purple">Façade Pattern</span> <span class="concept-tag tag-green">Method Overloading</span> <span class="concept-tag tag-blue">Method Overriding</span></div></div>
   </div>
 </div></div>
-<div class="sn">29 / 30</div>
+<div class="sn">29 / 31</div>
 </div></div>
+
+<!-- TEAM CONTRIBUTIONS SLIDE -->
+<div class="slide-wrap"><div class="slide">
+<div class="bg" style="background:var(--dark2);"></div>
+<div class="pad">
+<div class="label">Team Distribution</div>
+<div class="heading grad" style="font-size:44px;">Project Roles & Contributions</div>
+<div style="display:flex;flex-direction:column;gap:16px;flex:1;justify-content:center;max-width:1000px;margin:0 auto;width:100%;">
+  
+  <div class="card" style="border-left:4px solid var(--g1);background:rgba(0,200,150,0.03);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:22px;color:var(--text);">Abdul Rehman</div>
+      <span class="concept-tag tag-green" style="font-size:12px;padding:4px 12px;">Lead Engineer (The master of backend logic)</span>
+    </div>
+    <div style="font-size:14px;color:var(--muted);line-height:1.6;"><strong>Architected and implemented the entire core system.</strong> Developed the <code>DataStore</code> file serialization engine, structured the Object-Oriented inheritance hierarchies, designed all <code>Service</code> layer business logic (Booking, Auth, Flight, Hotel), and handled the exception handling framework. Executed the vast majority of the programming and debugging efforts for the whole application.</div>
+  </div>
+
+  <div class="card" style="border-left:4px solid var(--g2);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:18px;color:var(--text);">Muhammad Yousaf Khan</div>
+      <span class="concept-tag tag-blue" style="font-size:11px;">Project Manager & GUI Integrator</span>
+    </div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.6;">Played a key part in designing and coding the UI interfaces. Monitored the overall software development lifecycle, managed team coordination, and ensured UI integrated smoothly with the backend logic.</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+    <div class="card" style="border-left:4px solid var(--g3);">
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:18px;color:var(--text);margin-bottom:4px;">Hamza Basit</div>
+      <span class="concept-tag tag-purple" style="font-size:10px;margin-bottom:8px;display:inline-block;">The Project Designer</span>
+      <div style="font-size:13px;color:var(--muted);line-height:1.5;">Designed the project aesthetics. Created the high-fidelity presentation styling, color palettes, and visual elements used in the final build.</div>
+    </div>
+
+    <div class="card" style="border-left:4px solid #f59e0b;">
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:18px;color:var(--text);margin-bottom:4px;">Rehan Chaudry</div>
+      <span class="concept-tag tag-orange" style="font-size:10px;margin-bottom:8px;display:inline-block;">Database & Schema Lead</span>
+      <div style="font-size:13px;color:var(--muted);line-height:1.5;">Carried the whole database design process. Structured the entities, managed the relational dependencies, and generated the comprehensive ERD documentation.</div>
+    </div>
+  </div>
+
+</div>
+</div>
+<div class="sn">30 / 31</div>
+</div></div>
+
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:radial-gradient(ellipse 100% 80% at 50% 50%,rgba(0,200,150,.1) 0%,rgba(0,144,255,.06) 40%,transparent 70%),var(--dark2);"></div>
 <div class="pad">
@@ -852,6 +896,6 @@ src/
   <img src="assets/goodbye.png" style="height:100px;object-fit:contain;border-radius:12px;border:1px solid var(--border);margin-top:20px;"/>
 </div>
 </div>
-<div class="sn">30 / 30</div>
+<div class="sn">30 / 31</div>
 </div></div>
 </body></html>
