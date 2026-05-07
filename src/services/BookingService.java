@@ -51,24 +51,26 @@ public class BookingService {
 
     // This handles the entire process of reserving a flight and generating the bill
     public static Booking bookFlight(int userId, int flightId) throws SmartGoException {
-        // Find the flight details first
+        // Step 1: Look up the flight details to make sure the flight exists and get its price
         Flight flight = FlightService.getFlightById(flightId);
 
         String bookedAt = LocalDateTime.now().format(formatter);
 
-        // Create the actual booking record and save it to the text file
+        // Step 2: Create a generic booking record that connects the user to this specific flight
         Booking booking = new Booking(
                 nextBookingId++, userId, "FLIGHT",
                 0, flight.getId(), bookedAt, BookingStatus.CONFIRMED
         );
+        // Step 3: Write this new booking into our text database immediately
         DataStore.saveBooking(booking);
 
-        // Calculate the platform fee and create the invoice for this flight
+        // Step 4: Calculate the small extra fee our platform charges and generate the invoice
         double platformFee = flight.getPrice() * PLATFORM_FEE_RATE;
         Bill bill = new Bill(nextBillId++, booking.getId(), flight.getPrice(), platformFee);
+        // Step 5: Save the financial bill so the user can pay it later
         DataStore.saveBill(bill);
 
-        // Print the confirmation details so the UI can capture and show them
+        // Step 6: Print out all the details so the main window can show them to the user
         System.out.println("Flight booked successfully!");
         System.out.println("Booking ID: " + booking.getId());
         System.out.println("Flight: " + flight.getAirline() + " " + flight.getFlightNumber());
@@ -81,18 +83,19 @@ public class BookingService {
 
     // Similar to flights but for tour packages
     public static Booking bookTourPlan(int userId, int tourPlanId) throws SmartGoException {
+        // Step 1: Verify the tour package is still available
         TourPlan plan = TourPlanService.getTourPlanById(tourPlanId);
 
         String bookedAt = LocalDateTime.now().format(formatter);
 
-        // Record the tour booking in the database
+        // Step 2: Create the booking link for the tour
         Booking booking = new Booking(
                 nextBookingId++, userId, "TOUR_PLAN",
                 plan.getId(), 0, bookedAt, BookingStatus.CONFIRMED
         );
         DataStore.saveBooking(booking);
 
-        // Generate the bill with the standard 5 percent commission
+        // Step 3: Add the platform fee and create the bill for the package
         double platformFee = plan.getBasePrice() * PLATFORM_FEE_RATE;
         Bill bill = new Bill(nextBillId++, booking.getId(), plan.getBasePrice(), platformFee);
         DataStore.saveBill(bill);
@@ -110,26 +113,27 @@ public class BookingService {
 
     // Book a hotel for the currently logged in user
     public static Booking bookHotel(int userId, int hotelId, String checkIn, String checkOut, int numGuests) throws SmartGoException {
+        // Step 1: Find the hotel and ensure it exists in our system
         Hotel hotel = HotelService.getHotelById(hotelId);
 
         String bookedAt = LocalDateTime.now().format(formatter);
 
-        // 1. Create main booking record
+        // Step 2: Create the primary booking record for the hotel stay
         Booking booking = new Booking(
                 nextBookingId++, userId, "HOTEL",
                 0, 0, bookedAt, BookingStatus.CONFIRMED
         );
         DataStore.saveBooking(booking);
 
-        // 2. Create specific hotel booking details
+        // Step 3: Since hotels need extra details like dates we create a specialized stay record
         HotelBooking hotelBooking = new HotelBooking(
                 nextHotelBookingId++, booking.getId(), hotelId,
                 checkIn, checkOut, numGuests
         );
+        // Step 4: Save these specific stay details separately from the main booking
         DataStore.saveHotelBooking(hotelBooking);
 
-        // 3. Create bill (assuming 1 night for simplicity, or we could parse dates)
-        // For now let's just use the hotel price per night
+        // Step 5: Calculate the cost based on the hotel rate and add our platform commission
         double platformFee = hotel.getPricePerNight() * PLATFORM_FEE_RATE;
         Bill bill = new Bill(nextBillId++, booking.getId(), hotel.getPricePerNight(), platformFee);
         DataStore.saveBill(bill);
@@ -147,30 +151,38 @@ public class BookingService {
 
     // Cancel a booking by ID
     public static void cancelBooking(int bookingId, int userId) throws SmartGoException {
+        // Step 1: Load all current bookings from the file to start our search
         List<Booking> bookings = DataStore.loadBookings();
         boolean found = false;
 
         for (Booking b : bookings) {
+            // Step 2: This is critical security logic because we must check that the booking ID matches and it belongs to the logged in user
+            // This prevents one user from accidentally or maliciously cancelling someone else's trip
             if (b.getId() == bookingId && b.getUserId() == userId) {
+                // Step 3: We also check if the booking was already voided to avoid redundant actions
                 if (b.getStatus() == BookingStatus.CANCELLED) {
                     throw new SmartGoException("This booking is already cancelled.");
                 }
+                // Step 4: Mark the status as cancelled in our memory list
                 b.setStatus(BookingStatus.CANCELLED);
                 found = true;
                 break;
             }
         }
 
+        // Step 5: If the loop finishes and we didn't find a matching record we throw an error
         if (!found) {
             throw new SmartGoException("No booking found with ID " + bookingId + " for your account.");
         }
 
+        // Step 6: Finally we overwrite the entire file with our updated list to make the change permanent
         DataStore.saveAllBookings(bookings);
         System.out.println("Booking #" + bookingId + " has been cancelled.");
     }
 
     // Show all bookings for a specific user
     public static void showMyBookings(int userId) {
+        // Step 1: We need to load both bookings and bills to show a complete picture to the user
         List<Booking> bookings = DataStore.loadBookings();
         List<Bill> bills = DataStore.loadBills();
         boolean found = false;
@@ -179,10 +191,11 @@ public class BookingService {
         System.out.println("===============");
 
         for (Booking b : bookings) {
+            // Step 2: Only show the records that belong to the person currently using the app
             if (b.getUserId() == userId) {
                 System.out.println(b);
 
-                // Also show the bill for this booking
+                // Step 3: This nested loop cross references the bills file to find the matching invoice for this trip
                 for (Bill bill : bills) {
                     if (bill.getBookingId() == b.getId()) {
                         System.out.println("  Bill: Total $" + String.format("%.2f", bill.getTotalAmount())
@@ -201,10 +214,11 @@ public class BookingService {
 
     // Pay a bill for a booking
     public static void payBill(int bookingId, int userId, String method) throws SmartGoException {
+        // Step 1: Load all financial and reservation records
         List<Bill> bills = DataStore.loadBills();
         List<Booking> bookings = DataStore.loadBookings();
 
-        // Make sure the booking belongs to this user
+        // Step 2: Critical logic because we verify that the user actually owns the booking they are trying to pay for
         boolean userOwnsBooking = false;
         for (Booking b : bookings) {
             if (b.getId() == bookingId && b.getUserId() == userId) {
@@ -217,14 +231,16 @@ public class BookingService {
             throw new SmartGoException("No booking found with ID " + bookingId + " for your account.");
         }
 
-        // Find the bill and mark it as paid
+        // Step 3: Find the specific bill in our list and update its status
         boolean billFound = false;
         for (Bill bill : bills) {
             if (bill.getBookingId() == bookingId) {
+                // Step 4: We prevent double payments by checking the current status first
                 if (bill.getStatus().equals("PAID")) {
                     throw new SmartGoException("This bill has already been paid.");
                 }
 
+                // Step 5: Mark the bill as paid and create a new payment receipt record
                 bill.setStatus("PAID");
                 billFound = true;
 
@@ -233,6 +249,7 @@ public class BookingService {
                         nextPaymentId++, bill.getId(),
                         bill.getTotalAmount(), "FULL", method, paidAt, "COMPLETED"
                 );
+                // Step 6: Save the receipt to the payments file
                 DataStore.savePayment(payment);
 
                 System.out.println("Payment successful!");
@@ -247,6 +264,7 @@ public class BookingService {
             throw new SmartGoException("No bill found for booking ID " + bookingId + ".");
         }
 
+        // Step 7: Update the master bills file so the user won't be charged again
         DataStore.saveAllBills(bills);
     }
 

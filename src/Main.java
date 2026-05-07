@@ -12,7 +12,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        // Prepare the local storage and load all existing data from text files
+        // Step 1: Start by waking up all our different services and loading their data
         DataStore.init();
         AuthService.init();
         FlightService.init();
@@ -21,38 +21,43 @@ public class Main {
         BookingService.init();
         ReviewService.init();
 
-        // Make the app look like a standard Windows or Mac app instead of the old Java look
+        // Step 2: Set the visual theme so the buttons and windows look modern on any computer
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ignored) {}
 
+        // Step 3: Greet the user with a friendly popup message before the main app starts
         JOptionPane.showMessageDialog(null, "Welcome to SmartGo Travel App!", "SmartGo", JOptionPane.INFORMATION_MESSAGE);
 
         boolean running = true;
 
-        // Keep the app running in a loop until the user decides to exit
+        // Step 4: This loop is the heart of the app and keeps it open until the user chooses to exit
         while (running) {
+            // We check if a user is logged in to decide which menu to show them
             if (!AuthService.isLoggedIn()) {
-                // This menu shows up if no one is logged in yet
+                // If nobody is logged in we show the guest menu for joining or signing in
                 String[] options = {"Create an account", "Login", "Exit"};
                 int choice = JOptionPane.showOptionDialog(null, "What would you like to do?", "Guest Menu",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
+                // Based on the button clicked we trigger the right helper method
                 switch (choice) {
                     case 0 -> handleRegister();
                     case 1 -> handleLogin();
                     case 2, JOptionPane.CLOSED_OPTION -> {
+                        // If they pick exit or close the window we stop the loop and say goodbye
                         JOptionPane.showMessageDialog(null, "Thank you for using SmartGo. Goodbye!");
                         running = false;
                     }
                 }
             } else {
-                // This is the main dashboard for registered users
+                // Once a user is logged in we show them their personal travel dashboard
                 User user = AuthService.getLoggedInUser();
                 String[] options = {"Browse Flights", "Browse Tour Plans", "Browse Hotels", "My Bookings", "Reviews", "Logout"};
                 int choice = JOptionPane.showOptionDialog(null, "Hello, " + user.getName() + "! What would you like to do?", "Main Menu",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
+                // Each option here leads to a specialized submenu for that travel category
                 switch (choice) {
                     case 0 -> handleFlightsMenu();
                     case 1 -> handleTourPlansMenu();
@@ -66,6 +71,7 @@ public class Main {
         }
     }
 
+    // This method sets up a custom form with multiple text boxes for new users
     private static void handleRegister() {
         JTextField nameField = new JTextField();
         JTextField emailField = new JTextField();
@@ -73,6 +79,7 @@ public class Main {
         JPasswordField passwordField = new JPasswordField();
         JTextField addressField = new JTextField();
 
+        // We bundle all the input boxes together into one object to show in the popup
         Object[] message = {
                 "Full Name:", nameField,
                 "Email:", emailField,
@@ -81,6 +88,7 @@ public class Main {
                 "Address:", addressField
         };
 
+        // If the user clicks OK we grab all their text and try to create the account
         int option = JOptionPane.showConfirmDialog(null, message, "Register Account", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             try {
@@ -88,11 +96,13 @@ public class Main {
                         new String(passwordField.getPassword()), addressField.getText());
                 JOptionPane.showMessageDialog(null, "Account created successfully!");
             } catch (SmartGoException e) {
+                // If something goes wrong like a duplicate email we show the specific error
                 JOptionPane.showMessageDialog(null, "Could not create account: " + e.getMessage());
             }
         }
     }
 
+    // Similar to register but we only need two fields for signing in
     private static void handleLogin() {
         JTextField emailField = new JTextField();
         JPasswordField passwordField = new JPasswordField();
@@ -112,6 +122,7 @@ public class Main {
         }
     }
 
+    // This submenu handles everything related to flight searching and booking
     private static void handleFlightsMenu() {
         boolean inMenu = true;
         while (inMenu) {
@@ -120,8 +131,10 @@ public class Main {
                     JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
             switch (choice) {
+                // We use our special captureOutput helper to show all flights in a scrollable window
                 case 0 -> captureOutput(() -> FlightService.showAllFlights(), "All Flights");
                 case 1 -> {
+                    // We ask the user for a city name to filter the flights
                     String city = JOptionPane.showInputDialog("Enter destination city:");
                     if (city != null) {
                         var results = FlightService.searchByDestination(city);
@@ -129,6 +142,7 @@ public class Main {
                     }
                 }
                 case 2 -> {
+                    // We let the user filter flights by their favorite airline
                     String airline = JOptionPane.showInputDialog("Enter airline name:");
                     if (airline != null) {
                         var results = FlightService.searchByAirline(airline);
@@ -136,6 +150,7 @@ public class Main {
                     }
                 }
                 case 3 -> {
+                    // Users can read feedback from other travelers by entering a flight ID
                     String idStr = JOptionPane.showInputDialog("Enter flight ID:");
                     if (idStr != null) {
                         try {
@@ -145,6 +160,7 @@ public class Main {
                     }
                 }
                 case 4 -> {
+                    // This triggers the booking process and saves the reservation to the file
                     String idStr = JOptionPane.showInputDialog("Enter flight ID to book:");
                     if (idStr != null) {
                         try {
@@ -159,6 +175,7 @@ public class Main {
         }
     }
 
+    // This submenu deals with organized tour packages and vacation plans
     private static void handleTourPlansMenu() {
         boolean inMenu = true;
         while (inMenu) {
@@ -169,6 +186,7 @@ public class Main {
             switch (choice) {
                 case 0 -> captureOutput(() -> TourPlanService.showAllTourPlans(), "All Tour Plans");
                 case 1 -> {
+                    // Each tour can have different food options which we show here
                     String idStr = JOptionPane.showInputDialog("Enter tour ID:");
                     if (idStr != null) {
                         try {
@@ -201,6 +219,7 @@ public class Main {
         }
     }
 
+    // This submenu is where users can find and reserve hotel rooms
     private static void handleHotelsMenu() {
         boolean inMenu = true;
         while (inMenu) {
@@ -227,6 +246,7 @@ public class Main {
                     }
                 }
                 case 3 -> {
+                    // For hotels we need extra details like dates and the number of people staying
                     String idStr = JOptionPane.showInputDialog("Enter hotel ID to book:");
                     if (idStr != null) {
                         try {
@@ -248,6 +268,7 @@ public class Main {
         }
     }
 
+    // This submenu lets users manage their existing trips and settle their bills
     private static void handleBookingsMenu() {
         boolean inMenu = true;
         int userId = AuthService.getLoggedInUser().getId();
@@ -259,6 +280,7 @@ public class Main {
             switch (choice) {
                 case 0 -> captureOutput(() -> BookingService.showMyBookings(userId), "My Bookings");
                 case 1 -> {
+                    // Users can cancel any reservation they no longer need
                     String idStr = JOptionPane.showInputDialog("Enter booking ID to cancel:");
                     if (idStr != null) {
                         try {
@@ -269,6 +291,7 @@ public class Main {
                     }
                 }
                 case 2 -> {
+                    // This initiates the payment flow where users can pick a method like Card or Cash
                     String idStr = JOptionPane.showInputDialog("Enter booking ID to pay:");
                     if (idStr != null) {
                         try {
@@ -288,6 +311,7 @@ public class Main {
         }
     }
 
+    // This submenu is where users can share their experiences about their travels
     private static void handleReviewsMenu() {
         boolean inMenu = true;
         int userId = AuthService.getLoggedInUser().getId();
@@ -298,6 +322,7 @@ public class Main {
 
             switch (choice) {
                 case 0 -> {
+                    // We ask what type of service is being reviewed before taking the rating
                     String[] types = {"FLIGHT", "HOTEL", "TOUR_PLAN"};
                     int typeChoice = JOptionPane.showOptionDialog(null, "What are you reviewing?", "Review Type",
                             JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, types, types[0]);
@@ -319,35 +344,37 @@ public class Main {
         }
     }
 
-    // This helper method is very important because it lets us show console output in a GUI window
+    // This is a specialized tool that grabs anything the app prints to the console and shows it in a GUI window
     private static void captureOutput(Runnable action, String title) {
-        // We create a temporary storage in memory to catch everything printed to the console
+        // Step 1: Create a place in the computer memory to hold the text temporarily
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(baos);
         PrintStream old = System.out;
         
-        // We tell Java to send all print commands to our memory storage instead of the black console window
+        // Step 2: Reroute the standard output stream so it goes into our memory buffer instead of the terminal
         System.setOut(ps);
-        action.run(); // Run the service method (like showAllFlights)
+        action.run(); // We run the actual logic (like searching for flights) while the reroute is active
         System.out.flush();
-        System.setOut(old); // Put everything back to normal
+        System.setOut(old); // Step 3: Put the output stream back to normal immediately after finishing
         
-        // Now we take everything we caught and put it inside a scrollable text area
+        // Step 4: Take all the captured text and put it inside a scrollable box for the user to read
         JTextArea textArea = new JTextArea(baos.toString());
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setPreferredSize(new Dimension(600, 400));
         
-        // Finally show the window with all the captured text
+        // Step 5: Display the window with all the information we gathered
         JOptionPane.showMessageDialog(null, scrollPane, title, JOptionPane.PLAIN_MESSAGE);
     }
 
+    // This helper quickly builds a window to show a list of objects like flights or hotels
     private static void showResults(List<?> list, String title) {
         if (list.isEmpty()) {
             JOptionPane.showMessageDialog(null, "No results found.");
             return;
         }
         StringBuilder sb = new StringBuilder();
+        // We loop through each item and add its textual description to one big string
         list.forEach(item -> sb.append(item.toString()).append("\n\n"));
         JTextArea textArea = new JTextArea(sb.toString());
         textArea.setEditable(false);

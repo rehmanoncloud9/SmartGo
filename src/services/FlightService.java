@@ -20,17 +20,20 @@ public class FlightService {
 
     // This method sets up the initial flight data when the app starts up
     public static void init() {
+        // Step 1: This is critical logic because we look at the existing flights to find the highest ID used
         List<Flight> existing = DataStore.loadFlights();
         if (!existing.isEmpty()) {
+            // Step 2: We set our counter to the next number so we never reuse an ID, even after restarting the app
             nextFlightId = existing.get(existing.size() - 1).getId() + 1;
         }
 
+        // Step 3: We do the same check for destinations to keep those IDs unique as well
         List<Destination> destinations = DataStore.loadDestinations();
         if (!destinations.isEmpty()) {
             nextDestinationId = destinations.get(destinations.size() - 1).getId() + 1;
         }
 
-        // We only add sample flights if the database is currently empty
+        // Step 4: If this is the very first time the app is running we populate it with sample data
         if (existing.isEmpty()) {
             addSampleData();
         }
@@ -38,6 +41,7 @@ public class FlightService {
 
     // This creates a few default flights so the user has something to browse immediately
     private static void addSampleData() {
+        // Step 1: Create the destinations first so the flights have a place to go
         Destination d1 = new Destination(nextDestinationId++, "Multan", "Punjab", "Pakistan",
                 "Shah Rukn-e-Alam Shrine, Multan Fort, Ghanta Ghar", "multan.jpg");
         Destination d2 = new Destination(nextDestinationId++, "Lahore", "Punjab", "Pakistan",
@@ -45,10 +49,12 @@ public class FlightService {
         Destination d3 = new Destination(nextDestinationId++, "Skardu", "Gilgit-Baltistan", "Pakistan",
                 "Shangrila Resort, Deosai Plains, Upper Kachura Lake", "skardu.jpg");
 
+        // Step 2: Save these destinations to the file
         DataStore.saveDestination(d1);
         DataStore.saveDestination(d2);
         DataStore.saveDestination(d3);
 
+        // Step 3: Create the flight records and link them to the destination IDs we just created
         Flight f1 = new Flight(nextFlightId++, d1.getId(), 55.00, 180,
                 "PIA", "PK-341", "Economy", "2025-06-10 08:00", "2025-06-14 14:00");
         Flight f2 = new Flight(nextFlightId++, d2.getId(), 45.00, 200,
@@ -58,6 +64,7 @@ public class FlightService {
         Flight f4 = new Flight(nextFlightId++, d3.getId(), 95.00, 150,
                 "PIA", "PK-451", "Economy", "2025-07-01 06:00", "2025-07-08 21:00");
 
+        // Step 4: Finalize the setup by saving all the sample flights
         DataStore.saveFlight(f1);
         DataStore.saveFlight(f2);
         DataStore.saveFlight(f3);
@@ -68,6 +75,7 @@ public class FlightService {
 
     // This prints every available flight along with its destination details
     public static void showAllFlights() {
+        // Step 1: Load the full list of flights and destinations from the database
         List<Flight> flights = DataStore.loadFlights();
         List<Destination> destinations = DataStore.loadDestinations();
 
@@ -78,6 +86,7 @@ public class FlightService {
 
         System.out.println("\nAll Available Flights:");
         System.out.println("========================");
+        // Step 2: Loop through each flight and find its matching city name to show the user
         for (Flight f : flights) {
             String destName = getDestinationName(destinations, f.getDestinationId());
             System.out.println(f);
@@ -88,13 +97,16 @@ public class FlightService {
 
     // This lets users filter flights by typing in a city name
     public static List<Flight> searchByDestination(String city) {
+        // Step 1: Get all the data needed for the cross-reference search
         List<Flight> flights = DataStore.loadFlights();
         List<Destination> destinations = DataStore.loadDestinations();
         List<Flight> results = new ArrayList<>();
 
+        // Step 2: First find the destination ID that matches the city name entered
         for (Destination d : destinations) {
             // We ignore case so 'multan' and 'Multan' both work correctly
             if (d.getCity().equalsIgnoreCase(city)) {
+                // Step 3: Once we have the ID we find all flights headed to that specific destination
                 for (Flight f : flights) {
                     if (f.getDestinationId() == d.getId()) {
                         results.add(f);

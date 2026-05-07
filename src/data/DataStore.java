@@ -51,28 +51,33 @@ public class DataStore {
     private static List<String> readLines(String filename) {
         List<String> lines = new ArrayList<>();
         File file = new File(filename);
+        // Step 1: If the file doesn't exist yet we return an empty list to avoid crashes
         if (!file.exists()) return lines;
 
+        // Step 2: Use a BufferedReader to read the text content efficiently
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
+            // Step 3: Loop through each line until we reach the end of the file
             while ((line = reader.readLine()) != null) {
-                // We ignore empty lines to prevent crashes during parsing
+                // Step 4: This is critical logic because we ignore empty lines to prevent crashes during object parsing
                 if (!line.trim().isEmpty()) {
                     lines.add(line.trim());
                 }
             }
         } catch (IOException e) {
+            // Step 5: If there is a physical error reading the disk we print a message for the developer
             System.out.println("Could not read file: " + filename);
         }
         return lines;
     }
 
-    // This wipes a file clean and writes a whole new set of data to it
+    // This method wipes a file clean and writes a whole new set of data to it
     private static void writeAllLines(String filename, List<String> lines) {
+        // We use a FileWriter with the "false" flag to overwrite the old content
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, false))) {
             for (String line : lines) {
                 writer.write(line);
-                writer.newLine();
+                writer.newLine(); // We add a line break after each record to keep the file organized
             }
         } catch (IOException e) {
             System.out.println("Could not write file: " + filename);
@@ -81,19 +86,24 @@ public class DataStore {
 
     // We convert a User object into a single line of text with pipes as dividers
     public static void saveUser(User user) {
+        // Step 1: Pack every field of the User object into one long string separated by pipes
         String line = user.getId() + "|" + user.getName() + "|" + user.getEmail()
                 + "|" + user.getPhone() + "|" + user.getPasswordHash()
                 + "|" + user.getCreatedAt() + "|" + user.getAddress() + "|" + user.getLastLogin();
+        // Step 2: Add this single line to the bottom of the users text file
         appendLine(USERS_FILE, line);
     }
 
     // We read the users file and turn each line of text back into a real Java object
     public static List<User> loadUsers() {
         List<User> users = new ArrayList<>();
+        // Step 1: Read the text file line by line
         for (String line : readLines(USERS_FILE)) {
-            // Split the line by the pipe symbol to get the individual fields
+            // Step 2: Break the string apart at every pipe symbol to get the original data pieces
             String[] parts = line.split("\\|");
+            // Step 3: Check if we have all the parts before creating the Java object to avoid errors
             if (parts.length >= 8) {
+                // Step 4: Rebuild the User object using the pieces we just pulled from the text
                 users.add(new User(
                         Integer.parseInt(parts[0]), parts[1], parts[2],
                         parts[3], parts[4], parts[5], parts[6], parts[7]

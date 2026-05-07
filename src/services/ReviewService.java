@@ -11,7 +11,7 @@ import java.util.List;
 // ReviewService handles everything related to reviews.
 // Users can leave a review for a flight, hotel, or tour plan.
 // Anyone can read the reviews for a specific item.
-// This shows polymorphism - one service works for all three types.
+// This shows polymorphism because one service works for all three types.
 
 public class ReviewService {
 
@@ -31,24 +31,26 @@ public class ReviewService {
     public static void addReview(int userId, String reviewableType, int reviewableId,
                                   int rating, String comment) throws SmartGoException {
 
-        // We make sure the rating is within the logical range of one to five stars
+        // Step 1: We make sure the rating is within the logical range of one to five stars
         if (rating < 1 || rating > 5) {
             throw new SmartGoException("Rating must be between 1 and 5.");
         }
 
-        // We also check that the user didn't leave the comment section empty
+        // Step 2: We also check that the user didn't leave the comment section empty
         if (comment == null || comment.trim().isEmpty()) {
             throw new SmartGoException("Please write a comment for your review.");
         }
 
         String createdAt = LocalDateTime.now().format(formatter);
 
-        // We create a new Review object and save it immediately to our text file
+        // Step 3: This is critical logic because we use a generic 'reviewableType' string to identify if this is for a flight or a hotel
+        // This allows one single service to handle reviews for completely different parts of the system
         Review review = new Review(
                 nextReviewId++, userId, reviewableType,
                 reviewableId, rating, comment.trim(), createdAt
         );
 
+        // Step 4: Record the user's feedback permanently into our text database
         DataStore.saveReview(review);
 
         System.out.println("Thank you! Your review has been saved.");
@@ -57,14 +59,16 @@ public class ReviewService {
 
     // This displays all feedback left for a specific flight, hotel, or tour plan
     public static void showReviews(String reviewableType, int reviewableId) {
+        // Step 1: Gather every single review ever written from our storage files
         List<Review> reviews = DataStore.loadReviews();
         boolean found = false;
 
         System.out.println("\nReviews for " + reviewableType + " #" + reviewableId + ":");
         System.out.println("================================");
 
+        // Step 2: We filter the giant list to only show reviews that match the specific type and ID we want
         for (Review r : reviews) {
-            // We check both the type and the ID to find the exact matches
+            // This cross-reference is what lets us display only hotel reviews when you're looking at a hotel
             if (r.getReviewableType().equalsIgnoreCase(reviewableType)
                     && r.getReviewableId() == reviewableId) {
                 System.out.println(r);
@@ -73,6 +77,7 @@ public class ReviewService {
             }
         }
 
+        // Step 3: If we didn't find any matching reviews we let the user know instead of showing an empty screen
         if (!found) {
             System.out.println("No reviews yet for this item.");
         }

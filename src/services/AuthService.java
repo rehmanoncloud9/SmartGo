@@ -30,19 +30,22 @@ public class AuthService {
 
     // This creates a new account for a user after checking if the email is available
     public static User register(String name, String email, String phone, String password, String address) throws SmartGoException {
+        // Step 1: Load the existing user list from the file to check for duplicates
         List<User> users = DataStore.loadUsers();
 
-        // We loop through all users to make sure the email is not already taken
+        // Step 2: Loop through every user to make sure this email hasn't been used before
         for (User u : users) {
             if (u.getEmail().equalsIgnoreCase(email)) {
+                // If we find a match we stop the registration and show a helpful warning
                 throw new SmartGoException("An account with this email already exists. Please use a different email.");
             }
         }
 
         String createdAt = LocalDateTime.now().format(formatter);
 
-        // We store the password as-is for now, which is common for lab projects
+        // Step 3: Create the new user object with a unique ID and the current timestamp
         User newUser = new User(nextUserId++, name, email, phone, password, createdAt, address, createdAt);
+        // Step 4: Save the new user record permanently into our text database
         DataStore.saveUser(newUser);
 
         System.out.println("Account created successfully! Welcome, " + name + ".");
@@ -51,18 +54,21 @@ public class AuthService {
 
     // This verifies credentials and sets the session for the user
     public static User login(String email, String password) throws SmartGoException {
+        // Step 1: Retrieve all registered users to search for the login credentials
         List<User> users = DataStore.loadUsers();
 
+        // Step 2: Compare the provided email and password against each record in the list
         for (User u : users) {
-            // Both the email and password must match exactly
+            // We check for an exact match on both pieces of information
             if (u.getEmail().equalsIgnoreCase(email) && u.getPasswordHash().equals(password)) {
+                // Step 3: If matched, we store this user in memory as the "logged in" user for this session
                 loggedInUser = u;
                 System.out.println("Welcome back, " + u.getName() + "!");
                 return u;
             }
         }
 
-        // If we reach this point, it means we didn't find a matching account
+        // Step 4: If we finish the loop without finding a match we inform the user they made a mistake
         throw new SmartGoException("Incorrect email or password. Please try again.");
     }
 

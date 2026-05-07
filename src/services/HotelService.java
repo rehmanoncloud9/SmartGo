@@ -37,6 +37,7 @@ public class HotelService {
 
     // This displays a full list of every hotel currently in the system
     public static void showAllHotels() {
+        // Step 1: Request the full list of hotels from the persistent text file
         List<Hotel> hotels = DataStore.loadHotels();
 
         if (hotels.isEmpty()) {
@@ -46,6 +47,7 @@ public class HotelService {
 
         System.out.println("\nAll Available Hotels:");
         System.out.println("======================");
+        // Step 2: Loop through every hotel and print its textual description to the console
         for (Hotel h : hotels) {
             System.out.println(h);
         }
@@ -55,9 +57,12 @@ public class HotelService {
     // This allows users to find a specific hotel by typing any part of its name
     public static List<Hotel> searchByName(String query) {
         List<Hotel> results = new ArrayList<>();
+        // Step 1: Loop through the entire hotel database
         for (Hotel h : DataStore.loadHotels()) {
+            // Step 2: Check if the hotel name contains the letters the user typed in
             // We search for partial matches so 'pearl' would find 'Pearl Continental'
             if (h.getName().toLowerCase().contains(query.toLowerCase())) {
+                // Step 3: Add any matching hotel to our temporary results list
                 results.add(h);
             }
         }
