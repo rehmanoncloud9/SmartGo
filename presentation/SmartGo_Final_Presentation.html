@@ -13,7 +13,12 @@
   --muted:#64748b;--text:#0f172a;--code-bg:#0f172a;
 }
 body{font-family:"DM Sans",sans-serif;background:#f1f5f9;color:var(--text);padding:40px 20px;font-size:15px;}
-@media print{body{padding:0;margin:0;}.slide-wrap{page-break-after:always;margin:0;padding:0;}.slide{box-shadow:none!important;border-radius:0!important;width:100%!important;height:100vh!important;}}
+@media print{
+  @page { size: 1280px 720px; margin: 0; }
+  body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; padding: 0; margin: 0; }
+  .slide-wrap { page-break-inside: avoid; page-break-after: always; margin: 0; padding: 0; display: block; }
+  .slide { box-shadow: none !important; border-radius: 0 !important; width: 1280px !important; height: 720px !important; border: none !important; margin: 0 auto !important; }
+}
 .slide-wrap{display:flex;justify-content:center;margin-bottom:48px;}
 .slide{width:1280px;height:720px;border-radius:20px;overflow:hidden;position:relative;border:1px solid var(--border);box-shadow:0 30px 60px rgba(15,23,42,0.1);flex-shrink:0;background:var(--dark2);}
 .bg{position:absolute;inset:0;z-index:0;}
