@@ -10,6 +10,7 @@ public class MealBooking {
     private int mealPlanId;
     private boolean isCancelled;
 
+    // This is the main constructor for MealBooking
     public MealBooking(int id, int bookingId, int mealPlanId, boolean isCancelled) {
         this.id = id;
         this.bookingId = bookingId;
@@ -17,13 +18,27 @@ public class MealBooking {
         this.isCancelled = isCancelled;
     }
 
-    public int getId() { return id; }
-    public int getBookingId() { return bookingId; }
-    public int getMealPlanId() { return mealPlanId; }
-    public boolean isCancelled() { return isCancelled; }
+    public int getId() {
+        return id;
+    }
 
-    public void setCancelled(boolean cancelled) { this.isCancelled = cancelled; }
+    public int getBookingId() {
+        return bookingId;
+    }
 
+    public int getMealPlanId() {
+        return mealPlanId;
+    }
+
+    public boolean isCancelled() {
+        return isCancelled;
+    }
+
+    public void setCancelled(boolean cancelled) {
+        this.isCancelled = cancelled;
+    }
+
+    // This is the toString method for MealBooking
     @Override
     public String toString() {
         return "Meal Booking ID: " + id + " | Booking: " + bookingId

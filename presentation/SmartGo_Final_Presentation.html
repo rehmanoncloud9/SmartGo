@@ -12,7 +12,7 @@
   --dark2:#f8fafc;--card:#ffffff;--border:#e2e8f0;
   --muted:#64748b;--text:#0f172a;--code-bg:#0f172a;
 }
-body{font-family:"DM Sans",sans-serif;background:#f1f5f9;color:var(--text);padding:40px 20px;font-size:15px;}
+body{font-family:"DM Sans",sans-serif;background:#f1f5f9;color:var(--text);padding:40px 20px;font-size:18px;}
 @media print{
   @page { size: 1280px 720px; margin: 0; }
   body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; padding: 0; margin: 0; }
@@ -23,36 +23,36 @@ body{font-family:"DM Sans",sans-serif;background:#f1f5f9;color:var(--text);paddi
 .slide{width:1280px;height:720px;border-radius:20px;overflow:hidden;position:relative;border:1px solid var(--border);box-shadow:0 30px 60px rgba(15,23,42,0.1);flex-shrink:0;background:var(--dark2);}
 .bg{position:absolute;inset:0;z-index:0;}
 .pad{position:relative;z-index:2;padding:44px 60px;height:100%;display:flex;flex-direction:column;gap:14px;}
-.sn{position:absolute;bottom:28px;right:40px;font-size:12px;font-weight:700;color:rgba(15,23,42,0.3);font-family:"JetBrains Mono",monospace;letter-spacing:.1em;}
-.label{font-family:"JetBrains Mono",monospace;font-weight:700;letter-spacing:.15em;text-transform:uppercase;font-size:10px;color:var(--g1);padding:4px 12px;background:rgba(0,200,150,.08);border:1px solid rgba(0,200,150,0.15);border-radius:20px;display:inline-block;width:fit-content;}
+.sn{position:absolute;bottom:28px;right:40px;font-size:14px;font-weight:700;color:rgba(15,23,42,0.3);font-family:"JetBrains Mono",monospace;letter-spacing:.1em;}
+.label{font-family:"JetBrains Mono",monospace;font-weight:700;letter-spacing:.15em;text-transform:uppercase;font-size:12px;color:var(--g1);padding:4px 12px;background:rgba(0,200,150,.08);border:1px solid rgba(0,200,150,0.15);border-radius:20px;display:inline-block;width:fit-content;}
 .heading{font-family:"Syne",sans-serif;font-weight:700;line-height:1.15;letter-spacing:-.02em;}
 .display{font-family:"Syne",sans-serif;font-weight:800;line-height:1;letter-spacing:-.04em;}
 .grad{background:linear-gradient(135deg,var(--g1) 0%,var(--g2) 50%,var(--g3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.code{background:var(--code-bg);border-radius:10px;padding:16px 18px;font-family:"JetBrains Mono",monospace;font-size:11px;color:#cbd5e1;border:1px solid rgba(0,0,0,0.1);line-height:1.55;overflow:hidden;}
+.code{background:var(--code-bg);border-radius:10px;padding:16px 18px;font-family:"JetBrains Mono",monospace;font-size:14px;color:#cbd5e1;border:1px solid rgba(0,0,0,0.1);line-height:1.55;overflow:hidden;}
 .ck{color:#f472b6}.cv{color:#c084fc}.cs{color:#38bdf8}.cc{color:#64748b}.ct{color:#4ade80}.cm{color:#fb923c}.cy{color:#facc15}
 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 22px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);}
-.uml-box{background:#ffffff;border:1.5px solid #cbd5e1;border-radius:4px;min-width:150px;display:flex;flex-direction:column;font-size:10px;font-family:"JetBrains Mono",monospace;}
-.uml-name{background:#f8fafc;padding:8px 12px;text-align:center;font-weight:700;font-size:11px;border-bottom:1.5px solid #cbd5e1;font-family:"Syne",sans-serif;color:var(--text);}
+.uml-box{background:#ffffff;border:1.5px solid #cbd5e1;border-radius:4px;min-width:150px;display:flex;flex-direction:column;font-size:12px;font-family:"JetBrains Mono",monospace;}
+.uml-name{background:#f8fafc;padding:8px 12px;text-align:center;font-weight:700;font-size:13px;border-bottom:1.5px solid #cbd5e1;font-family:"Syne",sans-serif;color:var(--text);}
 .uml-name.abstract{color:var(--g1);font-style:italic;}
 .uml-name.iface{color:var(--g3);}
 .uml-section{padding:8px 12px;border-bottom:1px solid #e2e8f0;min-height:26px;line-height:1.7;color:#475569;}
 .uml-section:last-child{border-bottom:none;}
 .vs-grid{display:grid;grid-template-columns:1fr 36px 1fr;gap:16px;align-items:center;}
-.vs-bad{background:#fff1f2;border:1px solid #fecaca;border-radius:10px;padding:14px 16px;color:#991b1b;font-size:12.5px;line-height:1.5;}
-.vs-good{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px 16px;color:#166534;font-size:12.5px;line-height:1.5;}
-.vs-badge{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--g1),var(--g2));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:#fff;font-family:"Syne",sans-serif;}
-.bullet{display:flex;gap:10px;align-items:flex-start;margin-bottom:9px;font-size:14px;line-height:1.5;}
+.vs-bad{background:#fff1f2;border:1px solid #fecaca;border-radius:10px;padding:14px 16px;color:#991b1b;font-size:15px;line-height:1.5;}
+.vs-good{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px 16px;color:#166534;font-size:15px;line-height:1.5;}
+.vs-badge{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--g1),var(--g2));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#fff;font-family:"Syne",sans-serif;}
+.bullet{display:flex;gap:10px;align-items:flex-start;margin-bottom:9px;font-size:17px;line-height:1.5;}
 .bullet::before{content:"›";color:var(--g1);font-weight:900;font-size:18px;line-height:1.2;flex-shrink:0;}
-.concept-tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;font-family:"JetBrains Mono",monospace;letter-spacing:.05em;}
+.concept-tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;font-family:"JetBrains Mono",monospace;letter-spacing:.05em;}
 .tag-green{background:rgba(0,200,150,.1);color:var(--g1);border:1px solid rgba(0,200,150,.2);}
 .tag-blue{background:rgba(0,144,255,.1);color:var(--g2);border:1px solid rgba(0,144,255,.2);}
 .tag-purple{background:rgba(168,85,247,.1);color:var(--g3);border:1px solid rgba(168,85,247,.2);}
 .tag-orange{background:rgba(251,146,60,.1);color:#ea580c;border:1px solid rgba(251,146,60,.2);}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;}
 .arch-layer{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 18px;display:flex;align-items:center;gap:16px;}
-.arch-label{font-family:"Syne",sans-serif;font-weight:700;font-size:13px;min-width:120px;}
+.arch-label{font-family:"Syne",sans-serif;font-weight:700;font-size:16px;min-width:120px;}
 .hl{background:linear-gradient(135deg,rgba(0,200,150,.04),rgba(0,144,255,.04));border:1px solid rgba(0,200,150,.1);border-radius:12px;padding:16px 20px;}
-.ph{border-radius:10px;border:1px dashed #cbd5e1;background:rgba(15,23,42,0.02);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#94a3b8;font-family:"JetBrains Mono",monospace;font-size:11px;flex:1;}
+.ph{border-radius:10px;border:1px dashed #cbd5e1;background:rgba(15,23,42,0.02);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#94a3b8;font-family:"JetBrains Mono",monospace;font-size:13px;flex:1;}
 </style></head><body>
 </style></head><body>
 <div class="slide-wrap"><div class="slide">
@@ -67,7 +67,7 @@ body{font-family:"DM Sans",sans-serif;background:#f1f5f9;color:var(--text);paddi
 
   <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:80px;align-items:start;">
     <div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g1);font-weight:700;margin-bottom:24px;text-transform:uppercase;letter-spacing:0.2em;">Engineering Team · Group B2</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--g1);font-weight:700;margin-bottom:24px;text-transform:uppercase;letter-spacing:0.2em;">Engineering Team · Group B2</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px 24px;">
         <div><div style="font-family:Syne,sans-serif;font-weight:700;font-size:18px;color:var(--text);">Abdul Rehman</div><div style="font-size:12px;color:var(--muted);margin-top:4px;font-family:'JetBrains Mono',monospace;">ID: 576841</div></div>
         <div><div style="font-family:Syne,sans-serif;font-weight:700;font-size:18px;color:var(--text);">M. Yousaf Khan</div><div style="font-size:12px;color:var(--muted);margin-top:4px;font-family:'JetBrains Mono',monospace;">ID: 572229</div></div>
@@ -92,7 +92,7 @@ body{font-family:"DM Sans",sans-serif;background:#f1f5f9;color:var(--text);paddi
     </div>
   </div>
 </div></div>
-<div class="sn">01 / 31</div>
+<div class="sn">01 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -104,7 +104,7 @@ body{font-family:"DM Sans",sans-serif;background:#f1f5f9;color:var(--text);paddi
   <div style="display:flex;flex-direction:column;gap:24px;">
     <div style="border-left:3px solid #ef4444;padding-left:20px;">
       <div style="font-family:Syne,sans-serif;font-weight:700;font-size:18px;color:#ef4444;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.05em;">The Problem</div>
-      <div style="display:flex;flex-direction:column;gap:12px;font-size:14px;color:var(--muted);line-height:1.6;">
+      <div style="display:flex;flex-direction:column;gap:12px;font-size:17px;color:var(--muted);line-height:1.6;">
         <div>• <strong>Fragmented Systems:</strong> Travelers currently manage flights, hotels, and tours across 3+ disconnected applications.</div>
         <div>• <strong>Manual Calculation:</strong> Fee structures and platform commissions are often calculated manually, leading to financial errors.</div>
         <div>• <strong>Persistence Gaps:</strong> Critical user state and booking history are lost between sessions due to lack of local persistence.</div>
@@ -113,39 +113,39 @@ body{font-family:"DM Sans",sans-serif;background:#f1f5f9;color:var(--text);paddi
     
     <div style="border-left:3px solid var(--g1);padding-left:20px;background:rgba(0,200,150,0.03);padding-top:16px;padding-bottom:16px;border-radius:0 4px 4px 0;">
       <div style="font-family:Syne,sans-serif;font-weight:700;font-size:18px;color:var(--g1);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.05em;">The SmartGo Answer</div>
-      <div style="font-size:15px;color:var(--text);line-height:1.6;">
+      <div style="font-size:18px;color:var(--text);line-height:1.6;">
         A <strong>Unified Java Core</strong> where every travel entity is a first-class Object. One codebase handles the entire lifecycle: Discovery → Booking → Billing → Review.
       </div>
     </div>
   </div>
 
   <div style="border:1px solid var(--border);padding:24px;background:#fff;">
-    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);font-weight:700;margin-bottom:20px;text-transform:uppercase;letter-spacing:0.1em;">Feature Matrix</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--muted);font-weight:700;margin-bottom:20px;text-transform:uppercase;letter-spacing:0.1em;">Feature Matrix</div>
     <div style="display:flex;flex-direction:column;gap:16px;">
       <div style="display:flex;gap:16px;align-items:baseline;">
         <div style="width:8px;height:8px;background:var(--g1);flex-shrink:0;"></div>
-        <div><div style="font-weight:700;font-size:14px;">Flight Booking</div><div style="font-size:12px;color:var(--muted);">Global search and instant seat reservation.</div></div>
+        <div><div style="font-weight:700;font-size:17px;">Flight Booking</div><div style="font-size:12px;color:var(--muted);">Global search and instant seat reservation.</div></div>
       </div>
       <div style="display:flex;gap:16px;align-items:baseline;">
         <div style="width:8px;height:8px;background:var(--g2);flex-shrink:0;"></div>
-        <div><div style="font-weight:700;font-size:14px;">Hotel Reservations</div><div style="font-size:12px;color:var(--muted);">Rating-based discovery with guest management.</div></div>
+        <div><div style="font-weight:700;font-size:17px;">Hotel Reservations</div><div style="font-size:12px;color:var(--muted);">Rating-based discovery with guest management.</div></div>
       </div>
       <div style="display:flex;gap:16px;align-items:baseline;">
         <div style="width:8px;height:8px;background:var(--g3);flex-shrink:0;"></div>
-        <div><div style="font-weight:700;font-size:14px;">Tour Packages</div><div style="font-size:12px;color:var(--muted);">Multi-day itineraries with optional meal plans.</div></div>
+        <div><div style="font-weight:700;font-size:17px;">Tour Packages</div><div style="font-size:12px;color:var(--muted);">Multi-day itineraries with optional meal plans.</div></div>
       </div>
       <div style="display:flex;gap:16px;align-items:baseline;">
         <div style="width:8px;height:8px;background:#f59e0b;flex-shrink:0;"></div>
-        <div><div style="font-weight:700;font-size:14px;">Automated Billing</div><div style="font-size:12px;color:var(--muted);">5% platform fee computation and persistence.</div></div>
+        <div><div style="font-weight:700;font-size:17px;">Automated Billing</div><div style="font-size:12px;color:var(--muted);">5% platform fee computation and persistence.</div></div>
       </div>
       <div style="display:flex;gap:16px;align-items:baseline;">
         <div style="width:8px;height:8px;background:#fb923c;flex-shrink:0;"></div>
-        <div><div style="font-weight:700;font-size:14px;">Review Architecture</div><div style="font-size:12px;color:var(--muted);">Standardized feedback loop across all entities.</div></div>
+        <div><div style="font-weight:700;font-size:17px;">Review Architecture</div><div style="font-size:12px;color:var(--muted);">Standardized feedback loop across all entities.</div></div>
       </div>
     </div>
   </div>
 </div></div>
-<div class="sn">02 / 31</div>
+<div class="sn">02 / 28</div>
 </div></div>
 <!-- TEAM CONTRIBUTIONS SLIDE -->
 <div class="slide-wrap"><div class="slide">
@@ -160,34 +160,34 @@ body{font-family:"DM Sans",sans-serif;background:#f1f5f9;color:var(--text);paddi
       <div style="font-family:Syne,sans-serif;font-weight:700;font-size:22px;color:var(--text);">Abdul Rehman</div>
       <span class="concept-tag tag-green" style="font-size:12px;padding:4px 12px;">Lead Engineer (The master of backend logic)</span>
     </div>
-    <div style="font-size:14px;color:var(--muted);line-height:1.6;"><strong>Architected and implemented the entire core system and presentation.</strong> Developed the <code>DataStore</code> file serialization engine, structured the Object-Oriented inheritance hierarchies, designed all <code>Service</code> layer business logic, and handled exception frameworks. Executed the vast majority of the programming and debugging efforts, and <strong>authored the complete high-fidelity presentation slide deck</strong>.</div>
+    <div style="font-size:17px;color:var(--muted);line-height:1.6;"><strong>Architected and implemented the entire core system and presentation.</strong> Developed the <code>DataStore</code> file serialization engine, structured the Object-Oriented inheritance hierarchies, designed all <code>Service</code> layer business logic, and handled exception frameworks. Executed the vast majority of the programming and debugging efforts, and <strong>authored the complete high-fidelity presentation slide deck</strong>.</div>
   </div>
 
   <div class="card" style="border-left:4px solid var(--g2);">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
       <div style="font-family:Syne,sans-serif;font-weight:700;font-size:18px;color:var(--text);">Muhammad Yousaf Khan</div>
-      <span class="concept-tag tag-blue" style="font-size:11px;">Project Manager & GUI Integrator</span>
+      <span class="concept-tag tag-blue" style="font-size:14px;">Project Manager & GUI Integrator</span>
     </div>
-    <div style="font-size:13px;color:var(--muted);line-height:1.6;">Played a key part in designing and coding the UI interfaces. Monitored the overall software development lifecycle, managed team coordination, and ensured UI integrated smoothly with the backend logic.</div>
+    <div style="font-size:16px;color:var(--muted);line-height:1.6;">Played a key part in designing and coding the UI interfaces. Monitored the overall software development lifecycle, managed team coordination, and ensured UI integrated smoothly with the backend logic.</div>
   </div>
 
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
     <div class="card" style="border-left:4px solid var(--g3);">
       <div style="font-family:Syne,sans-serif;font-weight:700;font-size:18px;color:var(--text);margin-bottom:4px;">Hamza Basit</div>
       <span class="concept-tag tag-purple" style="font-size:10px;margin-bottom:8px;display:inline-block;">The Project Designer</span>
-      <div style="font-size:13px;color:var(--muted);line-height:1.5;">Designed the project aesthetics. Created the initial UI mockups, selected color palettes, and planned the visual layout elements used by the team.</div>
+      <div style="font-size:16px;color:var(--muted);line-height:1.5;">Designed the project aesthetics. Created the initial UI mockups, selected color palettes, and planned the visual layout elements used by the team.</div>
     </div>
 
     <div class="card" style="border-left:4px solid #f59e0b;">
       <div style="font-family:Syne,sans-serif;font-weight:700;font-size:18px;color:var(--text);margin-bottom:4px;">Rehan Chaudry</div>
       <span class="concept-tag tag-orange" style="font-size:10px;margin-bottom:8px;display:inline-block;">Database & Schema Lead</span>
-      <div style="font-size:13px;color:var(--muted);line-height:1.5;">Carried the whole database design process. Structured the entities, managed the relational dependencies, and generated the comprehensive ERD documentation.</div>
+      <div style="font-size:16px;color:var(--muted);line-height:1.5;">Carried the whole database design process. Structured the entities, managed the relational dependencies, and generated the comprehensive ERD documentation.</div>
     </div>
   </div>
 
 </div>
 </div>
-<div class="sn">03 / 31</div>
+<div class="sn">03 / 28</div>
 </div></div>
 
 <div class="slide-wrap"><div class="slide">
@@ -199,30 +199,30 @@ body{font-family:"DM Sans",sans-serif;background:#f1f5f9;color:var(--text);paddi
 <div style="display:grid;grid-template-columns:1fr 1.1fr;gap:40px;flex:1;">
   <div style="display:flex;flex-direction:column;gap:16px;">
     <div style="border-left:3px solid var(--g3);padding:14px 20px;background:#fff;border:1px solid var(--border);border-left-width:3px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">UI Layer</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:17px;color:var(--g3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">UI Layer</div>
       <div style="font-size:12px;color:var(--muted);">Main.java • Java Swing UI • Output Redirection via ByteArrayOutputStream</div>
     </div>
     <div style="text-align:center;color:var(--border);font-size:12px;">▼</div>
     <div style="border-left:3px solid var(--g2);padding:14px 20px;background:#fff;border:1px solid var(--border);border-left-width:3px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g2);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Service Layer</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:17px;color:var(--g2);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Service Layer</div>
       <div style="font-size:12px;color:var(--muted);">Stateless Business Logic • AuthService • BookingService • ReviewService</div>
     </div>
     <div style="text-align:center;color:var(--border);font-size:12px;">▼</div>
     <div style="border-left:3px solid var(--g1);padding:14px 20px;background:#fff;border:1px solid var(--border);border-left-width:3px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g1);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Model Layer</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:17px;color:var(--g1);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Model Layer</div>
       <div style="font-size:12px;color:var(--muted);">POJOs • Inheritance Hierarchies (Person, Transport) • Domain Entities</div>
     </div>
     <div style="text-align:center;color:var(--border);font-size:12px;">▼</div>
     <div style="border-left:3px solid #f59e0b;padding:14px 20px;background:#fff;border:1px solid var(--border);border-left-width:3px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#f59e0b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Data Layer</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:17px;color:#f59e0b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Data Layer</div>
       <div style="font-size:12px;color:var(--muted);">DataStore DAO • Pipe-Delimited Flat Files (.txt) • Buffered Persistence</div>
     </div>
   </div>
 
   <div style="display:flex;flex-direction:column;gap:24px;">
     <div style="border:1px solid var(--border);padding:20px;background:#fff;">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);font-weight:700;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.1em;">Key Design Decisions</div>
-      <div style="display:flex;flex-direction:column;gap:14px;font-size:13px;line-height:1.5;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--muted);font-weight:700;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.1em;">Key Design Decisions</div>
+      <div style="display:flex;flex-direction:column;gap:14px;font-size:16px;line-height:1.5;">
         <div><strong>• Flat-File Persistence:</strong> Used for lightweight state management without the overhead of a SQL database.</div>
         <div><strong>• Service Locator Pattern:</strong> Static service classes act as lightweight alternatives to full dependency injection containers.</div>
         <div><strong>• Centralized DAO:</strong> DataStore manages all I/O, ensuring consistent parsing and serialization across all 16 domain models.</div>
@@ -230,8 +230,8 @@ body{font-family:"DM Sans",sans-serif;background:#f1f5f9;color:var(--text);paddi
     </div>
 
     <div style="border:1px solid var(--border);padding:20px;background:#fff;flex:1;">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);font-weight:700;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.1em;">Package Structure</div>
-      <pre style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);line-height:1.4;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--muted);font-weight:700;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.1em;">Package Structure</div>
+      <pre style="font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--text);line-height:1.4;">
 src/
  ├── models/     <span style="color:var(--muted);">// 16 Domain Classes</span>
  ├── services/   <span style="color:var(--muted);">// 6 Business Logic Classes</span>
@@ -243,7 +243,7 @@ src/
     </div>
   </div>
 </div></div>
-<div class="sn">04 / 31</div>
+<div class="sn">04 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -269,11 +269,11 @@ src/
         <div class="uml-box" style="width:185px;"><div class="uml-name">Admin</div><div class="uml-section">- role : String<br>- lastLogin : String</div><div class="uml-section">+ getRole() : String<br>+ getAdminRole() : String</div></div>
       </div>
     </div>
-    <div style="font-size:11px;color:var(--muted);font-family:JetBrains Mono,monospace;">▷ hollow triangle = extends (Inheritance)</div>
+    <div style="font-size:14px;color:var(--muted);font-family:JetBrains Mono,monospace;">▷ hollow triangle = extends (Inheritance)</div>
   </div>
   <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;">
     <div class="hl">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g1);margin-bottom:8px;">What this module shows</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:17px;color:var(--g1);margin-bottom:8px;">What this module shows</div>
       <div class="bullet">Person is <strong>abstract</strong> — you can never instantiate a plain Person object. Enforced at compile time.</div>
       <div class="bullet"><strong>getRole()</strong> is declared abstract, forcing both User and Admin to provide their own implementation.</div>
       <div class="bullet"><strong>passwordHash</strong> is in Person — security-sensitive fields are in one protected location.</div>
@@ -285,7 +285,7 @@ src/
     </div>
   </div>
 </div></div>
-<div class="sn">05 / 31</div>
+<div class="sn">05 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -316,7 +316,7 @@ src/
   </div>
   <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;">
     <div class="hl">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g2);margin-bottom:8px;">What this module shows</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:17px;color:var(--g2);margin-bottom:8px;">What this module shows</div>
       <div class="bullet">Transport is abstract. <strong>getScheduleSummary()</strong> is the abstract method — Flight returns departure+return, Bus/Train return departure+arrival.</div>
       <div class="bullet">Flight additionally implements <strong>Reviewable</strong>, making it the only transport users can review.</div>
       <div class="bullet">Price and capacity live in Transport once — no duplication across 3 subclasses.</div>
@@ -328,7 +328,7 @@ src/
     </div>
   </div>
 </div></div>
-<div class="sn">06 / 31</div>
+<div class="sn">06 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -348,19 +348,19 @@ src/
         <div class="uml-box" style="width:185px;"><div class="uml-name">Hotel</div><div class="uml-section">- id : int  - name : String<br>- rating : int  - pricePerNight : double</div><div class="uml-section">implements Reviewable<br>+ getDisplayName()  + getReviewType()</div></div>
       </div>
     </div>
-    <div style="font-size:10.5px;color:#a855f7;font-family:JetBrains Mono,monospace;">⋯▷ dashed triangle = implements (Interface)</div>
+    <div style="font-size:13px;color:#a855f7;font-family:JetBrains Mono,monospace;">⋯▷ dashed triangle = implements (Interface)</div>
   </div>
   <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;">
     <div class="hl">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g3);margin-bottom:8px;">What this module shows</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:17px;color:var(--g3);margin-bottom:8px;">What this module shows</div>
       <div class="bullet">Reviewable is a <strong>contract</strong> — any class implementing it promises getId(), getDisplayName(), getReviewType().</div>
       <div class="bullet">ReviewService can accept <strong>any Reviewable</strong> — Hotel, Flight, or any future type — no instanceof checks.</div>
       <div class="bullet">Flight uses <strong>multiple contracts</strong>: extends Transport AND implements Reviewable — Java's safe near-multiple-inheritance.</div>
     </div>
-    <div class="code" style="font-size:10.5px;"><span class="cc">// ReviewService works for ANY Reviewable</span><br><span class="ck">public static void</span> showReviews(<span class="cs">String</span> type, <span class="cs">int</span> id)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">throws</span> SmartGoException {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cc">// Works for "FLIGHT", "HOTEL", "TOUR_PLAN"</span><br>}</div>
+    <div class="code" style="font-size:13px;"><span class="cc">// ReviewService works for ANY Reviewable</span><br><span class="ck">public static void</span> showReviews(<span class="cs">String</span> type, <span class="cs">int</span> id)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">throws</span> SmartGoException {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cc">// Works for "FLIGHT", "HOTEL", "TOUR_PLAN"</span><br>}</div>
   </div>
 </div></div>
-<div class="sn">07 / 31</div>
+<div class="sn">07 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -377,16 +377,16 @@ src/
   </div>
   <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;">
     <div class="hl">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g2);margin-bottom:8px;">Composition Chain</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:17px;color:var(--g2);margin-bottom:8px;">Composition Chain</div>
       <div class="bullet"><strong>Booking</strong> knows nothing about money. It delegates to Bill.</div>
       <div class="bullet"><strong>Bill</strong> auto-computes total = baseAmount + platformFee in its constructor — no external calculation needed.</div>
       <div class="bullet"><strong>Payment</strong> records the method (CASH / CARD / BANK_TRANSFER) from the PaymentMethod enum.</div>
       <div class="bullet">Each step is a <strong>separate concern</strong> — textbook Single Responsibility Principle.</div>
     </div>
-    <div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:#f59e0b;margin-bottom:6px;">BookingStatus Enum</div><div style="font-family:JetBrains Mono,monospace;font-size:11px;color:#94a3b8;">PENDING &nbsp;→ CONFIRMED &nbsp;→ CANCELLED</div><div style="font-size:12px;color:var(--muted);margin-top:6px;">Using an enum prevents illegal state strings like "canceld" — compiler enforces valid states.</div></div>
+    <div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:#f59e0b;margin-bottom:6px;">BookingStatus Enum</div><div style="font-family:JetBrains Mono,monospace;font-size:14px;color:#94a3b8;">PENDING &nbsp;→ CONFIRMED &nbsp;→ CANCELLED</div><div style="font-size:12px;color:var(--muted);margin-top:6px;">Using an enum prevents illegal state strings like "canceld" — compiler enforces valid states.</div></div>
   </div>
 </div></div>
-<div class="sn">08 / 31</div>
+<div class="sn">08 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -408,7 +408,7 @@ src/
   </div>
   <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;">
     <div class="hl">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g1);margin-bottom:8px;">Relationship Types Used</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:17px;color:var(--g1);margin-bottom:8px;">Relationship Types Used</div>
       <div class="bullet"><strong style="color:#0ea5e9;">Association (→)</strong>: TourPlan references Destination via destinationId — loosely coupled.</div>
       <div class="bullet"><strong style="color:var(--g1);">Composition</strong>: MealPlan cannot exist without its TourPlan — tourPlanId FK, always loaded together.</div>
       <div class="bullet"><strong style="color:var(--g3);">Link tables</strong>: TourPlanHotel and TourPlanTransport model many-to-many relationships.</div>
@@ -416,7 +416,7 @@ src/
     <div class="card"><div style="font-size:12px;color:var(--muted);line-height:1.6;">One TourPlan can have <strong style="color:var(--text);">multiple MealPlans</strong>, multiple <strong style="color:var(--text);">transport options</strong>, and multiple <strong style="color:var(--text);">hotels</strong> — one marked isDefault.</div></div>
   </div>
 </div></div>
-<div class="sn">09 / 31</div>
+<div class="sn">09 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -426,7 +426,7 @@ src/
 <div style="flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;min-height:0;">
   <img src="assets/erd.png" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:12px;"/>
 </div></div>
-<div class="sn">10 / 31</div>
+<div class="sn">10 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -439,13 +439,13 @@ src/
 <div class="two-col">
   <div style="display:flex;flex-direction:column;gap:10px;"><div class="code"><span class="cc">// Person.java — abstract base class</span><br><span class="ck">public abstract class</span> <span class="ct">Person</span> {<br>&nbsp;&nbsp;<span class="ck">private</span> <span class="cs">int</span> id;<br>&nbsp;&nbsp;<span class="ck">private</span> <span class="cs">String</span> name, email, phone, passwordHash;<br><br>&nbsp;&nbsp;<span class="cc">// Every subclass MUST implement this</span><br>&nbsp;&nbsp;<span class="ck">public abstract</span> <span class="cs">String</span> <span class="cm">getRole</span>();<br><br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cs">String</span> <span class="cm">toString</span>() {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">return</span> <span class="ct">"ID: "</span> + id + <span class="ct">" | Role: "</span> + <span class="cm">getRole</span>();<br>&nbsp;&nbsp;}<br>}</div>
 <div class="code"><span class="cc">// Transport.java — abstract with forced contract</span><br><span class="ck">public abstract class</span> <span class="ct">Transport</span> {<br>&nbsp;&nbsp;<span class="ck">private double</span> price;<br>&nbsp;&nbsp;<span class="ck">private int</span> capacity;<br><br>&nbsp;&nbsp;<span class="cc">// Subclasses provide their schedule format</span><br>&nbsp;&nbsp;<span class="ck">public abstract</span> <span class="cs">String</span> <span class="cm">getScheduleSummary</span>();<br>}</div></div>
-  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g1);margin-bottom:8px;">Why We Used This Here</div>
+  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:17px;color:var(--g1);margin-bottom:8px;">Why We Used This Here</div>
 <div class="bullet"><strong>Person</strong> and <strong>Transport</strong> are abstract because a plain "Person" or "Transport" has no meaning in our domain.</div>
 <div class="bullet">Abstract classes define <strong>template behavior</strong> (toString, getPrice) while delegating variable behavior to subclasses.</div>
 <div class="bullet">The compiler prevents <code style="background:#020810;padding:2px 5px;border-radius:4px;font-family:JetBrains Mono,monospace;font-size:10px;">new Person()</code> — invalid object creation is impossible.</div></div>
 <div class="vs-grid"><div class="vs-bad"><strong>❌ Alternative:</strong> Concrete classes with a "type" String field and runtime checks — messy, error-prone, no compile safety.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ Our Choice:</strong> Abstract classes give compile-time safety and force correct design.</div></div></div>
 </div></div>
-<div class="sn">11 / 31</div>
+<div class="sn">11 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -457,14 +457,14 @@ src/
 <div class="heading grad" style="font-size:42px;">Encapsulation — Controlled Access to Data</div>
 <div class="two-col">
   <div style="display:flex;flex-direction:column;gap:10px;"><div class="code"><span class="cc">// Bill.java — totalAmount is computed internally</span><br><span class="ck">public class</span> <span class="ct">Bill</span> {<br>&nbsp;&nbsp;<span class="ck">private double</span> baseAmount, platformFee;<br>&nbsp;&nbsp;<span class="ck">private double</span> totalAmount; <span class="cc">// never set externally</span><br>&nbsp;&nbsp;<span class="ck">private</span> <span class="cs">String</span> status;<br><br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cm">Bill</span>(<span class="cs">int</span> id, <span class="cs">int</span> bookingId,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">double</span> base, <span class="ck">double</span> fee) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">this</span>.baseAmount = base;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">this</span>.platformFee = fee;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">this</span>.totalAmount = base + fee; <span class="cc">// auto-computed</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">this</span>.status = <span class="ct">"UNPAID"</span>; <span class="cc">// safe default</span><br>&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;<span class="cc">// No setter for totalAmount — read-only</span><br>&nbsp;&nbsp;<span class="ck">public double</span> <span class="cm">getTotalAmount</span>() { <span class="ck">return</span> totalAmount; }<br>&nbsp;&nbsp;<span class="ck">public void</span> <span class="cm">setStatus</span>(<span class="cs">String</span> s) { <span class="ck">this</span>.status = s; }<br>}</div></div>
-  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g2);margin-bottom:8px;">Why We Used This Here</div>
+  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:17px;color:var(--g2);margin-bottom:8px;">Why We Used This Here</div>
 <div class="bullet">All fields are <strong>private</strong> across every model class. External code only reads/modifies what we explicitly allow.</div>
 <div class="bullet"><strong>totalAmount</strong> has no setter — it can never be tampered with after creation. Prevents billing fraud.</div>
 <div class="bullet"><strong>passwordHash</strong> in Person is private — AuthService validates it but no other class can read it directly.</div>
 <div class="bullet">Default status = "UNPAID" in constructor ensures objects always start in a valid state.</div></div>
 <div class="vs-grid"><div class="vs-bad"><strong>❌ Without:</strong> Public fields mean any class can set bill.totalAmount = 0 — silent fraud, no audit trail.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ With:</strong> Only BookingService.payBill() can transition status to PAID, after a real payment is recorded.</div></div></div>
 </div></div>
-<div class="sn">12 / 31</div>
+<div class="sn">12 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -476,14 +476,14 @@ src/
 <div class="heading grad" style="font-size:42px;">Inheritance — Code Reuse via IS-A Relationships</div>
 <div class="two-col">
   <div style="display:flex;flex-direction:column;gap:10px;"><div class="code"><span class="cc">// Flight.java — inherits from Transport</span><br><span class="ck">public class</span> <span class="ct">Flight</span> <span class="ck">extends</span> <span class="ct">Transport</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">implements</span> <span class="cv">Reviewable</span> {<br><br>&nbsp;&nbsp;<span class="ck">private</span> <span class="cs">String</span> airline, flightNumber, flightClass;<br>&nbsp;&nbsp;<span class="ck">private</span> <span class="cs">String</span> departureTime, returnTime;<br><br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cm">Flight</span>(<span class="cs">int</span> id, <span class="cs">int</span> destId,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">double</span> price, <span class="cs">int</span> cap, <span class="cs">String</span> airline, ...) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">super</span>(id, destId, <span class="ct">"Flight"</span>, price, cap);<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">this</span>.airline = airline;<br>&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;<span class="ck">@Override</span><br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cs">String</span> <span class="cm">getScheduleSummary</span>() {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">return</span> <span class="ct">"Departs: "</span> + departureTime +<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ct">" | Returns: "</span> + returnTime;<br>&nbsp;&nbsp;}<br>}</div></div>
-  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g3);margin-bottom:8px;">Why We Used This Here</div>
+  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:17px;color:var(--g3);margin-bottom:8px;">Why We Used This Here</div>
 <div class="bullet"><strong>Flight IS-A Transport</strong> — inherits price, capacity, destinationId, and toString() without rewriting them.</div>
 <div class="bullet"><strong>super()</strong> delegates base construction to Transport. Flight only initializes its own airline-specific fields.</div>
 <div class="bullet"><strong>Admin extends Person</strong> and <strong>User extends Person</strong> — both reuse full authentication and identity infrastructure.</div>
 <div class="bullet">@Override is explicit — prevents typo-based method hiding without a compiler warning.</div></div>
-<div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:var(--muted);margin-bottom:6px;">Inheritance Tree</div><div style="font-family:JetBrains Mono,monospace;font-size:11px;line-height:1.9;color:#94a3b8;">Person → User &nbsp;&nbsp;&nbsp;Person → Admin<br>Transport → Flight &nbsp;Transport → Bus &nbsp;Transport → Train<br>Exception → SmartGoException</div></div></div>
+<div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:var(--muted);margin-bottom:6px;">Inheritance Tree</div><div style="font-family:JetBrains Mono,monospace;font-size:14px;line-height:1.9;color:#94a3b8;">Person → User &nbsp;&nbsp;&nbsp;Person → Admin<br>Transport → Flight &nbsp;Transport → Bus &nbsp;Transport → Train<br>Exception → SmartGoException</div></div></div>
 </div></div>
-<div class="sn">13 / 31</div>
+<div class="sn">13 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -495,13 +495,13 @@ src/
 <div class="heading grad" style="font-size:42px;">Runtime Polymorphism — One Call, Many Behaviors</div>
 <div class="two-col">
   <div style="display:flex;flex-direction:column;gap:10px;"><div class="code"><span class="cc">// Same method call — different output per type</span><br><br><span class="cv">Transport</span> t1 = <span class="ck">new</span> <span class="ct">Flight</span>(...);<br><span class="cv">Transport</span> t2 = <span class="ck">new</span> <span class="ct">Bus</span>(...);<br><span class="cv">Transport</span> t3 = <span class="ck">new</span> <span class="ct">Train</span>(...);<br><br>System.out.<span class="cm">println</span>(t1.<span class="cm">getScheduleSummary</span>());<br><span class="cc">// → "Departs: 08:00 | Returns: 14:00"</span><br>System.out.<span class="cm">println</span>(t2.<span class="cm">getScheduleSummary</span>());<br><span class="cc">// → "Departs: 07:30 | Arrives: 12:00"</span><br>System.out.<span class="cm">println</span>(t3.<span class="cm">getScheduleSummary</span>());<br><span class="cc">// → "Departs: 06:00 | Arrives: 11:30"</span><br><br><span class="cc">// ReviewService — polymorphic on Reviewable</span><br><span class="ck">public static void</span> <span class="cm">showReviews</span>(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs">String</span> type, <span class="cs">int</span> id) { ... }<br><span class="cc">// Same method: FLIGHT, HOTEL, TOUR_PLAN</span></div></div>
-  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#fb923c;margin-bottom:8px;">Why We Used This Here</div>
+  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:17px;color:#fb923c;margin-bottom:8px;">Why We Used This Here</div>
 <div class="bullet">The <strong>Reviewable interface</strong> lets ReviewService handle Hotel, Flight, and TourPlan uniformly — no switch-case on type needed.</div>
 <div class="bullet"><strong>getScheduleSummary()</strong> is overridden in 3 concrete classes — the JVM dispatches to the right implementation at runtime.</div>
 <div class="bullet">This is the <strong>Open/Closed Principle</strong>: adding a new transport type (e.g., Ferry) requires zero changes to BookingService.</div></div>
 <div class="vs-grid"><div class="vs-bad"><strong>❌ Without:</strong> if (type.equals("FLIGHT")) {...} else if (type.equals("BUS")) {...} — grows with every new type.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ With:</strong> transport.getScheduleSummary() — one line works for all transport types today and tomorrow.</div></div></div>
 </div></div>
-<div class="sn">14 / 31</div>
+<div class="sn">14 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -513,13 +513,13 @@ src/
 <div class="heading grad" style="font-size:42px;">Method Overloading — Same Name, Different Signature</div>
 <div class="two-col">
   <div style="display:flex;flex-direction:column;gap:10px;"><div class="code"><span class="cc">// AuthService.java — two login() overloads</span><br><br><span class="cc">// Login by email + password</span><br><span class="ck">public static</span> <span class="cv">User</span> <span class="cm">login</span>(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs">String</span> email, <span class="cs">String</span> password)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">throws</span> <span class="cv">SmartGoException</span> {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cc">// find user by email, compare password</span><br>}<br><br><span class="cc">// Login by userID + password (admin use case)</span><br><span class="ck">public static</span> <span class="cv">User</span> <span class="cm">login</span>(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs">int</span> userId, <span class="cs">String</span> password)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">throws</span> <span class="cv">SmartGoException</span> {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cc">// find user by ID, compare password</span><br>}<br><br><span class="cc">// Resolved at COMPILE TIME by parameter types</span><br>AuthService.<span class="cm">login</span>(<span class="ct">"email@x.com"</span>, <span class="ct">"pass"</span>); <span class="cc">// → 1st</span><br>AuthService.<span class="cm">login</span>(42, <span class="ct">"pass"</span>); <span class="cc">// → 2nd</span></div></div>
-  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#fb923c;margin-bottom:8px;">Why We Used This Here</div>
+  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:17px;color:#fb923c;margin-bottom:8px;">Why We Used This Here</div>
 <div class="bullet"><strong>Compile-time polymorphism</strong> allows different calling conventions without renaming the method — callers use the natural login() name.</div>
 <div class="bullet">The compiler selects the right overload based on argument types: String+String → email login; int+String → ID login.</div>
 <div class="bullet">Cleanly separates two distinct login flows without an if-else branch inside a single method.</div></div>
 <div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:var(--muted);margin-bottom:6px;">Runtime vs Compile-time</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;"><div style="background:#020810;border-radius:8px;padding:10px;"><div style="color:var(--g1);font-weight:700;margin-bottom:4px;">Runtime (Override)</div><div style="color:var(--muted);">getScheduleSummary() — JVM picks at runtime</div></div><div style="background:#020810;border-radius:8px;padding:10px;"><div style="color:var(--g2);font-weight:700;margin-bottom:4px;">Compile-time (Overload)</div><div style="color:var(--muted);">login() — compiler picks by arg types</div></div></div></div></div>
 </div></div>
-<div class="sn">15 / 31</div>
+<div class="sn">15 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -531,13 +531,13 @@ src/
 <div class="heading grad" style="font-size:42px;">Interfaces — Designing Contracts, Not Implementations</div>
 <div class="two-col">
   <div style="display:flex;flex-direction:column;gap:10px;"><div class="code"><span class="cc">// Reviewable.java — a pure contract</span><br><span class="ck">public interface</span> <span class="cv">Reviewable</span> {<br>&nbsp;&nbsp;<span class="cs">int</span> <span class="cm">getId</span>();<br>&nbsp;&nbsp;<span class="cs">String</span> <span class="cm">getDisplayName</span>();<br>&nbsp;&nbsp;<span class="cs">String</span> <span class="cm">getReviewType</span>();<br>}<br><br><span class="cc">// Hotel implements Reviewable</span><br><span class="ck">public class</span> <span class="ct">Hotel</span> <span class="ck">implements</span> <span class="cv">Reviewable</span> {<br>&nbsp;&nbsp;<span class="ck">@Override</span><br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cs">String</span> <span class="cm">getDisplayName</span>() { <span class="ck">return</span> name; }<br>&nbsp;&nbsp;<span class="ck">@Override</span><br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cs">String</span> <span class="cm">getReviewType</span>() { <span class="ck">return</span> <span class="ct">"HOTEL"</span>; }<br>}<br><br><span class="cc">// Flight: extends Transport AND implements Reviewable</span><br><span class="ck">public class</span> <span class="ct">Flight</span> <span class="ck">extends</span> <span class="ct">Transport</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">implements</span> <span class="cv">Reviewable</span> { ... }</div></div>
-  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g3);margin-bottom:8px;">Why We Used This Here</div>
+  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:17px;color:var(--g3);margin-bottom:8px;">Why We Used This Here</div>
 <div class="bullet">Java does not support multiple inheritance of classes. But a class <strong>can implement multiple interfaces</strong> — Flight extends Transport and also implements Reviewable.</div>
 <div class="bullet">Reviewable is a <strong>behavioral contract</strong> — not about what an object IS, but what it CAN DO (be reviewed).</div>
 <div class="bullet">ReviewService works with any Reviewable now or in future. Zero changes needed to add a new reviewable type.</div></div>
 <div class="vs-grid"><div class="vs-bad"><strong>❌ Abstract class for Reviewable:</strong> Forces Hotel to stop extending its own hierarchy just to be reviewable.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ Interface:</strong> Hotel and Flight keep their own hierarchies AND gain review capability — no trade-off.</div></div></div>
 </div></div>
-<div class="sn">16 / 31</div>
+<div class="sn">16 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -549,14 +549,14 @@ src/
 <div class="heading grad" style="font-size:42px;">Custom Exception — SmartGoException</div>
 <div class="two-col">
   <div style="display:flex;flex-direction:column;gap:10px;"><div class="code"><span class="cc">// SmartGoException.java</span><br><span class="ck">public class</span> <span class="ct">SmartGoException</span> <span class="ck">extends</span> <span class="ct">Exception</span> {<br>&nbsp;&nbsp;<span class="ck">public</span> <span class="cm">SmartGoException</span>(<span class="cs">String</span> message) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">super</span>(message);<br>&nbsp;&nbsp;}<br>}<br><br><span class="cc">// Thrown with human-readable messages</span><br><span class="ck">throw new</span> <span class="ct">SmartGoException</span>(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ct">"An account with this email already exists."</span><br>);<br><br><span class="cc">// Caught cleanly in Main.java</span><br><span class="ck">try</span> {<br>&nbsp;&nbsp;AuthService.<span class="cm">login</span>(email, password);<br>} <span class="ck">catch</span> (<span class="cv">SmartGoException</span> e) {<br>&nbsp;&nbsp;JOptionPane.<span class="cm">showMessageDialog</span>(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">null</span>, <span class="ct">"Login failed: "</span> + e.<span class="cm">getMessage</span>()<br>&nbsp;&nbsp;);<br>}</div></div>
-  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g1);margin-bottom:8px;">Why We Used This Here</div>
+  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:17px;color:var(--g1);margin-bottom:8px;">Why We Used This Here</div>
 <div class="bullet"><strong>Domain-specific error type</strong> — callers catch SmartGoException, not generic Exception. Our domain errors are distinguishable from Java I/O errors.</div>
 <div class="bullet"><strong>Checked exception</strong> (extends Exception) — compiler forces every caller to handle or declare it. No silent failure.</div>
 <div class="bullet"><strong>Human-readable messages</strong> go straight into JOptionPane — user sees "Incorrect password", not a stack trace.</div>
 <div class="bullet">All service methods declare <code style="background:#020810;padding:2px 5px;border-radius:4px;font-family:JetBrains Mono,monospace;font-size:10px;">throws SmartGoException</code>.</div></div>
 <div class="vs-grid"><div class="vs-bad"><strong>❌ Without:</strong> Return null on failure — null pointer crashes, silent failures, terrible UX.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ With:</strong> Throw SmartGoException — compiler-enforced handling, user-friendly error display.</div></div></div>
 </div></div>
-<div class="sn">17 / 31</div>
+<div class="sn">17 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -568,14 +568,14 @@ src/
 <div class="heading grad" style="font-size:42px;">Enums — Type-Safe Constants</div>
 <div class="two-col">
   <div style="display:flex;flex-direction:column;gap:10px;"><div class="code"><span class="cc">// BookingStatus.java</span><br><span class="ck">public enum</span> <span class="cv">BookingStatus</span> {<br>&nbsp;&nbsp;PENDING, CONFIRMED, CANCELLED<br>}<br><br><span class="cc">// PaymentStatus.java</span><br><span class="ck">public enum</span> <span class="cv">PaymentStatus</span> {<br>&nbsp;&nbsp;PENDING, COMPLETED, FAILED<br>}<br><br><span class="cc">// PaymentMethod.java</span><br><span class="ck">public enum</span> <span class="cv">PaymentMethod</span> {<br>&nbsp;&nbsp;CASH, CARD, BANK_TRANSFER<br>}<br><br><span class="cc">// Only valid states allowed — compiler enforces</span><br>booking.<span class="cm">setStatus</span>(<span class="cv">BookingStatus</span>.CANCELLED);<br><br><span class="cc">// Serialize:   status.name()  → "CANCELLED"</span><br><span class="cc">// Deserialize: BookingStatus.valueOf("CANCELLED")</span></div></div>
-  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g2);margin-bottom:8px;">Why We Used This Here</div>
+  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:17px;color:var(--g2);margin-bottom:8px;">Why We Used This Here</div>
 <div class="bullet"><strong>Type safety</strong> — assigning status = "canceld" (typo) is a compile error when using an enum. String fields have no such protection.</div>
 <div class="bullet">Enums work with <strong>switch expressions</strong> — exhaustiveness checking prevents missing cases.</div>
 <div class="bullet"><strong>Serialization</strong>: status.name() writes "CONFIRMED" to file; BookingStatus.valueOf() reads it back — zero parsing boilerplate.</div>
 <div class="bullet">Three separate enums for three separate domains — each concept stays in its own type.</div></div>
 <div class="vs-grid"><div class="vs-bad"><strong>❌ With Strings:</strong> "paid", "PAID", "Paid" all pass compilation but break equality checks at runtime.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ With Enums:</strong> Only .CONFIRMED, .PENDING, .CANCELLED compile. Compiler is the gatekeeper.</div></div></div>
 </div></div>
-<div class="sn">18 / 31</div>
+<div class="sn">18 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -587,13 +587,13 @@ src/
 <div class="heading grad" style="font-size:42px;">File Serialization — Persistent Object State</div>
 <div class="two-col">
   <div style="display:flex;flex-direction:column;gap:10px;"><div class="code"><span class="cc">// DataStore.java — serialize User to pipe-delimited line</span><br><span class="ck">public static void</span> <span class="cm">saveUser</span>(<span class="cv">User</span> user) {<br>&nbsp;&nbsp;<span class="cs">String</span> line = user.<span class="cm">getId</span>() + <span class="ct">"|"</span><br>&nbsp;&nbsp;&nbsp;&nbsp;+ user.<span class="cm">getName</span>() + <span class="ct">"|"</span> + user.<span class="cm">getEmail</span>()<br>&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="ct">"|"</span> + user.<span class="cm">getPasswordHash</span>()<br>&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="ct">"|"</span> + user.<span class="cm">getAddress</span>();<br>&nbsp;&nbsp;<span class="cm">appendLine</span>(USERS_FILE, line);<br>}<br><br><span class="cc">// Deserialize — reconstruct User from line</span><br><span class="ck">public static</span> List&lt;<span class="cv">User</span>&gt; <span class="cm">loadUsers</span>() {<br>&nbsp;&nbsp;List&lt;<span class="cv">User</span>&gt; users = <span class="ck">new</span> ArrayList&lt;&gt;();<br>&nbsp;&nbsp;<span class="ck">for</span> (<span class="cs">String</span> line : <span class="cm">readLines</span>(USERS_FILE)) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs">String</span>[] p = line.<span class="cm">split</span>(<span class="ct">"\|"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">if</span> (p.length >= 8)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;users.<span class="cm">add</span>(<span class="ck">new</span> <span class="ct">User</span>(Integer.<span class="cm">parseInt</span>(p[0]),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p[1], p[2], ...));<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;<span class="ck">return</span> users;<br>}</div></div>
-  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#fb923c;margin-bottom:8px;">Why We Used This Here</div>
+  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;"><div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:17px;color:#fb923c;margin-bottom:8px;">Why We Used This Here</div>
 <div class="bullet"><strong>State persistence</strong> — every User, Booking, Bill, Payment, and Review survives between restarts via pipe-delimited .txt files.</div>
 <div class="bullet">DataStore is a <strong>dedicated data-access layer</strong> — all read/write logic in one class, keeping models pure and services clean.</div>
 <div class="bullet"><strong>Append vs Overwrite</strong>: saveUser() appends (fast). saveAllBookings() overwrites entire file (needed to update status mid-list after cancellation).</div></div>
-<div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:var(--muted);margin-bottom:6px;">File Format — users.txt</div><div style="font-family:JetBrains Mono,monospace;font-size:10.5px;color:#94a3b8;line-height:1.8;">1|Abdul Rehman|abdul@mail.com|+92-300-1234|pass123|2025-01-01|Rawalpindi|2025-01-01<br>2|Hamza Basit|hamza@mail.com|+92-321-5678|pass456|2025-01-02|Lahore|2025-01-02</div></div></div>
+<div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:12px;color:var(--muted);margin-bottom:6px;">File Format — users.txt</div><div style="font-family:JetBrains Mono,monospace;font-size:13px;color:#94a3b8;line-height:1.8;">1|Abdul Rehman|abdul@mail.com|+92-300-1234|pass123|2025-01-01|Rawalpindi|2025-01-01<br>2|Hamza Basit|hamza@mail.com|+92-321-5678|pass456|2025-01-02|Lahore|2025-01-02</div></div></div>
 </div></div>
-<div class="sn">19 / 31</div>
+<div class="sn">19 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -605,14 +605,14 @@ src/
     <div class="code"><span class="cc">// LSP — Transport reference holds any subtype</span><br><span class="cc">// without ANY change in calling code behavior</span><br><br><span class="ck">public static</span> <span class="cv">Booking</span> <span class="cm">bookFlight</span>(<span class="cs">int</span> userId, <span class="cs">int</span> flightId) {<br><br>&nbsp;&nbsp;<span class="cc">// Flight IS-A Transport — fully substitutable</span><br>&nbsp;&nbsp;<span class="cv">Flight</span> flight = FlightService.<span class="cm">getFlightById</span>(flightId);<br><br>&nbsp;&nbsp;<span class="cc">// getPrice() from Transport — works on ANY subtype</span><br>&nbsp;&nbsp;<span class="ck">double</span> fee = flight.<span class="cm">getPrice</span>() * PLATFORM_FEE_RATE;<br><br>&nbsp;&nbsp;<span class="cc">// Same line works for Bus, Train, etc.</span><br>}<br><br><span class="cc">// Person reference — User and Admin interchangeable</span><br><span class="cv">Person</span> p = AuthService.<span class="cm">getLoggedInUser</span>();<br>System.out.<span class="cm">println</span>(p.<span class="cm">getRole</span>()); <span class="cc">// "User" or "Admin"</span></div>
   </div>
   <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;">
-    <div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g3);margin-bottom:8px;">What LSP Means in SmartGo</div>
+    <div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:17px;color:var(--g3);margin-bottom:8px;">What LSP Means in SmartGo</div>
     <div class="bullet">Every subclass of Transport <strong>fulfills the full Transport contract</strong> — getPrice(), getCapacity(), getScheduleSummary() — without weakening any guarantee.</div>
     <div class="bullet">BookingService calls flight.getPrice() via the Transport reference. Switching to Bus or Train doesn't change the billing logic.</div>
     <div class="bullet">User and Admin are both valid substitutes for Person — neither breaks toString() or any shared logic.</div></div>
     <div class="vs-grid"><div class="vs-bad"><strong>❌ LSP Violation:</strong> Subclass overrides getPrice() to throw UnsupportedOperationException — code using Transport reference crashes unexpectedly.</div><div class="vs-badge">VS</div><div class="vs-good"><strong>✅ LSP Satisfied:</strong> Every concrete Transport subclass maintains the parent's contract — substitution is always safe.</div></div>
   </div>
 </div></div>
-<div class="sn">20 / 31</div>
+<div class="sn">20 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -621,19 +621,19 @@ src/
 <div class="heading grad" style="font-size:40px;">Single Responsibility — One Class, One Job</div>
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;flex:1;">
   <div style="display:flex;flex-direction:column;gap:10px;">
-    <div class="card" style="flex:1;"><div style="color:var(--g1);font-weight:700;font-family:Syne,sans-serif;font-size:13px;margin-bottom:8px;">📦 Models</div><div style="font-size:12px;color:var(--muted);line-height:1.6;">Hold data and represent domain objects. No business logic. No file I/O. No UI code.</div><div style="margin-top:8px;font-family:JetBrains Mono,monospace;font-size:10px;color:#475569;">User, Flight, Hotel,<br>Booking, Bill, Payment,<br>Review, TourPlan ...</div></div>
+    <div class="card" style="flex:1;"><div style="color:var(--g1);font-weight:700;font-family:Syne,sans-serif;font-size:16px;margin-bottom:8px;">📦 Models</div><div style="font-size:12px;color:var(--muted);line-height:1.6;">Hold data and represent domain objects. No business logic. No file I/O. No UI code.</div><div style="margin-top:8px;font-family:JetBrains Mono,monospace;font-size:10px;color:#475569;">User, Flight, Hotel,<br>Booking, Bill, Payment,<br>Review, TourPlan ...</div></div>
     <div class="card"><div style="color:var(--g1);font-weight:700;font-size:12px;margin-bottom:4px;">Responsibility</div><div style="font-size:11.5px;color:var(--muted);">Getters, setters, toString(). Nothing else.</div></div>
   </div>
   <div style="display:flex;flex-direction:column;gap:10px;">
-    <div class="card" style="flex:1;"><div style="color:var(--g2);font-weight:700;font-family:Syne,sans-serif;font-size:13px;margin-bottom:8px;">⚙️ Services</div><div style="font-size:12px;color:var(--muted);line-height:1.6;">Implement business rules. Call DataStore for persistence. Coordinate between models.</div><div style="margin-top:8px;font-family:JetBrains Mono,monospace;font-size:10px;color:#475569;">AuthService,<br>BookingService,<br>FlightService,<br>ReviewService ...</div></div>
+    <div class="card" style="flex:1;"><div style="color:var(--g2);font-weight:700;font-family:Syne,sans-serif;font-size:16px;margin-bottom:8px;">⚙️ Services</div><div style="font-size:12px;color:var(--muted);line-height:1.6;">Implement business rules. Call DataStore for persistence. Coordinate between models.</div><div style="margin-top:8px;font-family:JetBrains Mono,monospace;font-size:10px;color:#475569;">AuthService,<br>BookingService,<br>FlightService,<br>ReviewService ...</div></div>
     <div class="card"><div style="color:var(--g2);font-weight:700;font-size:12px;margin-bottom:4px;">Responsibility</div><div style="font-size:11.5px;color:var(--muted);">Business logic only. Never touches Swing directly.</div></div>
   </div>
   <div style="display:flex;flex-direction:column;gap:10px;">
-    <div class="card" style="flex:1;"><div style="color:var(--g3);font-weight:700;font-family:Syne,sans-serif;font-size:13px;margin-bottom:8px;">💾 DataStore</div><div style="font-size:12px;color:var(--muted);line-height:1.6;">All file I/O in one place. Reads and writes .txt files. No business logic whatsoever.</div><div style="margin-top:8px;font-family:JetBrains Mono,monospace;font-size:10px;color:#475569;">saveUser, loadUsers,<br>saveFlight, loadFlights,<br>saveBooking, ...</div></div>
+    <div class="card" style="flex:1;"><div style="color:var(--g3);font-weight:700;font-family:Syne,sans-serif;font-size:16px;margin-bottom:8px;">💾 DataStore</div><div style="font-size:12px;color:var(--muted);line-height:1.6;">All file I/O in one place. Reads and writes .txt files. No business logic whatsoever.</div><div style="margin-top:8px;font-family:JetBrains Mono,monospace;font-size:10px;color:#475569;">saveUser, loadUsers,<br>saveFlight, loadFlights,<br>saveBooking, ...</div></div>
     <div class="card"><div style="color:var(--g3);font-weight:700;font-size:12px;margin-bottom:4px;">Responsibility</div><div style="font-size:11.5px;color:var(--muted);">Serialization only. Never applies business rules.</div></div>
   </div>
 </div></div>
-<div class="sn">21 / 31</div>
+<div class="sn">21 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -642,22 +642,22 @@ src/
 <div class="heading grad" style="font-size:42px;">Guest Flow — Register, Login, Welcome</div>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;flex:1;">
   <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">① Guest Menu</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">① Guest Menu</div>
       <img src="assets/guest_menu.png" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;"/>
-      <div style='font-size:11px;color:var(--muted);'>JOptionPane multi-option dialog — guest chooses Register, Login, or Exit.</div>
+      <div style='font-size:14px;color:var(--muted);'>JOptionPane multi-option dialog — guest chooses Register, Login, or Exit.</div>
     </div>
   <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">② Registration Form</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">② Registration Form</div>
       <img src="assets/register.png" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;"/>
-      <div style='font-size:11px;color:var(--muted);'>Collects name, email, phone, password, address via JOptionPane.</div>
+      <div style='font-size:14px;color:var(--muted);'>Collects name, email, phone, password, address via JOptionPane.</div>
     </div>
   <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">③ Account Confirmed</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">③ Account Confirmed</div>
       <img src="assets/account_ok.png" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;"/>
-      <div style='font-size:11px;color:var(--muted);'>Success dialog after registration. User persisted to users.txt.</div>
+      <div style='font-size:14px;color:var(--muted);'>Success dialog after registration. User persisted to users.txt.</div>
     </div>
 </div></div>
-<div class="sn">22 / 31</div>
+<div class="sn">22 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -666,22 +666,22 @@ src/
 <div class="heading grad" style="font-size:42px;">Main Menu & Flight Browsing</div>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;flex:1;">
   <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">① Main Menu (Logged In)</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">① Main Menu (Logged In)</div>
       <img src="assets/main_menu.png" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;"/>
-      <div style='font-size:11px;color:var(--muted);'>Personalized greeting. 6 options: Flights, Tours, Hotels, My Bookings, Reviews, Logout.</div>
+      <div style='font-size:14px;color:var(--muted);'>Personalized greeting. 6 options: Flights, Tours, Hotels, My Bookings, Reviews, Logout.</div>
     </div>
   <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">② Flights Sub-Menu</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">② Flights Sub-Menu</div>
       <img src="assets/flights_menu.png" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;"/>
-      <div style='font-size:11px;color:var(--muted);'>Search by destination or airline, view all, read reviews, or book by ID.</div>
+      <div style='font-size:14px;color:var(--muted);'>Search by destination or airline, view all, read reviews, or book by ID.</div>
     </div>
   <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">③ All Flights Listing</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">③ All Flights Listing</div>
       <img src="assets/all_flights.png" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;"/>
-      <div style='font-size:11px;color:var(--muted);'>Output from FlightService.showAllFlights() via ByteArrayOutputStream → JScrollPane.</div>
+      <div style='font-size:14px;color:var(--muted);'>Output from FlightService.showAllFlights() via ByteArrayOutputStream → JScrollPane.</div>
     </div>
 </div></div>
-<div class="sn">23 / 31</div>
+<div class="sn">23 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -690,27 +690,27 @@ src/
 <div class="heading grad" style="font-size:42px;">Hotels, Tours & Booking Management</div>
 <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:1;">
   <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">All Hotels</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">All Hotels</div>
       <img src="assets/all_hotels.png" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;"/>
-      <div style='font-size:11px;color:var(--muted);'>Pearl Continental, Shangrila — star ratings, prices.</div>
+      <div style='font-size:14px;color:var(--muted);'>Pearl Continental, Shangrila — star ratings, prices.</div>
     </div>
   <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">All Tour Plans</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">All Tour Plans</div>
       <img src="assets/all_tours.png" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;"/>
-      <div style='font-size:11px;color:var(--muted);'>Multan Heritage, Lahore Cultural, Skardu Mountain.</div>
+      <div style='font-size:14px;color:var(--muted);'>Multan Heritage, Lahore Cultural, Skardu Mountain.</div>
     </div>
   <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Bookings Menu</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Bookings Menu</div>
       <img src="assets/bookings_menu.png" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;"/>
-      <div style='font-size:11px;color:var(--muted);'>View, Cancel, Pay — complete booking lifecycle.</div>
+      <div style='font-size:14px;color:var(--muted);'>View, Cancel, Pay — complete booking lifecycle.</div>
     </div>
   <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">My Bookings</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">My Bookings</div>
       <img src="assets/my_bookings.png" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;"/>
-      <div style='font-size:11px;color:var(--muted);'>Bookings with bill amounts and payment status.</div>
+      <div style='font-size:14px;color:var(--muted);'>Bookings with bill amounts and payment status.</div>
     </div>
 </div></div>
-<div class="sn">24 / 31</div>
+<div class="sn">24 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -719,32 +719,32 @@ src/
 <div class="heading grad" style="font-size:42px;">Extended UI Screenshots</div>
 <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;flex:1;">
   <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Screen 1</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Screen 1</div>
       <img src="assets/new_ss_1.png" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;"/>
       
     </div>
   <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Screen 2</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Screen 2</div>
       <img src="assets/new_ss_2.png" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;"/>
       
     </div>
   <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Screen 3</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Screen 3</div>
       <img src="assets/new_ss_3.png" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;"/>
       
     </div>
   <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Screen 4</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Screen 4</div>
       <img src="assets/new_ss_4.png" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;"/>
       
     </div>
   <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Screen 5</div>
+      <div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Screen 5</div>
       <img src="assets/new_ss_5.png" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;"/>
       
     </div>
 </div></div>
-<div class="sn">25 / 31</div>
+<div class="sn">25 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -794,43 +794,7 @@ src/
     <div class="hl"><div style="font-size:12.5px;color:var(--muted);line-height:1.6;">The <strong style="color:var(--text);">5% platform fee</strong> is a single constant — changing it in one place updates flights, hotels, and tours simultaneously.</div></div>
   </div>
 </div></div>
-<div class="sn">26 / 31</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
-<div class="label">Technical Deep Dive</div>
-<div class="heading grad" style="font-size:42px;">Clever Pattern — Capturing Console Output for Swing</div>
-<div class="two-col">
-  <div style="display:flex;flex-direction:column;gap:10px;">
-    <div class="code" style="font-size:10.5px;"><span class="cc">// Main.java — captureOutput() helper</span><br><span class="cc">// Services print to System.out. We redirect</span><br><span class="cc">// that output into a String for Swing display.</span><br><br><span class="ck">private static void</span> <span class="cm">captureOutput</span>(<span class="cv">Runnable</span> action, <span class="cs">String</span> title) {<br><br>&nbsp;&nbsp;<span class="cv">ByteArrayOutputStream</span> baos = <span class="ck">new</span> <span class="ct">ByteArrayOutputStream</span>();<br>&nbsp;&nbsp;<span class="cv">PrintStream</span> ps = <span class="ck">new</span> <span class="ct">PrintStream</span>(baos);<br>&nbsp;&nbsp;<span class="cv">PrintStream</span> old = System.out;<br><br>&nbsp;&nbsp;System.<span class="cm">setOut</span>(ps);&nbsp;&nbsp;&nbsp;&nbsp;<span class="cc">// redirect stdout</span><br>&nbsp;&nbsp;action.<span class="cm">run</span>();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cc">// service prints here</span><br>&nbsp;&nbsp;System.out.<span class="cm">flush</span>();<br>&nbsp;&nbsp;System.<span class="cm">setOut</span>(old);&nbsp;&nbsp;<span class="cc">// restore stdout</span><br><br>&nbsp;&nbsp;<span class="cv">JTextArea</span> ta = <span class="ck">new</span> <span class="ct">JTextArea</span>(baos.<span class="cm">toString</span>());<br>&nbsp;&nbsp;ta.<span class="cm">setEditable</span>(<span class="ck">false</span>);<br>&nbsp;&nbsp;<span class="cv">JScrollPane</span> sp = <span class="ck">new</span> <span class="ct">JScrollPane</span>(ta);<br>&nbsp;&nbsp;JOptionPane.<span class="cm">showMessageDialog</span>(<span class="ck">null</span>, sp, title, JOptionPane.PLAIN_MESSAGE);<br>}</div>
-  </div>
-  <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;">
-    <div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g1);margin-bottom:8px;">Why This Is Architecturally Sound</div>
-    <div class="bullet"><strong>Services stay clean</strong> — they print to System.out normally. Zero Swing imports in any service class. UI and logic stay fully separated.</div>
-    <div class="bullet"><strong>Runnable functional interface</strong> — Main passes () -&gt; FlightService.showAllFlights() as a lambda. The helper doesn't care what runs inside.</div>
-    <div class="bullet">JScrollPane wraps the JTextArea — any amount of output is scrollable, not truncated by a dialog box limit.</div>
-    <div class="bullet">stdout is always restored after capture — System.out works normally outside the dialog.</div></div>
-    <div class="card"><div style="font-size:12px;color:var(--muted);line-height:1.5;">Usage throughout Main.java:<br><code style="font-family:JetBrains Mono,monospace;font-size:10.5px;color:#94a3b8;">captureOutput(() -&gt; FlightService.showAllFlights(), "All Flights");</code></div></div>
-  </div>
-</div></div>
-<div class="sn">27 / 31</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:var(--dark2);"></div>
-<div class="pad">
-<div class="label">Design Patterns</div>
-<div class="heading grad" style="font-size:42px;">Design Patterns Employed in SmartGo</div>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;flex:1;">
-  <div class="card" style="display:flex;flex-direction:column;gap:10px;border-top:3px solid var(--g1);"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:15px;color:var(--text);text-transform:uppercase;letter-spacing:0.05em;">Service Layer</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;">AuthService and BookingService encapsulate all business logic. Main.java coordinates these stateless services without exposing implementation details.</div><div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--g1);margin-top:auto;font-weight:700;">IMPLEMENTATION: AuthService.login()</div></div>
-  <div class="card" style="display:flex;flex-direction:column;gap:10px;border-top:3px solid var(--g2);"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:15px;color:var(--text);text-transform:uppercase;letter-spacing:0.05em;">Template Method</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;">Abstract classes Person and Transport define the algorithm skeleton (toString, getPrice) and defer specific steps (getRole, getScheduleSummary) to subclasses.</div><div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--g2);margin-top:auto;font-weight:700;">IMPLEMENTATION: Transport.toString()</div></div>
-  <div class="card" style="display:flex;flex-direction:column;gap:10px;border-top:3px solid var(--g3);"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:15px;color:var(--text);text-transform:uppercase;letter-spacing:0.05em;">DAO Pattern</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;">DataStore.java provides an abstract interface (saveUser, loadUsers) that hides all file-based persistence logic from the higher-level service layers.</div><div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--g3);margin-top:auto;font-weight:700;">IMPLEMENTATION: DataStore.saveUser()</div></div>
-</div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-  <div class="card" style="display:flex;gap:14px;align-items:flex-start;"><div style="font-size:22px;">🔌</div><div><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#f59e0b;margin-bottom:4px;">Strategy via Interface (Reviewable)</div><div style="font-size:12px;color:var(--muted);line-height:1.5;">ReviewService operates on the Reviewable interface — the concrete review strategy is decided at runtime by the implementing class.</div></div></div>
-  <div class="card" style="display:flex;gap:14px;align-items:flex-start;"><div style="font-size:22px;">📡</div><div><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#fb923c;margin-bottom:4px;">Façade — Main.java</div><div style="font-size:12px;color:var(--muted);line-height:1.5;">Main.java presents a simple menu interface while hiding the complexity of 6 service classes and DataStore behind clean method calls.</div></div></div>
-</div></div>
-<div class="sn">28 / 31</div>
+<div class="sn">26 / 28</div>
 </div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:var(--dark2);"></div>
@@ -847,55 +811,31 @@ src/
     <div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g3);margin-bottom:8px;">✅ Input Validation</div>
     <div class="bullet">Email uniqueness enforced at registration — SmartGoException thrown on duplicate.</div>
     <div class="bullet">Review rating validated: must be 1–5. Comment must not be blank.</div>
-    <div class="bullet">Payment method limited to enum: CASH, CARD, BANK_TRANSFER — no free-text inputs.</div>
-    <div class="bullet">Already-cancelled bookings cannot be cancelled again; already-paid bills cannot be paid again.</div></div>
-    <div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#f59e0b;margin-bottom:8px;">💾 Data Consistency</div><div style="font-size:12.5px;color:var(--muted);line-height:1.5;">Cancellation loads ALL bookings, modifies the right one, then writes ALL back — atomic update preventing partial writes. Same pattern for bill payments.</div></div>
+    <div class="code" style="font-size:12px;"><span class="cc">// BookingService.java — auto-billing on every booking</span><br><span class="ck">public static final double</span> PLATFORM_FEE_RATE = <span class="cy">0.05</span>;<br><br><span class="cv">Booking</span> booking = <span class="ck">new</span> <span class="ct">Booking</span>(<br>&nbsp;&nbsp;nextBookingId++, userId, <span class="ct">"FLIGHT"</span>,<br>&nbsp;&nbsp;0, flight.<span class="cm">getId</span>(), bookedAt, <span class="cv">BookingStatus</span>.CONFIRMED<br>);<br>DataStore.<span class="cm">saveBooking</span>(booking);<br><br><span class="ck">double</span> fee = flight.<span class="cm">getPrice</span>() * PLATFORM_FEE_RATE;<br><span class="cv">Bill</span> bill = <span class="ck">new</span> <span class="ct">Bill</span>(<br>&nbsp;&nbsp;nextBillId++, booking.<span class="cm">getId</span>(),<br>&nbsp;&nbsp;flight.<span class="cm">getPrice</span>(), fee <span class="cc">// total auto-computed</span><br>);<br>DataStore.<span class="cm">saveBill</span>(bill);</div>
+    <div class="hl"><div style="font-size:14px;color:var(--muted);line-height:1.6;">The <strong style="color:var(--text);">5% platform fee</strong> is a single constant — changing it in one place updates flights, hotels, and tours simultaneously.</div></div>
+    </div>
   </div>
-</div></div>
-<div class="sn">29 / 31</div>
-</div></div>
-<div class="slide-wrap"><div class="slide">
-<div class="bg" style="background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(0,144,255,.08) 0%,transparent 60%),var(--dark2);"></div>
-<div class="pad">
-<div class="label">Reflection</div>
-<div class="heading grad" style="font-size:44px;">Key Learnings & OOP Insights</div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;">
-  <div style="display:flex;flex-direction:column;gap:10px;">
-    <div class="hl"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g1);margin-bottom:10px;">What We Got Right</div>
-    <div class="bullet"><strong>Abstraction pays off</strong> — adding a new booking type (e.g., cruise) requires a new model class + one method in BookingService. Zero existing code changes.</div>
-    <div class="bullet"><strong>Single DataStore</strong> was the right call — centralizing all I/O meant we only debugged file parsing once, not six times.</div>
-    <div class="bullet"><strong>Custom exceptions</strong> dramatically improved UX — every error is a readable English sentence, not a Java stack trace.</div>
-    <div class="bullet"><strong>Enums prevented bugs</strong> — we never had a status-mismatch bug because invalid states simply cannot be compiled.</div></div>
-  </div>
-  <div style="display:flex;flex-direction:column;gap:10px;">
-    <div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g2);margin-bottom:10px;">What We'd Improve</div>
-    <div class="bullet"><strong>BCrypt password hashing</strong> — the passwordHash field name shows intent; production version would use BCrypt.hashpw().</div>
-    <div class="bullet"><strong>Replace flat files with SQLite</strong> — relational queries (JOIN bookings to bills) would be far cleaner than nested Java loops.</div>
-    <div class="bullet"><strong>Observer pattern for notifications</strong> — booking confirmation could trigger email via an event system, decoupled from BookingService.</div></div>
-    <div class="card"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:var(--g3);margin-bottom:8px;">OOP Concepts Covered</div><div style="display:flex;flex-wrap:wrap;gap:6px;"><span class="concept-tag tag-green">Abstraction</span> <span class="concept-tag tag-blue">Encapsulation</span> <span class="concept-tag tag-purple">Inheritance</span> <span class="concept-tag tag-orange">Polymorphism</span> <span class="concept-tag tag-purple">Interfaces</span> <span class="concept-tag tag-green">Custom Exceptions</span> <span class="concept-tag tag-blue">Enumerations</span> <span class="concept-tag tag-orange">Serialization</span> <span class="concept-tag tag-purple">LSP</span> <span class="concept-tag tag-green">SRP</span> <span class="concept-tag tag-blue">Template Method</span> <span class="concept-tag tag-orange">DAO Pattern</span> <span class="concept-tag tag-purple">Façade Pattern</span> <span class="concept-tag tag-green">Method Overloading</span> <span class="concept-tag tag-blue">Method Overriding</span></div></div>
-  </div>
-</div></div>
-<div class="sn">30 / 31</div>
-</div></div>
-
+</div>
+<div class="sn">27 / 28</div>
+</div></div></div>
 <div class="slide-wrap"><div class="slide">
 <div class="bg" style="background:radial-gradient(ellipse 100% 80% at 50% 50%,rgba(0,200,150,.1) 0%,rgba(0,144,255,.06) 40%,transparent 70%),var(--dark2);"></div>
 <div class="pad">
 <div style="height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:14px;">
   <div>
-    <div class="display grad" style="font-size:120px;letter-spacing:-0.06em;">Conclusion</div>
-    <div style="font-size:24px;color:var(--text);font-weight:500;margin-top:10px;">SmartGo Technical Showcase</div>
-    <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);margin-top:8px;text-transform:uppercase;letter-spacing:0.1em;">End of Presentation</div>
+    <div class="display grad" style="font-size:140px;letter-spacing:-0.06em;">Conclusion</div>
+    <div style="font-size:30px;color:var(--text);font-weight:500;margin-top:10px;">SmartGo Technical Showcase</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--muted);margin-top:8px;text-transform:uppercase;letter-spacing:0.1em;">End of Presentation</div>
   </div>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:900px;width:100%;margin-top:12px;">
-    <div class="card" style="text-align:left;"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;">Abdul Rehman</div><div style="font-size:11px;color:var(--muted);margin-top:3px;">Reg. 576841</div></div>
-    <div class="card" style="text-align:left;"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;">M. Yousaf Khan</div><div style="font-size:11px;color:var(--muted);margin-top:3px;">Reg. 572229</div></div>
-    <div class="card" style="text-align:left;"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;">Hamza Basit</div><div style="font-size:11px;color:var(--muted);margin-top:3px;">Reg. 557844</div></div>
-    <div class="card" style="text-align:left;"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;">Rehan Ahmad</div><div style="font-size:11px;color:var(--muted);margin-top:3px;">Reg. 553327</div></div>
+    <div class="card" style="text-align:left;"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:16px;">Abdul Rehman</div><div style="font-size:13px;color:var(--muted);margin-top:3px;">Reg. 576841</div></div>
+    <div class="card" style="text-align:left;"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:16px;">M. Yousaf Khan</div><div style="font-size:13px;color:var(--muted);margin-top:3px;">Reg. 572229</div></div>
+    <div class="card" style="text-align:left;"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:16px;">Hamza Basit</div><div style="font-size:13px;color:var(--muted);margin-top:3px;">Reg. 557844</div></div>
+    <div class="card" style="text-align:left;"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:16px;">Rehan Ahmad</div><div style="font-size:13px;color:var(--muted);margin-top:3px;">Reg. 553327</div></div>
   </div>
-  <img src="assets/goodbye.png" style="height:100px;object-fit:contain;border-radius:12px;border:1px solid var(--border);margin-top:20px;"/>
+  <img src="assets/goodbye.png" style="height:120px;object-fit:contain;border-radius:12px;border:1px solid var(--border);margin-top:20px;"/>
 </div>
 </div>
-<div class="sn">31 / 31</div>
+<div class="sn">28 / 28</div>
 </div></div>
 </body></html>

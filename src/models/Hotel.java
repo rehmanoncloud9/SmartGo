@@ -16,7 +16,7 @@ public class Hotel implements Reviewable {
 
     // This constructor initializes a new hotel record for a specific destination
     public Hotel(int id, int destinationId, String name, int rating,
-                 String managerContact, String address, double pricePerNight) {
+            String managerContact, String address, double pricePerNight) {
         this.id = id;
         this.destinationId = destinationId;
         this.name = name;
@@ -26,15 +26,42 @@ public class Hotel implements Reviewable {
         this.pricePerNight = pricePerNight;
     }
 
-    public int getId() { return id; }
-    public int getDestinationId() { return destinationId; }
-    public String getName() { return name; }
-    public int getRating() { return rating; }
-    public String getManagerContact() { return managerContact; }
-    public String getAddress() { return address; }
-    public double getPricePerNight() { return pricePerNight; }
+    // This is the getter for ID
+    public int getId() {
+        return id;
+    }
 
-    public void setPricePerNight(double pricePerNight) { this.pricePerNight = pricePerNight; }
+    // This is the getter for destination ID
+    public int getDestinationId() {
+        return destinationId;
+    }
+
+    // This is the getter for name
+    public String getName() {
+        return name;
+    }
+
+    // This is the getter for rating
+    public int getRating() {
+        return rating;
+    }
+
+    // This is the getter for manager contact
+    public String getManagerContact() {
+        return managerContact;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public double getPricePerNight() {
+        return pricePerNight;
+    }
+
+    public void setPricePerNight(double pricePerNight) {
+        this.pricePerNight = pricePerNight;
+    }
 
     @Override
     public String getDisplayName() {

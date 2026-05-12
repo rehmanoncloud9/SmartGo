@@ -11,7 +11,7 @@ public class Train extends Transport {
     private String arrivalTime;
 
     public Train(int id, int destinationId, double price, int capacity,
-                 String operator, String trainNumber, String departureTime, String arrivalTime) {
+            String operator, String trainNumber, String departureTime, String arrivalTime) {
         super(id, destinationId, "Train", price, capacity);
         this.operator = operator;
         this.trainNumber = trainNumber;
@@ -19,10 +19,21 @@ public class Train extends Transport {
         this.arrivalTime = arrivalTime;
     }
 
-    public String getOperator() { return operator; }
-    public String getTrainNumber() { return trainNumber; }
-    public String getDepartureTime() { return departureTime; }
-    public String getArrivalTime() { return arrivalTime; }
+    public String getOperator() {
+        return operator;
+    }
+
+    public String getTrainNumber() {
+        return trainNumber;
+    }
+
+    public String getDepartureTime() {
+        return departureTime;
+    }
+
+    public String getArrivalTime() {
+        return arrivalTime;
+    }
 
     @Override
     public String getScheduleSummary() {

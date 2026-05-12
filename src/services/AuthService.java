@@ -28,12 +28,15 @@ public class AuthService {
         }
     }
 
-    // This creates a new account for a user after checking if the email is available
-    public static User register(String name, String email, String phone, String password, String address) throws SmartGoException {
+    // This creates a new account for a user after checking if the email is
+    // available
+    public static User register(String name, String email, String phone, String password, String address)
+            throws SmartGoException {
         // Step 1: Load the existing user list from the file to check for duplicates
         List<User> users = DataStore.loadUsers();
 
-        // Step 2: Loop through every user to make sure this email hasn't been used before
+        // Step 2: Loop through every user to make sure this email hasn't been used
+        // before
         for (User u : users) {
             if (u.getEmail().equalsIgnoreCase(email)) {
                 // If we find a match we stop the registration and show a helpful warning
@@ -57,18 +60,21 @@ public class AuthService {
         // Step 1: Retrieve all registered users to search for the login credentials
         List<User> users = DataStore.loadUsers();
 
-        // Step 2: Compare the provided email and password against each record in the list
+        // Step 2: Compare the provided email and password against each record in the
+        // list
         for (User u : users) {
             // We check for an exact match on both pieces of information
             if (u.getEmail().equalsIgnoreCase(email) && u.getPasswordHash().equals(password)) {
-                // Step 3: If matched, we store this user in memory as the "logged in" user for this session
+                // Step 3: If matched, we store this user in memory as the "logged in" user for
+                // this session
                 loggedInUser = u;
                 System.out.println("Welcome back, " + u.getName() + "!");
                 return u;
             }
         }
 
-        // Step 4: If we finish the loop without finding a match we inform the user they made a mistake
+        // Step 4: If we finish the loop without finding a match we inform the user they
+        // made a mistake
         throw new SmartGoException("Incorrect email or password. Please try again.");
     }
 
@@ -107,5 +113,3 @@ public class AuthService {
         return loggedInUser != null;
     }
 }
-
-

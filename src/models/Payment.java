@@ -15,7 +15,8 @@ public class Payment {
     private String paidAt;
     private String status;
 
-    // This constructor initializes the payment record with the settled amount and method used
+    // This constructor initializes the payment record with the settled amount and
+    // method used
     public Payment(int id, int billId, double amount, String paymentType, String method, String paidAt, String status) {
         this.id = id;
         this.billId = billId;
@@ -26,15 +27,45 @@ public class Payment {
         this.status = status;
     }
 
-    public int getId() { return id; }
-    public int getBillId() { return billId; }
-    public double getAmount() { return amount; }
-    public String getPaymentType() { return paymentType; }
-    public String getMethod() { return method; }
-    public String getPaidAt() { return paidAt; }
-    public String getStatus() { return status; }
+    // This is the getter for ID
+    public int getId() {
+        return id;
+    }
 
-    public void setStatus(String status) { this.status = status; }
+    // This is the getter for bill ID
+    public int getBillId() {
+        return billId;
+    }
+
+    // This is the getter for amount
+    public double getAmount() {
+        return amount;
+    }
+
+    // This is the getter for payment type
+    public String getPaymentType() {
+        return paymentType;
+    }
+
+    // This is the getter for method
+    public String getMethod() {
+        return method;
+    }
+
+    // This is the getter for date and time
+    public String getPaidAt() {
+        return paidAt;
+    }
+
+    // This is the getter for status
+    public String getStatus() {
+        return status;
+    }
+
+    // This is the setter for status
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     @Override
     public String toString() {

@@ -14,8 +14,8 @@ public class Flight extends Transport implements Reviewable {
 
     // We pass general info like price and capacity to the Transport parent class
     public Flight(int id, int destinationId, double price, int capacity,
-                  String airline, String flightNumber, String flightClass,
-                  String departureTime, String returnTime) {
+            String airline, String flightNumber, String flightClass,
+            String departureTime, String returnTime) {
         super(id, destinationId, "Flight", price, capacity);
         this.airline = airline;
         this.flightNumber = flightNumber;
@@ -24,10 +24,21 @@ public class Flight extends Transport implements Reviewable {
         this.returnTime = returnTime;
     }
 
-    public String getAirline() { return airline; }
-    public String getFlightNumber() { return flightNumber; }
+    // This is the getter for airline
+    public String getAirline() {
+        return airline;
+    }
+
+    // This is the getter for flight number
+    public String getFlightNumber() {
+        return flightNumber;
+    }
+
+    // This is the getter for flight class
     public String getFlightClass() { return flightClass; }
+    // This is the getter for departure time
     public String getDepartureTime() { return departureTime; }
+    // This is the getter for return time
     public String getReturnTime() { return returnTime; }
 
     @Override

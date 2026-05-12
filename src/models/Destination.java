@@ -5,7 +5,8 @@ package models;
 
 public class Destination {
 
-    // These fields store the geographical location and highlight features of a travel spot
+    // These fields store the geographical location and highlight features of a
+    // travel spot
     private int id;
     private String city;
     private String region;
@@ -13,7 +14,8 @@ public class Destination {
     private String attractions;
     private String imageUrl;
 
-    // This constructor sets up the initial details for a new city in our travel database
+    // This constructor sets up the initial details for a new city in our travel
+    // database
     public Destination(int id, String city, String region, String country, String attractions, String imageUrl) {
         this.id = id;
         this.city = city;
@@ -23,14 +25,38 @@ public class Destination {
         this.imageUrl = imageUrl;
     }
 
-    public int getId() { return id; }
-    public String getCity() { return city; }
-    public String getRegion() { return region; }
-    public String getCountry() { return country; }
-    public String getAttractions() { return attractions; }
-    public String getImageUrl() { return imageUrl; }
+    // This is the getter for ID
+    public int getId() {
+        return id;
+    }
 
-    public void setAttractions(String attractions) { this.attractions = attractions; }
+    // This is the getter for city
+    public String getCity() {
+        return city;
+    }
+
+    // This is the getter for region
+    public String getRegion() {
+        return region;
+    }
+
+    // This is the getter for country
+    public String getCountry() {
+        return country;
+    }
+
+    // This is the getter for attractions
+    public String getAttractions() {
+        return attractions;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setAttractions(String attractions) {
+        this.attractions = attractions;
+    }
 
     @Override
     public String toString() {

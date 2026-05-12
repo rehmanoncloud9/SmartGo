@@ -16,7 +16,7 @@ public class TourPlan {
 
     // This constructor builds the tour package with its title, duration and price
     public TourPlan(int id, int destinationId, int adminId, String title,
-                    int durationDays, double basePrice, String status) {
+            int durationDays, double basePrice, String status) {
         this.id = id;
         this.destinationId = destinationId;
         this.adminId = adminId;
@@ -26,16 +26,41 @@ public class TourPlan {
         this.status = status;
     }
 
-    public int getId() { return id; }
-    public int getDestinationId() { return destinationId; }
-    public int getAdminId() { return adminId; }
-    public String getTitle() { return title; }
-    public int getDurationDays() { return durationDays; }
-    public double getBasePrice() { return basePrice; }
-    public String getStatus() { return status; }
+    public int getId() {
+        return id;
+    }
 
-    public void setStatus(String status) { this.status = status; }
-    public void setBasePrice(double basePrice) { this.basePrice = basePrice; }
+    public int getDestinationId() {
+        return destinationId;
+    }
+
+    public int getAdminId() {
+        return adminId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getDurationDays() {
+        return durationDays;
+    }
+
+    public double getBasePrice() {
+        return basePrice;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setBasePrice(double basePrice) {
+        this.basePrice = basePrice;
+    }
 
     @Override
     public String toString() {

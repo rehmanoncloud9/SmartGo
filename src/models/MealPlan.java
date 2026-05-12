@@ -21,13 +21,34 @@ public class MealPlan {
         this.price = price;
     }
 
-    public int getId() { return id; }
-    public int getTourPlanId() { return tourPlanId; }
-    public String getName() { return name; }
-    public String getDescription() { return description; }
-    public double getPrice() { return price; }
+    // This is the getter for ID
+    public int getId() {
+        return id;
+    }
 
-    public void setPrice(double price) { this.price = price; }
+    // This is the getter for tour plan ID
+    public int getTourPlanId() {
+        return tourPlanId;
+    }
+
+    // This is the getter for name
+    public String getName() {
+        return name;
+    }
+
+    // This is the getter for description
+    public String getDescription() {
+        return description;
+    }
+
+    // This is the getter for price
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
     @Override
     public String toString() {

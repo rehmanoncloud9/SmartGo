@@ -17,10 +17,21 @@ public class TourPlanHotel {
         this.isDefault = isDefault;
     }
 
-    public int getId() { return id; }
-    public int getTourPlanId() { return tourPlanId; }
-    public int getHotelId() { return hotelId; }
-    public boolean isDefault() { return isDefault; }
+    public int getId() {
+        return id;
+    }
+
+    public int getTourPlanId() {
+        return tourPlanId;
+    }
+
+    public int getHotelId() {
+        return hotelId;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
 
     @Override
     public String toString() {

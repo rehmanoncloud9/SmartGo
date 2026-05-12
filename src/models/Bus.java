@@ -10,8 +10,9 @@ public class Bus extends Transport {
     private String departureTime;
     private String arrivalTime;
 
+    // This is the main constructor for Bus
     public Bus(int id, int destinationId, double price, int capacity,
-               String operator, String busType, String departureTime, String arrivalTime) {
+            String operator, String busType, String departureTime, String arrivalTime) {
         super(id, destinationId, "Bus", price, capacity);
         this.operator = operator;
         this.busType = busType;
@@ -19,10 +20,25 @@ public class Bus extends Transport {
         this.arrivalTime = arrivalTime;
     }
 
-    public String getOperator() { return operator; }
-    public String getBusType() { return busType; }
-    public String getDepartureTime() { return departureTime; }
-    public String getArrivalTime() { return arrivalTime; }
+    // This is the getter for operator
+    public String getOperator() {
+        return operator;
+    }
+
+    // This is the getter for bus type
+    public String getBusType() {
+        return busType;
+    }
+
+    // This is the getter for departure time
+    public String getDepartureTime() {
+        return departureTime;
+    }
+
+    // This is the getter for arrival time
+    public String getArrivalTime() {
+        return arrivalTime;
+    }
 
     @Override
     public String getScheduleSummary() {

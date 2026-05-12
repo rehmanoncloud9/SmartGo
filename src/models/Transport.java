@@ -13,7 +13,8 @@ public abstract class Transport {
     private double price;
     private int capacity;
 
-    // This constructor handles all the basic information every vehicle needs to have
+    // This constructor handles all the basic information every vehicle needs to
+    // have
     public Transport(int id, int destinationId, String type, double price, int capacity) {
         this.id = id;
         this.destinationId = destinationId;
@@ -22,14 +23,33 @@ public abstract class Transport {
         this.capacity = capacity;
     }
 
-    public int getId() { return id; }
-    public int getDestinationId() { return destinationId; }
-    public String getType() { return type; }
-    public double getPrice() { return price; }
-    public int getCapacity() { return capacity; }
+    public int getId() {
+        return id;
+    }
 
-    public void setPrice(double price) { this.price = price; }
-    public void setCapacity(int capacity) { this.capacity = capacity; }
+    public int getDestinationId() {
+        return destinationId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
 
     // Every specific transport type like Flight must implement this method
     public abstract String getScheduleSummary();

@@ -15,9 +15,17 @@ public class TourPlanTransport {
         this.transportId = transportId;
     }
 
-    public int getId() { return id; }
-    public int getTourPlanId() { return tourPlanId; }
-    public int getTransportId() { return transportId; }
+    public int getId() {
+        return id;
+    }
+
+    public int getTourPlanId() {
+        return tourPlanId;
+    }
+
+    public int getTransportId() {
+        return transportId;
+    }
 
     @Override
     public String toString() {
