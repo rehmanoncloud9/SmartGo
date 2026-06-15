@@ -16,7 +16,7 @@ It lets users register, log in, browse travel options, book trips, manage bookin
 ## Tech Stack
 
 - Java (Swing for UI)
-- File-based persistence for application data (`src/data/*.txt`)
+- File-based persistence for application data (`data/*.txt` at runtime)
 - SQL schema for relational modeling (`src/db.sql`)
 
 ## Project Structure
@@ -45,6 +45,7 @@ From the repository root:
 
 - Runtime data is stored in the `data/` folder (created automatically on startup).
 - The app loads and saves records using plain text files through `DataStore`.
+- Sample source data files are currently present under `src/data/`.
 
 ## Database Schema
 
